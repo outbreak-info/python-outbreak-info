@@ -1,4 +1,5 @@
 import requests
+import pandas as pd
 
 server = 'api.outbreak.info' # or 'dev.outbreak.info'
 auth = ***REMOVED*** # keep this private!
