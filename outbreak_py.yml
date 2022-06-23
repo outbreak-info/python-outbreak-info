@@ -1,0 +1,50 @@
+name: myenv
+channels:
+  - anaconda
+  - conda-forge
+  - defaults
+dependencies:
+  - blas=1.0=openblas
+  - bottleneck=1.3.4=py39h86b5767_1
+  - brotlipy=0.7.0=py39h9ed2024_1003
+  - ca-certificates=2022.4.26=hecd8cb5_0
+  - certifi=2022.6.15=py39hecd8cb5_0
+  - cffi=1.15.0=py39hc55c11b_1
+  - charset-normalizer=2.0.4=pyhd3eb1b0_0
+  - cryptography=36.0.0=py39hf6deb26_0
+  - idna=3.3=pyhd3eb1b0_0
+  - libblas=3.9.0=15_osx64_openblas
+  - libcblas=3.9.0=15_osx64_openblas
+  - libcxx=12.0.0=h2f01273_0
+  - libffi=3.3=hb1e8313_2
+  - libgfortran=5.0.0=9_3_0_h6c81a4c_23
+  - libgfortran5=9.3.0=h6c81a4c_23
+  - liblapack=3.9.0=15_osx64_openblas
+  - libopenblas=0.3.20=openmp_hb3cd9ec_0
+  - llvm-openmp=14.0.4=ha654fa7_0
+  - ncurses=6.3=hca72f7f_2
+  - numexpr=2.8.0=py39h4d6be9b_1
+  - numpy=1.22.3=py39h9c3cb84_0
+  - numpy-base=1.22.3=py39he782bc1_0
+  - openssl=1.1.1o=hca72f7f_0
+  - pandas=1.4.2=py39he9d5cce_0
+  - pip=21.2.4=py39hecd8cb5_0
+  - pycparser=2.21=pyhd3eb1b0_0
+  - pyopenssl=22.0.0=pyhd3eb1b0_0
+  - pysocks=1.7.1=py39hecd8cb5_0
+  - python=3.9.12=hdfd78df_1
+  - python-dateutil=2.8.2=pyhd8ed1ab_0
+  - python_abi=3.9=2_cp39
+  - pytz=2022.1=pyhd8ed1ab_0
+  - readline=8.1.2=hca72f7f_1
+  - requests=2.27.1=pyhd3eb1b0_0
+  - setuptools=61.2.0=py39hecd8cb5_0
+  - six=1.16.0=pyh6c4a22f_0
+  - sqlite=3.38.3=h707629a_0
+  - tk=8.6.12=h5d9f67b_0
+  - tzdata=2022a=hda174b7_0
+  - urllib3=1.26.9=py39hecd8cb5_0
+  - wheel=0.37.1=pyhd3eb1b0_0
+  - xz=5.2.5=hca72f7f_1
+  - zlib=1.2.12=h4dc903c_2
+prefix: /Users/sarahrandall/opt/anaconda3/envs/myenv
