@@ -1,22 +1,24 @@
-import pandas as pd
-import os
-import sys
 import altair as alt
-data_path = os.path.realpath('outbreak_data')
-sys.path.append(data_path)
-import outbreak_common
+from outbreak_data import outbreak_data
 
 
-def plot_increase(location):
+def plot_increase(location, num_pages):
     """
     Visualizes the confirmed increase in number of cases
     
     Arguments:
         location: Location as a string or list of location strings
+        num_pages: Amount of pages (1000 obs/page) of data to use
         
     Returns:
         An interactive altair plot
     """
-    data = outbreak_common.cases_by_location(location)
+    data = outbreak_data.page_cases_by_location(location, num_pages)
+    # base feature viz // amount of new covid cases
+    base = alt.Chart(data).mark_line().encode(
+        x='date:T',
+        y='confirmed_numIncrease:Q',
+        color='admin1:N'
+    ).interactive()
 
-    return ...
+    return base
