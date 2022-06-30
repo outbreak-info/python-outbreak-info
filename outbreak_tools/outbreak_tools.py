@@ -11,7 +11,7 @@ def plot_increase(location):
     :param all_data: Whether to use all data or num_pages
     :return: An interactive altair plot
     """
-    data = outbreak_data.cases_by_location(location, True)
+    data = outbreak_data.cases_by_location(location)
     # base feature viz // amount of new covid cases
     base = alt.Chart(data).mark_line().encode(
         x='date:T',
