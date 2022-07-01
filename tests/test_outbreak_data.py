@@ -12,12 +12,13 @@ from outbreak_data import outbreak_data
 
 def _test_get_location():
     """
-    Test the ability of get data to return a location.
+    Test the ability of get data to return a location's case data within a
+    pandas dataframe
     """
     location = 'USA_US-CA'
-    out = outbreak_data.get_outbreak_data('covid19/query', False,
+    out = outbreak_data.get_outbreak_data('covid19/query',
                             f'location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{outbreak_data.nopage}')
-    assert(out.status_code == 200)
+    assert(out.admin1.unique()[0] == 'California')
 
 
 def _test_get_multiple_locations():
@@ -25,9 +26,9 @@ def _test_get_multiple_locations():
     Test the ability of get data to return multiple locations.
     """
     location = '(USA_US-CA OR USA_US-NY)'
-    out = outbreak_data.get_outbreak_data('covid19/query', False,
+    out = outbreak_data.get_outbreak_data('covid19/query',
                                           f'location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{outbreak_data.nopage}')
-    assert(out.status_code == 200)
+    assert(len(out.admin1.unique()) == 2)
 
 
 def _test_page_data():
