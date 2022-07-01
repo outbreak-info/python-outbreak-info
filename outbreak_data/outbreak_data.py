@@ -77,7 +77,7 @@ def page_data(data_origin, collect, num_pages = None, server=server, auth=auth, 
         return scroll_df
 
 
-def cases_by_location(location, collect_all, num_pages=None, server=server, auth=auth):
+def cases_by_location(location, collect_all=True, num_pages=None, server=server, auth=auth):
     """
     Loads data from a location; Use 'OR' between locations to get multiple.
     Arguments:
@@ -117,8 +117,6 @@ def get_prevalence_by_location(endpoint, argstring, server=server, auth=auth):
         A request object containing the raw data"""
     auth = {'Authorization': str(auth)}
     return requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth) 
-
-USA_prevs = get_prevalence_by_location('genomics/prevalence-by-location-all-lineages','location_id=USA&sort=date&ndays=2048&nday_threshold=0&other_threshold=0').json()['results']
         
 def prevalence_by_location(location, pango_lin = None, startswith=None, server=server, auth=auth):
     raw_data = get_prevalence_by_location('genomics/prevalence-by-location-all-lineages', f'location_id={location}&sort=date&ndays=2048&nday_threshold=0&other_threshold=0').json()['results']
@@ -139,7 +137,7 @@ def prevalence_by_location(location, pango_lin = None, startswith=None, server=s
         return lins.loc[lins['lineage'].str.startswith(search_all)]
     else:
         return lins.loc[lins['lineage']== pango_lin]
-    
+
 
     
 
