@@ -7,7 +7,7 @@ nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer E
 covid19_endpoint = 'covid19/query'
 
 
-def get_outbreak_data(endpoint, collect_all, argstring, server=server, auth=auth):
+def get_outbreak_data(endpoint, argstring, server=server, auth=auth,  collect_all=False):
     """
     Receives raw data using outbreak API
 
@@ -17,22 +17,8 @@ def get_outbreak_data(endpoint, collect_all, argstring, server=server, auth=auth
     :return: A request object containing the raw data
     """
     auth = {'Authorization': str(auth)}
-
-    def api_call(scrolling, argstring):
-        if scrolling:
-            return requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth)
-        else:
-            return requests.get(f'https://{server}/{endpoint}?q={argstring}', headers=auth)
-
-    def page_data(data_in):
-        """
-        Used as a helper function to page through results and return more data.
-        :param data_in: Initial request containing the args
-        :param server: Used to call which server in the API.
-        :param auth: Used as a header in call to the API.
-        :param endpoint: Used to specify the endpoint the covid19 data is stored.
-        :return: Pandas Dataframe
-        """
+    data_in = requests.get(f'https://{server}/{endpoint}?q={argstring}', headers=auth)
+    if collect_all:
         scroll_id = data_in.json()['_scroll_id']
         data_out = pd.DataFrame(columns=pd.Series(data_in.json()['hits'][0]).index)
 
@@ -45,27 +31,23 @@ def get_outbreak_data(endpoint, collect_all, argstring, server=server, auth=auth
 
             page = fetching_page + str(curr_page)
             to_scroll = 'scroll_id=' + scroll_id + page
-            data_in = api_call(True, to_scroll)
-
-        # applying datetime to dates column and sorting in ascending
-        data_out['date'] = data_out['date'].apply(lambda x: pd.to_datetime(x))
-        data_out = data_out.sort_values(by='date', ascending=True)
-        data_out.reset_index(drop=True, inplace=True)
-        return data_out
-
-    data_origin = api_call(False, argstring)
-    if collect_all:
-        return page_data(data_origin)
+            data_in = requests.get(f'https://{server}/{endpoint}?{to_scroll}', headers=auth)
     else:
-        return data_origin
+        data_out = pd.DataFrame(data_in.json()['hits'])
+    # applying datetime to dates column and sorting in ascending
+    data_out['date'] = data_out['date'].apply(lambda x: pd.to_datetime(x))
+    data_out = data_out.sort_values(by='date', ascending=True)
+    data_out.reset_index(drop=True, inplace=True)
+    return data_out
 
 
 def cases_by_location(location, server=server, auth=auth):
     """
     Loads data from a location; Use 'OR' between locations to get multiple.
+    Since this API endpoint supports paging, collect_all is used to return all data.
 
     :param location: A string
     :return: A pandas dataframe
 
     """
-    return get_outbreak_data(covid19_endpoint, True, f'location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}')
+    return get_outbreak_data(covid19_endpoint, f'location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}', collect_all=True)
