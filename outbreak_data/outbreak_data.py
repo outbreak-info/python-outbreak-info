@@ -75,6 +75,34 @@ def page_data(data_origin, collect, num_pages = None, server=server, auth=auth, 
         scroll_df = scroll_df.sort_values(by='date', ascending=True)
         scroll_df.reset_index(drop=True, inplace=True)
         return scroll_df
+
+
+def cases_by_location(location, collect_all, num_pages=None, server=server, auth=auth):
+    """
+    Loads data from a location; Use 'OR' between locations to get multiple.
+    Arguments:
+        :param location: A string
+        :param num_pages: For every value >= 0, returns 1000 obs. (paging)
+        :param collect_all: If true returns all pages
+    Returns:
+        A pandas dataframe
+    """
+    assert(type(collect_all) == bool)
+    raw_data = get_outbreak_data('covid19/query',
+                                               f'location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}',
+                                               server, auth)
+    if collect_all:
+        assert(num_pages is None)
+        return page_data(raw_data, True)
+    else:
+        assert(num_pages is not None)
+        assert(type(num_pages) == int)
+        assert(num_pages >= 0)
+
+        if num_pages == 0:
+            return pd.DataFrame(raw_data.json()['hits'])
+        elif num_pages > 0:
+            return page_data(raw_data, collect_all, num_pages)
         
 def get_prevalence_by_location(endpoint, argstring, server=server, auth=auth):
     
@@ -90,14 +118,49 @@ def get_prevalence_by_location(endpoint, argstring, server=server, auth=auth):
     auth = {'Authorization': str(auth)}
     return requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth) 
 
+USA_prevs = get_prevalence_by_location('genomics/prevalence-by-location-all-lineages','location_id=USA&sort=date&ndays=2048&nday_threshold=0&other_threshold=0').json()['results']
+        
+def prevalence_by_location(location, pango_lin = None, startswith=None, server=server, auth=auth):
+    raw_data = get_prevalence_by_location('genomics/prevalence-by-location-all-lineages', f'location_id={location}&sort=date&ndays=2048&nday_threshold=0&other_threshold=0').json()['results']
+    lins = pd.DataFrame(raw_data)
+    
+    """Loads prevalence data from a location
 
-
-     
-
-
-
-                              
-
+           Arguments:
+               :param location: A string
+               :param num_pages: For every value >= 0, returns 1000 obs. (paging)
+               :param pango_lin: A string; loads data for a specifc lineage
+               :param startswith: A string; loads data for all lineages beginning with first letter(s) of name
+           Returns:
+               A pandas dataframe"""
+               
+    if startswith is not None:
+        search_all = startswith
+        return lins.loc[lins['lineage'].str.startswith(search_all)]
+    else:
+        return lins.loc[lins['lineage']== pango_lin]
+    
 
     
 
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
