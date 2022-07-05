@@ -20,3 +20,7 @@ def plot_increase(location):
     ).interactive()
 
     return base
+
+
+
+

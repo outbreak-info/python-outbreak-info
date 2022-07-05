@@ -42,6 +42,7 @@ def get_outbreak_data(endpoint, argstring, server=server, auth=auth,  collect_al
     return data_out
 
 
+
 def cases_by_location(location, server=server, auth=auth):
     """
     Loads data from a location; Use 'OR' between locations to get multiple.
@@ -53,3 +54,38 @@ def cases_by_location(location, server=server, auth=auth):
     """
     args = f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}'
     return get_outbreak_data(covid19_endpoint, args, collect_all=True)
+        
+def get_prevalence_by_location(endpoint, argstring, server=server, auth=auth):
+    
+    """Used with prevalence_by_location. Works similarly to get_outbreak_data. 
+       Prevalence_by_location() requires a different url string.
+    
+    Arguments: 
+        endpoint: directory in server the data is stored
+        argstring: feature arguments to provide to API call
+    
+    Returns: 
+        A request object containing the raw data"""
+    auth = {'Authorization': str(auth)}
+    return requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth) 
+        
+def prevalence_by_location(location, pango_lin = None, startswith=None, server=server, auth=auth):
+    raw_data = get_prevalence_by_location('genomics/prevalence-by-location-all-lineages', f'location_id={location}&sort=date&ndays=2048&nday_threshold=0&other_threshold=0').json()['results']
+    lins = pd.DataFrame(raw_data)
+    
+    """Loads prevalence data from a location
+
+           Arguments:
+               :param location: A string
+               :param num_pages: For every value >= 0, returns 1000 obs. (paging)
+               :param pango_lin: A string; loads data for a specifc lineage
+               :param startswith: A string; loads data for all lineages beginning with first letter(s) of name
+           Returns:
+               A pandas dataframe"""
+               
+    if startswith is not None:
+        search_all = startswith
+        return lins.loc[lins['lineage'].str.startswith(search_all)]
+    else:
+        return lins.loc[lins['lineage']== pango_lin]
+
