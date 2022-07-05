@@ -17,7 +17,7 @@ def _test_get_location():
     """
     location = 'USA_US-CA'
     out = outbreak_data.get_outbreak_data('covid19/query',
-                            f'location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{outbreak_data.nopage}')
+                            f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{outbreak_data.nopage}')
     assert(out.admin1.unique()[0] == 'California')
 
 

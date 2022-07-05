@@ -9,7 +9,8 @@ covid19_endpoint = 'covid19/query'
 
 def get_outbreak_data(endpoint, argstring, server=server, auth=auth,  collect_all=False):
     """
-    Receives raw data using outbreak API
+    Receives raw data using outbreak API.
+    Must append 'q=' to argstring if initiating non-scrolling query (default).
 
     :param endpoint: directory in server the data is stored
     :param argstring: feature arguments to provide to API call
@@ -17,7 +18,7 @@ def get_outbreak_data(endpoint, argstring, server=server, auth=auth,  collect_al
     :return: A request object containing the raw data
     """
     auth = {'Authorization': str(auth)}
-    data_in = requests.get(f'https://{server}/{endpoint}?q={argstring}', headers=auth)
+    data_in = requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth)
     if collect_all:
         scroll_id = data_in.json()['_scroll_id']
         data_out = pd.DataFrame(columns=pd.Series(data_in.json()['hits'][0]).index)
@@ -50,4 +51,5 @@ def cases_by_location(location, server=server, auth=auth):
     :return: A pandas dataframe
 
     """
-    return get_outbreak_data(covid19_endpoint, f'location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}', collect_all=True)
+    args = f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}'
+    return get_outbreak_data(covid19_endpoint, args, collect_all=True)
