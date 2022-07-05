@@ -7,102 +7,53 @@ nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer E
 covid19_endpoint = 'covid19/query'
 
 
-def get_outbreak_data(endpoint, argstring, server=server, auth=auth):
+def get_outbreak_data(endpoint, argstring, server=server, auth=auth,  collect_all=False):
     """
-    Recieves raw data using outbreak API
-       
-    Arguments: 
-        endpoint: directory in server the data is stored
-        argstring: feature arguments to provide to API call
-    
-    Returns: 
-        A request object containing the raw data
-       
+    Receives raw data using outbreak API.
+    Must append 'q=' to argstring if initiating non-scrolling query (default).
+
+    :param endpoint: directory in server the data is stored
+    :param argstring: feature arguments to provide to API call
+    :param collect_all: if True, returns all data.
+    :return: A request object containing the raw data
     """
     auth = {'Authorization': str(auth)}
-    return requests.get(f'https://{server}/{endpoint}?q={argstring}', headers=auth)
+    data_in = requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth)
+    if collect_all:
+        scroll_id = data_in.json()['_scroll_id']
+        data_out = pd.DataFrame(columns=pd.Series(data_in.json()['hits'][0]).index)
 
-
-def page_data(data_origin, collect, num_pages = None, server=server, auth=auth, covid19_endpoint=covid19_endpoint):
-    """
-    Used as a helper function to page through results and return more data.
-    :param data_origin: Initial request containing the args
-    :param num_pages: Numer of pages to scroll.
-    :param server: Used to call which server in the API.
-    :param auth: Used as a header in call to the API.
-    :param covid19_endpoint: Used to specify the endpoint the covid19 data is stored.
-    :param collect: if True, returns max pages & disables num_pages.
-    :return: Pandas Dataframe
-    """
-    if collect:
-        assert(num_pages is None)
-    else:
-        assert(num_pages is not None)
-
-    auth = {'Authorization': str(auth)}
-    scroll_id = data_origin.json()['_scroll_id']
-    scroll_df = pd.DataFrame(columns=pd.Series(data_origin.json()['hits'][0]).index)
-
-    fetching_page = '&fetch_all=True&page='
-    curr_page = 0
-    if collect:
-        while 'success' not in data_origin.json().keys():
+        fetching_page = '&fetch_all=True&page='
+        curr_page = 0
+        while 'success' not in data_in.json().keys():
             # individual request df
-            data = pd.DataFrame(data_origin.json()['hits'])
-            scroll_df = scroll_df.append(data, ignore_index=True)
+            data = pd.DataFrame(data_in.json()['hits'])
+            data_out = data_out.append(data, ignore_index=True)
 
             page = fetching_page + str(curr_page)
             to_scroll = 'scroll_id=' + scroll_id + page
-            data_origin = requests.get(f'https://{server}/{covid19_endpoint}?{to_scroll}', headers=auth)
-            curr_page += 1
-        # applying datetime to dates column and sorting in ascending
-        scroll_df['date'] = scroll_df['date'].apply(lambda x: pd.to_datetime(x))
-        scroll_df = scroll_df.sort_values(by='date', ascending=True)
-        scroll_df.reset_index(drop=True, inplace=True)
-        return scroll_df
+            data_in = requests.get(f'https://{server}/{endpoint}?{to_scroll}', headers=auth)
     else:
-        while curr_page <= num_pages:
-            # individual request df
-            data = pd.DataFrame(data_origin.json()['hits'])
-            scroll_df = scroll_df.append(data, ignore_index=True)
-
-            page = fetching_page + str(curr_page)
-            to_scroll = 'scroll_id=' + scroll_id + page
-            data_origin = requests.get(f'https://{server}/{covid19_endpoint}?{to_scroll}', headers=auth)
-            curr_page += 1
-        # applying datetime to dates column and sorting in ascending
-        scroll_df['date'] = scroll_df['date'].apply(lambda x: pd.to_datetime(x))
-        scroll_df = scroll_df.sort_values(by='date', ascending=True)
-        scroll_df.reset_index(drop=True, inplace=True)
-        return scroll_df
+        data_out = pd.DataFrame(data_in.json()['hits'])
+    # applying datetime to dates column and sorting in ascending
+    data_out['date'] = data_out['date'].apply(lambda x: pd.to_datetime(x))
+    data_out = data_out.sort_values(by='date', ascending=True)
+    data_out.reset_index(drop=True, inplace=True)
+    return data_out
 
 
-def cases_by_location(location, collect_all=True, num_pages=None, server=server, auth=auth):
+
+def cases_by_location(location, server=server, auth=auth):
     """
     Loads data from a location; Use 'OR' between locations to get multiple.
-    Arguments:
-        :param location: A string
-        :param num_pages: For every value >= 0, returns 1000 obs. (paging)
-        :param collect_all: If true returns all pages
-    Returns:
-        A pandas dataframe
-    """
-    assert(type(collect_all) == bool)
-    raw_data = get_outbreak_data('covid19/query',
-                                               f'location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}',
-                                               server, auth)
-    if collect_all:
-        assert(num_pages is None)
-        return page_data(raw_data, True)
-    else:
-        assert(num_pages is not None)
-        assert(type(num_pages) == int)
-        assert(num_pages >= 0)
+    Since this API endpoint supports paging, collect_all is used to return all data.
 
-        if num_pages == 0:
-            return pd.DataFrame(raw_data.json()['hits'])
-        elif num_pages > 0:
-            return page_data(raw_data, collect_all, num_pages)
+    :param location: A string
+    :return: A pandas dataframe
+
+    """
+    args = f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}'
+    return get_outbreak_data(covid19_endpoint, args, collect_all=True)
         
 def get_prevalence_by_location(endpoint, argstring, server=server, auth=auth):
     
@@ -138,27 +89,3 @@ def prevalence_by_location(location, pango_lin = None, startswith=None, server=s
     else:
         return lins.loc[lins['lineage']== pango_lin]
 
-
-    
-
-
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
