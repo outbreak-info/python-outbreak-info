@@ -2,6 +2,13 @@ import altair as alt
 from outbreak_data import outbreak_data
 
 
+server = 'api.outbreak.info'  # or 'dev.outbreak.info'
+auth = 'Bearer 0ed52bbfb6c79d1fd8e9c6f267f9b6311c885a4c4c6f037d6ab7b3a40d586ad0'  # keep this private!
+nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer ES versions as well
+covid19_endpoint = 'covid19/query'
+
+
+
 def plot_increase(location, all_data, num_pages = None):
     """
     Visualizes the confirmed increase in number of cases
@@ -22,7 +29,4 @@ def plot_increase(location, all_data, num_pages = None):
     ).interactive()
 
     return base
-
-
-
 
