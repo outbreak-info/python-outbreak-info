@@ -103,19 +103,18 @@ def cases_by_location(location, server=server, auth=auth): #click arrow to left 
             raw_data = get_outbreak_data('covid19/query',
                                                 f'location_id:{i}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}',
                                                 server, auth)
-
             try:
                 page_data(raw_data, True) 
             except:
-                  print(bad_input)
+                print(bad_input)
                  
             if firstdf:
-                        df = pd.DataFrame(raw_data.json()['hits'])
-                        firstdf = False
+                df = pd.DataFrame(raw_data.json()['hits'])
+                firstdf = False
                           #need flag to keep df1 from being used again
             else:
-                    newdf = pd.DataFrame(raw_data.json()['hits'])
-                    df = pd.concat([df, newdf], sort=False)
+                newdf = pd.DataFrame(raw_data.json()['hits'])
+                df = pd.concat([df, newdf], sort=False)
                         
         if not df.empty:
             return df
@@ -145,5 +144,25 @@ def get_prevalence_by_location(endpoint, argstring, server=server, auth=auth):
           A request object containing the raw data"""
     auth = {'Authorization': str(auth)}
     return requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth) 
+
+
+def prevalence_by_location(location, pango_lin = None, startswith=None, server=server, auth=auth):
+    raw_data = get_prevalence_by_location('genomics/prevalence-by-location-all-lineages', f'location_id={location}&sort=date&ndays=2048&nday_threshold=0&other_threshold=0').json()['results']
+    lins = pd.DataFrame(raw_data)
+    
+    """Loads prevalence data from a location
+           Arguments:
+               :param location: A string
+               :param num_pages: For every value >= 0, returns 1000 obs. (paging)
+               :param pango_lin: A string; loads data for a specifc lineage
+               :param startswith: A string; loads data for all lineages beginning with first letter(s) of name
+           Returns:
+               A pandas dataframe"""
+               
+    if startswith is not None:
+        search_all = startswith
+        return lins.loc[lins['lineage'].str.startswith(search_all)]
+    else:
+        return lins.loc[lins['lineage']== pango_lin]
 
 
