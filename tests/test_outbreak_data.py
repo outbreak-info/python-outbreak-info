@@ -25,14 +25,10 @@ def _test_get_multiple_locations():
     """
     Test the ability of get data to return multiple locations.
     """
-    location = '(USA_US-CA OR USA_US-NY)'
+    location = ['USA_US-CA', 'USA_US-NY)']
     out = outbreak_data.get_outbreak_data('covid19/query',
-                                          f'location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{outbreak_data.nopage}')
+                                          f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{outbreak_data.nopage}')
     assert(len(out.admin1.unique()) == 2)
-
-
-def _test_page_data():
-    pass
 
 
 def test_get_outbreak_data():
