@@ -10,7 +10,7 @@ covid19_endpoint = 'covid19/query'
 def get_outbreak_data(endpoint, argstring, server=server, auth=auth,  collect_all=False, in_data=None, curr_page=None):
     """
     Receives raw data using outbreak API.
-    Must append 'q=' to argstring if initiating non-scrolling query (default).
+    Must prepend 'q=' to argstring.
 
     :param endpoint: directory in server the data is stored
     :param argstring: feature arguments to provide to API call
