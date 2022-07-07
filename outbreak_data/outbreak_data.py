@@ -63,19 +63,35 @@ def cases_by_location(location, server=server, auth=auth):
 
     """
     # location names can be further checked to verify validity // proper format
+    
     if type(location) == list:
-        locations = '(' + ' OR '.join(location) + ')'
-        args = f'q=location_id:{locations}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}'
-        return get_outbreak_data(covid19_endpoint, args, collect_all=True)
+        for i in location:
+            try:
+                locations = '(' + ' OR '.join(location) + ')'
+                bad_input = ('{} is not a valid location ID'.format(i))
+                args = f'q=location_id:{locations}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}'
+                df = get_outbreak_data(covid19_endpoint, args, collect_all=True)
+                if not df.empty:
+                    return df
+            except:
+                print(bad_input)
+            
     else:
-        args = f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}'
-        return get_outbreak_data(covid19_endpoint, args, collect_all=True)
-
-
+        bad_input = ('{} is not a valid location ID'.format(location))
+        try:
+            bad_input = ('{} is not a valid location ID'.format(location))
+            args = f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}'
+            df = get_outbreak_data(covid19_endpoint, args, collect_all=True)
+            if not df.empty:
+                return df
+        except:
+            print(bad_input)
+            
+            
 def get_prevalence_by_location(endpoint, argstring, server=server, auth=auth):
     
     """Used with prevalence_by_location. Works similarly to get_outbreak_data. 
-       Prevalence_by_location() requires a different url string.
+        Prevalence_by_location() requires a different url string.
     
     Arguments: 
         endpoint: directory in server the data is stored
@@ -93,13 +109,13 @@ def prevalence_by_location(location, pango_lin = None, startswith=None, server=s
     
     """Loads prevalence data from a location
 
-           Arguments:
-               :param location: A string
-               :param num_pages: For every value >= 0, returns 1000 obs. (paging)
-               :param pango_lin: A string; loads data for a specifc lineage
-               :param startswith: A string; loads data for all lineages beginning with first letter(s) of name
-           Returns:
-               A pandas dataframe"""
+            Arguments:
+                :param location: A string
+                :param num_pages: For every value >= 0, returns 1000 obs. (paging)
+                :param pango_lin: A string; loads data for a specifc lineage
+                :param startswith: A string; loads data for all lineages beginning with first letter(s) of name
+            Returns:
+                A pandas dataframe"""
                
     if startswith is not None:
         search_all = startswith
