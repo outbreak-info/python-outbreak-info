@@ -35,13 +35,12 @@ def cases_by_location(location, server=server, auth=auth):
         A pandas dataframe
     
     """
-    raw_data = get_outbreak_data('covid19/query',
-                                 f'location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}',
-                                 server, auth)
+    raw_data = get_outbreak_data('covid19/query', f'location_id{location}&sort=date&fields=date,confirmed_rolling,admin1&{nopage}', server, auth)
+   
     return pd.DataFrame(raw_data.json()['hits'])
 
 
-def page_cases_by_location(location, num_pages, server=server, auth=auth, covid19_endpoint=covid19_endpoint):
+def page_cases_by_location(location, num_pages, server=server, auth=auth, covid19_endpoint=covid19_endpoint, pull_smoothed=0):
     """
     Loads data from a location; Use 'OR' between locations to get multiple.
     Uses a paging mechanism.
@@ -56,8 +55,22 @@ def page_cases_by_location(location, num_pages, server=server, auth=auth, covid1
     auth = {'Authorization': str(auth)}
 
     raw_data = get_outbreak_data(covid19_endpoint,
-                                                 f'location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}',
+                                                 f'location_id:{location}&sort=date&fields=date,{confirmed},admin1{nopage}',
                                                  server, auth)
+    print_raw=raw_data.json()['hits']
+    print_raw_table=pd.DataFrame(print_raw)
+    refined_table=print_raw_table.drop(columns=['_score', 'admin1'], axis=1)
+    if pull_smoothed == 0:
+        confirmed='confirmed_numIncrease'
+        print(refined_table)
+    elif pull_smoothed == 1:
+        confirmed='confirmed_rolling'
+        print(refined_table)
+    elif pull_smoothed == 2:
+        confirmed='confirmed_rolling','confirmed_numIncrease'
+        print(refined_table)
+    else:
+        print("invalid parameter value!")                           
 
     scroll_id = raw_data.json()['_scroll_id']
     scroll_df = pd.DataFrame(columns=pd.Series(raw_data.json()['hits'][0]).index)
