@@ -74,7 +74,6 @@ def prevalence_by_location(location, pango_lin = None, startswith=None, server=s
     lins = pd.DataFrame(raw_data)
     
     """Loads prevalence data from a location
-
            Arguments:
                :param location: A string
                :param num_pages: For every value >= 0, returns 1000 obs. (paging)
@@ -89,3 +88,10 @@ def prevalence_by_location(location, pango_lin = None, startswith=None, server=s
     else:
         return lins.loc[lins['lineage']== pango_lin]
 
+
+        
+        
+        
+        
+        
+        
