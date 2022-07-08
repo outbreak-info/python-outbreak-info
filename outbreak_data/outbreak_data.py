@@ -7,7 +7,7 @@ nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer E
 covid19_endpoint = 'covid19/query'
 
 
-def get_outbreak_data(endpoint, argstring, server=server, auth=auth,  collect_all=False, in_data=None, curr_page=None):
+def get_outbreak_data(endpoint, argstring, server=server, auth=auth,  collect_all=False, curr_page=0):
     """
     Receives raw data using outbreak API.
     Must append 'q=' to argstring if initiating non-scrolling query (default).
@@ -24,32 +24,23 @@ def get_outbreak_data(endpoint, argstring, server=server, auth=auth,  collect_al
     auth = {'Authorization': str(auth)}
     # initial request // used to collect data during recursion or as output of single API call
     in_req = requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth)
+    valid_req = 'success' not in in_req.json().keys()
     # initial pandas dataframe set and updating page for collecting new data
-    if in_data is None:
-        # initial df
+    if valid_req:
         in_data = pd.DataFrame(in_req.json()['hits'])
-    # base case check for returning data w/wo recursion
-    if collect_all:
-        # recursion state
-        if 'success' not in in_req.json().keys():
-            if curr_page is not None:
-                data = pd.DataFrame(in_req.json()['hits'])
-                out_data = in_data.append(data, ignore_index=True)
-            else:
-                out_data = in_data
-                curr_page = 0
+        # applying datetime to dates column and sorting in ascending
+        in_data['date'] = in_data['date'].apply(lambda x: pd.to_datetime(x))
+        if collect_all:
+            # base case check for ending recursion
             scroll_id = in_req.json()['_scroll_id']
             fetching_page = '&fetch_all=True&page='
             page = fetching_page + str(curr_page)
             to_scroll = 'scroll_id=' + scroll_id + page
-            return get_outbreak_data(endpoint, to_scroll, collect_all=True, in_data=out_data, curr_page=curr_page+1)
-
-    # non-recursion state
-    # applying datetime to dates column and sorting in ascending
-    in_data['date'] = in_data['date'].apply(lambda x: pd.to_datetime(x))
-    in_data = in_data.sort_values(by='date', ascending=True)
-    in_data.reset_index(drop=True, inplace=True)
-    return in_data
+            in_data = in_data.append(get_outbreak_data(endpoint, to_scroll, collect_all=True, curr_page=curr_page+1))
+        in_data = in_data.sort_values(by='date', ascending=True)
+        in_data.reset_index(drop=True, inplace=True)
+        return in_data
+    return
 
 
 def cases_by_location(location, server=server, auth=auth):
