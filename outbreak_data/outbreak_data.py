@@ -91,7 +91,7 @@ def cases_by_location(location, server=server, auth=auth):
 def get_prevalence_by_location(endpoint, argstring, server=server, auth=auth):
     
     """Used with prevalence_by_location. Works similarly to get_outbreak_data. 
-        Prevalence_by_location() requires a different url string.
+        Prevalence_by_location() does not support paging.
     
     Arguments: 
         endpoint: directory in server the data is stored
@@ -111,7 +111,6 @@ def prevalence_by_location(location, pango_lin = None, startswith=None, server=s
 
             Arguments:
                 :param location: A string
-                :param num_pages: For every value >= 0, returns 1000 obs. (paging)
                 :param pango_lin: A string; loads data for a specifc lineage
                 :param startswith: A string; loads data for all lineages beginning with first letter(s) of name
             Returns:
@@ -122,4 +121,42 @@ def prevalence_by_location(location, pango_lin = None, startswith=None, server=s
         return lins.loc[lins['lineage'].str.startswith(search_all)]
     else:
         return lins.loc[lins['lineage']== pango_lin]
+    
+    
+def lineage_mutations(pango_lin, freq=None, server=server, auth=auth):
 
+  
+    raw_data = get_prevalence_by_location('genomics/lineage-mutations', f'pangolin_lineage={pango_lin}').json()['results']
+    return pd.DataFrame(raw_data)
+
+""" Preliminary drafting: not part of function"""
+
+    # if type(pango_lin) == list:
+            
+    #         lineages = '(' + ' OR '.join(pango_lin) + ')'
+    #         endpoint = 'covid19/query'
+    #         args = f'pangolin_lineage={lineages}'
+    #         return get_outbreak_data(endpoint, args, collect_all=True)
+                                    
+            
+  
+        #     # if type(mutation) == list:
+        #     #     mutations = '(' + ' AND '.join(mutation) + ')'
+            
+          
+    
+    
+    # else:
+    #     raw_data = get_prevalence_by_location('genomics/lineage-mutations', f'pangolin_lineage={pango_lin}').json()['results']
+    #     lins = pd.DataFrame(raw_data)
+    #     return lins
+
+foo = lineage_mutations('A.27')
+
+           
+            
+            
+            
+            
+                
+                
