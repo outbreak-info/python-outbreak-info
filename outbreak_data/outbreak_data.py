@@ -41,19 +41,62 @@ def get_outbreak_data(endpoint, argstring, server=server, auth=auth,  collect_al
     data_out.reset_index(drop=True, inplace=True)
     return data_out
 
-
-
-def cases_by_location(location, server=server, auth=auth):
+smoothed-confirmed-rolling-cases
+def cases_by_location(location, server=server, auth=auth, pull_smoothed=0):
     """
     Loads data from a location; Use 'OR' between locations to get multiple.
-    Since this API endpoint supports paging, collect_all is used to return all data.
-
-    :param location: A string
-    :return: A pandas dataframe
-
+    
+    Arguments:
+        location: A string 
+    
+    Returns:
+        A pandas dataframe
+   
     """
-    args = f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}'
-    return get_outbreak_data(covid19_endpoint, args, collect_all=True)
+    raw_data = get_outbreak_data(covid19_endpoint,
+                                                 f'location_id:{location}&sort=date&fields=date,{confirmed},admin1{nopage}',
+                                                 server, auth)
+    print_raw=raw_data.json()['hits']
+    print_raw_table=pd.DataFrame(print_raw)
+    refined_table=print_raw_table.drop(columns=['_score', 'admin1'], axis=1)
+    if pull_smoothed == 0:
+        confirmed='confirmed_numIncrease'
+        print(refined_table)
+    elif pull_smoothed == 1:
+        confirmed='confirmed_rolling'
+        print(refined_table)
+    elif pull_smoothed == 2:
+        confirmed='confirmed_rolling','confirmed_numIncrease'
+        print(refined_table)
+    else:
+        print("invalid parameter value!")                           
+
+main
+    raw_data = get_outbreak_data('covid19/query', f'location_id{location}&sort=date&fields=date,confirmed_rolling,admin1&{nopage}', server, auth)
+   
+    return pd.DataFrame(raw_data.json()['hits'])
+
+
+def page_cases_by_location(location, num_pages, server=server, auth=auth, covid19_endpoint=covid19_endpoint):
+    scroll_id = raw_data.json()['_scroll_id']
+    scroll_df = pd.DataFrame(columns=pd.Series(raw_data.json()['hits'][0]).index)
+
+    fetching_page = '&fetch_all=True&page='
+    curr_page = 1
+    while curr_page <= num_pages:
+        # individual request df
+        data = pd.DataFrame(raw_data.json()['hits'])
+        scroll_df = scroll_df.append(data, ignore_index=True)
+
+        page = fetching_page + str(curr_page)
+        to_scroll = 'scroll_id=' + scroll_id + page
+        raw_data = requests.get(f'https://{server}/{covid19_endpoint}?{to_scroll}', headers=auth)
+        curr_page += 1
+    scroll_df['date'] = scroll_df['date'].apply(lambda x: pd.to_datetime(x))
+    scroll_df = scroll_df.sort_values(by='date', ascending=True)
+    scroll_df.reset_index(drop=True, inplace=True)
+    return scroll_df
+
         
 def get_prevalence_by_location(endpoint, argstring, server=server, auth=auth):
     
@@ -87,6 +130,7 @@ def prevalence_by_location(location, pango_lin = None, startswith=None, server=s
         return lins.loc[lins['lineage'].str.startswith(search_all)]
     else:
         return lins.loc[lins['lineage']== pango_lin]
+
 
 
         
