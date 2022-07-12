@@ -88,10 +88,10 @@ def cases_by_location(location, server=server, auth=auth):
             print(bad_input)
             
             
-def get_prevalence_by_location(endpoint, argstring, server=server, auth=auth):
+def get_outbreak_data_no_paging(endpoint, argstring, server=server, auth=auth):
     
-    """Used with prevalence_by_location. Works similarly to get_outbreak_data. 
-        Prevalence_by_location() does not support paging.
+    """Works similarly to get_outbreak_data. Used for API endpoints that 
+    do not support paging.
     
     Arguments: 
         endpoint: directory in server the data is stored
@@ -104,7 +104,7 @@ def get_prevalence_by_location(endpoint, argstring, server=server, auth=auth):
 
 
 def prevalence_by_location(location, pango_lin = None, startswith=None, server=server, auth=auth):
-    raw_data = get_prevalence_by_location('genomics/prevalence-by-location-all-lineages', f'location_id={location}&sort=date&ndays=2048&nday_threshold=0&other_threshold=0').json()['results']
+    raw_data = get_outbreak_data_no_paging('genomics/prevalence-by-location-all-lineages', f'location_id={location}&sort=date&ndays=2048&nday_threshold=0&other_threshold=0').json()['results']
     lins = pd.DataFrame(raw_data)
     
     """Loads prevalence data from a location
@@ -126,39 +126,46 @@ def prevalence_by_location(location, pango_lin = None, startswith=None, server=s
     
 def lineage_mutations(pango_lin, mutation=None, freq=None, server=server, auth=auth):
     
+    """Retrieves data from all mutations in a specified lineage above a frequency threshold
+       Mutiple queries for lineages and mutations can be separated by ','
+    
+          Arguments:
+             :param pango_lin: A string or list; loads data for all mutations in a specified PANGO lineage 
+             :param mutation: A string or list; loads data for lineages containing a specified mutation
+             :param freq: a number between 0 and 1 specifying the frequency threshold above which to return mutations (default = 0.8)
+          Returns:
+              A pandas dataframe"""
+              
     # Turns any string input into list format: most universal
     
-      if type(pango_lin) == str:
+    if type(pango_lin) == str:
           
          pango_lin = pango_lin.replace(" ", "")
-      
          pango_lin = list(pango_lin.split(","))
-       
       
-      if mutation is not None and type(mutation) == str:
+    if mutation is not None and type(mutation) == str:
           
           mutation = mutation.replace(" ", "")
-          
           mutation = list(mutation.split(","))
-         
-      assert(type(pango_lin == list))
-      assert(type(mutation == list)) 
-      
-      
-      if mutation is None:
-          lineages = '' + ' OR '.join(pango_lin) 
-      
-      else:
-          lineages = '' + ' OR '.join(pango_lin) + ' AND ' + ' AND '.join(mutation) + '' #not concatenating correctly or not the right query?
-            
-      raw_data = get_prevalence_by_location('genomics/lineage-mutations', f'pangolin_lineage={lineages}').json()['results']
-            
-      df = pd.DataFrame(raw_data[lineages]) # see how to access list values in a dictionary
-            
-      if freq is not None:
-          assert(type(freq == float))
-          return df.loc[df['prevalence'] >= freq]
-      
-      return df
+       
+    assert(type(pango_lin == list))
+    assert(type(mutation == list)) 
+    
+    
+    if mutation is None:
+        lineages = '' + ' OR '.join(pango_lin) 
+    
+    else:
+        lineages = '' + ' OR '.join(pango_lin) + ' AND ' + ' AND '.join(mutation) + '' #not concatenating correctly or not the right query?
           
-         
+    raw_data = get_outbreak_data_no_paging('genomics/lineage-mutations', f'pangolin_lineage={lineages}').json()['results']
+          
+    df = pd.DataFrame(raw_data[lineages]) 
+          
+    if freq is not None:
+        assert(type(freq == float))
+        if freq > 0 and freq < 1:
+          return df.loc[df['prevalence'] >= freq]
+    else:
+        return df
+    
