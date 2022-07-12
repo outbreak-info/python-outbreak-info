@@ -126,124 +126,39 @@ def prevalence_by_location(location, pango_lin = None, startswith=None, server=s
     
 def lineage_mutations(pango_lin, mutation=None, freq=None, server=server, auth=auth):
     
-      if type(pango_lin) == list and type(mutation) == list:  #trying to utilize the OR/AND logic and failing
-        
-            lineages = '' + ' OR '.join(pango_lin) + ' AND ' + ' AND '.join(mutation) + '' #not concatenating correctly
-            
-            
-            raw_data = get_prevalence_by_location('genomics/lineage-mutations', f'pangolin_lineage={lineages}').json()['results']
-            val = pd.DataFrame(raw_data[lineages]) # see how to access list values in a dictionary
-           
-            return val
+    # Turns any string input into list format: most universal
     
-      elif type(pango_lin) == list:
-        lineages = '' + ' OR '.join(pango_lin) + ''
-        raw_data = get_prevalence_by_location('genomics/lineage-mutations', f'pangolin_lineage={lineages}').json()['results']
-        val = pd.DataFrame(raw_data[lineages])
-        return val
-  
-      else:
-           raw_data = get_prevalence_by_location('genomics/lineage-mutations', f'pangolin_lineage={pango_lin}').json()['results']
-           val = pd.DataFrame(raw_data[pango_lin])
-           return val
-         
-            
-foo = lineage_mutations(['A.27', 'B.1'], ['orf1a:n3651s','s:n501y', 's:g1219v'])
-            
-
-""" Works For finding a specific mutation:"""
-
-        # raw_data = get_prevalence_by_location('genomics/lineage-mutations', f'pangolin_lineage={pango_lin}').json()['results']
-        # val = pd.DataFrame(raw_data[pango_lin]) # see how to access list values in a dictionary
-        # return val.loc[val['mutation']== 'orf1a:n3651s']
-    
- 
-    
- 
-    
- 
-    
- 
-    
- 
-    
- 
-    
- 
-    
- 
-    
- 
-    
- 
-    
- 
-    
- 
-    
- 
-    
- 
-    
- 
-    
- 
-    
- 
-    
- 
-    
-"""Just Extra Ideas"""
-    # raw_data = get_prevalence_by_location('genomics/lineage-mutations', f'pangolin_lineage={pango_lin}').json()['results']
-    # val = pd.DataFrame(raw_data[pango_lin]) # see how to access list values in a dictionary
-        
-    #     if type(mutation) == list:
-        
-            
-    #         for i in mutation:
-    #           if i == mutation[0]:
-    #              init = val.loc[val['mutation']== i]
-    #              df2 = val.loc[val['mutation']== [i+1]]
-    #              df = pd.concat([init, df2], sort=False)
-    #           else:
-    #              df2 = val.loc[val['mutation']== [i+1]]
-    #              df = pd.concat([df, df2], sort=False)
-                 
-    #         return df
-           
-        
-           
-
-   
-
-""" Preliminary drafting: not part of function"""
-
-    # if type(pango_lin) == list:
-            
-    #         lineages = '(' + ' OR '.join(pango_lin) + ')'
-    #         endpoint = 'covid19/query'
-    #         args = f'pangolin_lineage={lineages}'
-    #         return get_outbreak_data(endpoint, args, collect_all=True)
-                                    
-            
-  
-        #     # if type(mutation) == list:
-        #     #     mutations = '(' + ' AND '.join(mutation) + ')'
-            
+      if type(pango_lin) == str:
           
-    
-    
-    # else:
-    #     raw_data = get_prevalence_by_location('genomics/lineage-mutations', f'pangolin_lineage={pango_lin}').json()['results']
-    #     lins = pd.DataFrame(raw_data)
-    #     return lins
-
-#foo = lineage_mutations('A.27', ['orf1a:n3651s','s:n501y', 's:g1219v'])
-
-           
+         pango_lin = pango_lin.replace(" ", "")
+      
+         pango_lin = list(pango_lin.split(","))
+       
+      
+      if mutation is not None and type(mutation) == str:
+          
+          mutation = mutation.replace(" ", "")
+          
+          mutation = list(mutation.split(","))
+         
+      assert(type(pango_lin == list))
+      assert(type(mutation == list)) 
+      
+      
+      if mutation is None:
+          lineages = '' + ' OR '.join(pango_lin) 
+      
+      else:
+          lineages = '' + ' OR '.join(pango_lin) + ' AND ' + ' AND '.join(mutation) + '' #not concatenating correctly or not the right query?
             
+      raw_data = get_prevalence_by_location('genomics/lineage-mutations', f'pangolin_lineage={lineages}').json()['results']
             
+      df = pd.DataFrame(raw_data[lineages]) # see how to access list values in a dictionary
             
-            
-                
-                
+      if freq is not None:
+          assert(type(freq == float))
+          return df.loc[df['prevalence'] >= freq]
+      
+      return df
+          
+         
