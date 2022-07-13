@@ -1,5 +1,6 @@
 import requests
 import pandas as pd
+import re
 
 server = 'api.outbreak.info'  # or 'dev.outbreak.info'
 auth = ***REMOVED***  # keep this private!
@@ -7,40 +8,51 @@ nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer E
 covid19_endpoint = 'covid19/query'
 
 
-def get_outbreak_data(endpoint, argstring, server=server, auth=auth,  collect_all=False, curr_page=0):
+def get_outbreak_data(endpoint, argstring, server=server, auth=auth,  collect_all=False):
     """
     Receives raw data using outbreak API.
-    Must append 'q=' to argstring if initiating non-scrolling query (default).
 
     :param endpoint: directory in server the data is stored
     :param argstring: feature arguments to provide to API call
     :param server: Server to request from
     :param auth: Auth key
     :param collect_all: if True, returns all data.
-    :param in_data: Parent data during recursion.
-    :param curr_page: Page to access during next step of recursion.
     :return: A request object containing the raw data
     """
+    def format_data(data):
+        data['date'] = data['date'].apply(lambda x: pd.to_datetime(x))
+        data = data.sort_values(by='date', ascending=True)
+        data.reset_index(drop=True, inplace=True)
+        return data
     auth = {'Authorization': str(auth)}
     # initial request // used to collect data during recursion or as output of single API call
     in_req = requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth)
     valid_req = 'success' not in in_req.json().keys()
-    # initial pandas dataframe set and updating page for collecting new data
-    if valid_req:
+    if collect_all is False:
+        try:
+            in_data = pd.DataFrame(in_req.json()['results'])
+            return format_data(in_data)
+        except KeyError:
+            print("Request not returning any data with 'results' keyword")
+            try:
+                in_data = pd.DataFrame(in_req.json()['hits'])
+                return format_data(in_data)
+            except KeyError:
+                print("Request not returning any data with 'hits' keyword")
+                pass
+    elif collect_all and not valid_req:
+        return
+    elif collect_all and valid_req:
+        # initial pandas dataframe set and updating page for collecting new data
         in_data = pd.DataFrame(in_req.json()['hits'])
-        # applying datetime to dates column and sorting in ascending
-        in_data['date'] = in_data['date'].apply(lambda x: pd.to_datetime(x))
-        if collect_all:
-            # base case check for ending recursion
-            scroll_id = in_req.json()['_scroll_id']
-            fetching_page = '&fetch_all=True&page='
-            page = fetching_page + str(curr_page)
-            to_scroll = 'scroll_id=' + scroll_id + page
-            in_data = in_data.append(get_outbreak_data(endpoint, to_scroll, collect_all=True, curr_page=curr_page+1))
-        in_data = in_data.sort_values(by='date', ascending=True)
-        in_data.reset_index(drop=True, inplace=True)
-        return in_data
-    return
+        # base case check for ending recursion
+        scroll_id = in_req.json()['_scroll_id']
+        fetching_page = '&fetch_all=True&page='
+        next_page = int(re.search(r'(?<=page=)\d+', argstring).group(0)) + 1
+        page = fetching_page + str(next_page)
+        to_scroll = 'scroll_id=' + scroll_id + page
+        in_data = in_data.append(get_outbreak_data(endpoint, to_scroll, collect_all=True))
+        return format_data(in_data)
 
 # minimal working version
 # def cases_by_location(location, server=server, auth=auth):
@@ -124,21 +136,21 @@ def get_outbreak_data_no_paging(endpoint, argstring, server=server, auth=auth):
         A request object containing the raw data"""
     auth = {'Authorization': str(auth)}
     return requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth) 
-    
+
+
 def prevalence_by_location(location, startswith=None, server=server, auth=auth):
+
+    lins = get_outbreak_data('genomics/prevalence-by-location-all-lineages',
+                                          f'location_id={location}&sort=date&ndays=2048&nday_threshold=0&other_threshold=0')
     
     """Loads prevalence data from a location
-    
-       Arguments:
-           :param location: A string
-           :param num_pages: For every value >= 0, returns 1000 obs. (paging)
-           :param startswith: A string; loads data for all lineages beginning with first letter(s) of name
-           
-       Return: A pandas dataframe"""
-          
-    raw_data = get_outbreak_data_no_paging('genomics/prevalence-by-location-all-lineages', 
-                                          f'location_id={location}&sort=date&ndays=2048&nday_threshold=0&other_threshold=0').json()['results']
-    lins = pd.DataFrame(raw_data)
+            Arguments:
+                :param location: A string
+                :param num_pages: For every value >= 0, returns 1000 obs. (paging)
+                :param startswith: A string; loads data for all lineages beginning with first letter(s) of name
+            Returns:
+                A pandas dataframe"""
+
     if startswith is not None:
        return lins.loc[lins['lineage'].str.startswith(startswith)]
     return lins
