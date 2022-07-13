@@ -90,31 +90,25 @@ def cases_by_location(location, server=server, auth=auth):
     :return: A pandas dataframe
     """
     # location names can be further checked to verify validity // proper format
-    
-    # Converts all location input strings into lists: best universal input 
-    
-    if type(location) == str:
-      
+    if isinstance(location, str):  # Converts all location input strings into lists: best universal input 
       location = location.replace(" ", "")
       location = list(location.split(","))     
-      assert(type(location == list))
-      
+    if not isinstance(location, list) or len(location) == 0:
+        raise ValueError('Please enter at least 1 valid location id')
     try:
         locations = '(' + ' OR '.join(location) + ')'
         args = f'q=location_id:{locations}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}'
-        df = get_outbreak_data(covid19_endpoint, args, collect_all=True) # only one request!
-        
+        df = get_outbreak_data(covid19_endpoint, args, collect_all=True) 
         for i in location:  # checks each entry in location for invalid location ids after request
                 valid_loc = df.loc[df['_id'].str.startswith(i)]
                 if valid_loc.empty:
                     print('{} is not a valid location ID'.format(i))
-        
         if not df.empty:
             return df
-                            
     except:
         for i in location:
             print('{} is not a valid location ID'.format(i))
+            
             
             
 def get_outbreak_data_no_paging(endpoint, argstring, server=server, auth=auth):
@@ -133,25 +127,24 @@ def get_outbreak_data_no_paging(endpoint, argstring, server=server, auth=auth):
     
 def prevalence_by_location(location, startswith=None, server=server, auth=auth):
     
+    """Loads prevalence data from a location
+    
+       Arguments:
+           :param location: A string
+           :param num_pages: For every value >= 0, returns 1000 obs. (paging)
+           :param startswith: A string; loads data for all lineages beginning with first letter(s) of name
+           
+       Return: A pandas dataframe"""
+          
     raw_data = get_outbreak_data_no_paging('genomics/prevalence-by-location-all-lineages', 
                                           f'location_id={location}&sort=date&ndays=2048&nday_threshold=0&other_threshold=0').json()['results']
     lins = pd.DataFrame(raw_data)
-    
-    """Loads prevalence data from a location
-            Arguments:
-                :param location: A string
-                :param num_pages: For every value >= 0, returns 1000 obs. (paging)
-                :param startswith: A string; loads data for all lineages beginning with first letter(s) of name
-            Returns:
-                A pandas dataframe"""
-                
     if startswith is not None:
        return lins.loc[lins['lineage'].str.startswith(startswith)]
-   
     return lins
   
     
-def lineage_mutations(pango_lin, mutation=None, freq=None, server=server, auth=auth):
+def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=auth):
     
     """Retrieves data from all mutations in a specified lineage above a frequency threshold
        Mutiple queries for lineages and mutations can be separated by ','
@@ -166,34 +159,25 @@ def lineage_mutations(pango_lin, mutation=None, freq=None, server=server, auth=a
     # Turns any string input into list format: most universal
     
     if type(pango_lin) == str:
-          
          pango_lin = pango_lin.replace(" ", "")
          pango_lin = list(pango_lin.split(","))
-      
     if mutation is not None and type(mutation) == str:
-          
           mutation = mutation.replace(" ", "")
           mutation = list(mutation.split(","))
-       
-    assert(type(pango_lin == list))
-    assert(type(mutation == list)) 
-    
-    
+    if isinstance(pango_lin, list):
+       pass
+    if mutation is not None and isinstance(mutation, list):
+       pass
     if mutation is None:
         lineages = '' + ' OR '.join(pango_lin) 
-    
     else:
-        lineages = '' + ' OR '.join(pango_lin) + ' AND ' + ' AND '.join(mutation) + '' #not concatenating correctly or not the right query?
-          
+        lineages = '' + ' OR '.join(pango_lin) + ' AND ' + ' AND '.join(mutation) + '' 
     raw_data = get_outbreak_data_no_paging('genomics/lineage-mutations', f'pangolin_lineage={lineages}').json()['results']
-          
     df = pd.DataFrame(raw_data[lineages]) 
           
-    if freq is not None:
-        assert(type(freq == float))
-        if freq > 0 and freq < 1:
+    if freq != 0.8:
+        if isinstance(freq, float) and freq > 0 and freq < 1:
           return df.loc[df['prevalence'] >= freq]
     else:
         return df
-    
-    
+
