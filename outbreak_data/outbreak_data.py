@@ -43,15 +43,15 @@ def get_outbreak_data(endpoint, argstring, server=server, auth=auth,  collect_al
     return
 
 # minimal working version
-def cases_by_location(location, server=server, auth=auth):
-    """
-    Loads data from a location; Use 'OR' between locations to get multiple.
-    Since this API endpoint supports paging, collect_all is used to return all data.
-    :param location: A string
-    :return: A pandas dataframe
-    """
-    args = f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}'
-    return get_outbreak_data(covid19_endpoint, args, collect_all=True)
+# def cases_by_location(location, server=server, auth=auth):
+#     """
+#     Loads data from a location; Use 'OR' between locations to get multiple.
+#     Since this API endpoint supports paging, collect_all is used to return all data.
+#     :param location: A string
+#     :return: A pandas dataframe
+#     """
+#     args = f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}'
+#     return get_outbreak_data(covid19_endpoint, args, collect_all=True)
 
 # Hritika's smoothed-data version (WIP)
 #def cases_by_location(location, server=server, auth=auth, pull_smoothed=0):
@@ -81,50 +81,73 @@ def cases_by_location(location, server=server, auth=auth):
 #        print("invalid parameter value!")
 
 # Sarah's multiple-locations version (WIP)
-#def cases_by_location(location, server=server, auth=auth):
-#    """
-#    Loads data from a location if input is a string, or from multiple locations
-#    if location is a list of string locations.
-#    Since this API endpoint supports paging, collect_all is used to return all data.
-#    :param location: A string or list of strings
-#    :return: A pandas dataframe
-#    """
-#    # location names can be further checked to verify validity // proper format
-#    if type(location) == list:
-#        for i in location:
-#            try:
-#                locations = '(' + ' OR '.join(location) + ')'
-#                bad_input = ('{} is not a valid location ID'.format(i))
-#                args = f'q=location_id:{locations}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}'
-#                df = get_outbreak_data(covid19_endpoint, args, collect_all=True)
-#                if not df.empty:
-#                    return df
-#            except:
-#                print(bad_input)
-#    else:
-#        bad_input = ('{} is not a valid location ID'.format(location))
-#        try:
-#            bad_input = ('{} is not a valid location ID'.format(location))
-#            args = f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}'
-#            df = get_outbreak_data(covid19_endpoint, args, collect_all=True)
-#            if not df.empty:
-#                return df
-#        except:
-#            print(bad_input)
-
-# WIP
-def prevalence_by_location(location, pango_lin = None, startswith=None, server=server, auth=auth):
-    lins = get_outbreak_data('genomics/prevalence-by-location-all-lineages', f'location_id={location}&sort=date&ndays=2048&nday_threshold=0&other_threshold=0')
+def cases_by_location(location, server=server, auth=auth):
+    """
+    Loads data from a location if input is a string, or from multiple locations
+    if location is a list of string locations.
+    Since this API endpoint supports paging, collect_all is used to return all data.
+    :param location: A string or list of strings
+    :return: A pandas dataframe
+    """
+    # location names can be further checked to verify validity // proper format
+    
+    # Converts all location input strings into lists: best universal input 
+    
+    if type(location) == str:
+      
+      location = location.replace(" ", "")
+      location = list(location.split(","))     
+      assert(type(location == list))
+      
+    try:
+        locations = '(' + ' OR '.join(location) + ')'
+        args = f'q=location_id:{locations}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}'
+        df = get_outbreak_data(covid19_endpoint, args, collect_all=True) # only one request!
+        
+        for i in location:  # checks each entry in location for invalid location ids after request
+                valid_loc = df.loc[df['_id'].str.startswith(i)]
+                if valid_loc.empty:
+                    print('{} is not a valid location ID'.format(i))
+        
+        if not df.empty:
+            return df
+                            
+    except:
+        for i in location:
+            print('{} is not a valid location ID'.format(i))
+            
+            
+def get_outbreak_data_no_paging(endpoint, argstring, server=server, auth=auth):
+    
+    """Works similarly to get_outbreak_data. Used for API enpoints
+       that do not support paging
+    
+    Arguments: 
+        endpoint: directory in server the data is stored
+        argstring: feature arguments to provide to API call
+    
+    Returns: 
+        A request object containing the raw data"""
+    auth = {'Authorization': str(auth)}
+    return requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth) 
+    
+def prevalence_by_location(location, startswith=None, server=server, auth=auth):
+    
+    raw_data = get_outbreak_data_no_paging('genomics/prevalence-by-location-all-lineages', 
+                                          f'location_id={location}&sort=date&ndays=2048&nday_threshold=0&other_threshold=0').json()['results']
+    lins = pd.DataFrame(raw_data)
+    
     """Loads prevalence data from a location
             Arguments:
                 :param location: A string
                 :param num_pages: For every value >= 0, returns 1000 obs. (paging)
-                :param pango_lin: A string; loads data for a specifc lineage
                 :param startswith: A string; loads data for all lineages beginning with first letter(s) of name
             Returns:
                 A pandas dataframe"""
+                
     if startswith is not None:
-        search_all = startswith
-        return lins.loc[lins['lineage'].str.startswith(search_all)]
-    else:
-        return lins.loc[lins['lineage']== pango_lin]
+       return lins.loc[lins['lineage'].str.startswith(startswith)]
+   
+    return lins
+  
+    
