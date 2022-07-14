@@ -111,8 +111,9 @@ def cases_by_location(location, server=server, auth=auth):
         locations = '(' + ' OR '.join(location) + ')'
         args = f'q=location_id:{locations}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}'
         df = get_outbreak_data(covid19_endpoint, args, collect_all=True) 
-        for i in location:  # checks each entry in location for invalid location ids after request
-                valid_loc = df.loc[df['_id'].str.startswith(i)]
+        for i in location:  # checks each entry in location for invalid location ids after request -fix
+                check = i[0:2] #checks for first 3 letters from string input in df; if they're there, the df passed
+                valid_loc = df.loc[df['_id'].str.startswith(check)]
                 if valid_loc.empty:
                     print('{} is not a valid location ID'.format(i))
         if not df.empty:
@@ -120,7 +121,6 @@ def cases_by_location(location, server=server, auth=auth):
     except:
         for i in location:
             print('{} is not a valid location ID'.format(i))
-            
             
             
 def get_outbreak_data_no_paging(endpoint, argstring, server=server, auth=auth):
@@ -170,10 +170,10 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
               
     # Turns any string input into list format: most universal
     
-    if type(pango_lin) == str:
+    if isinstance(pango_lin, str):
          pango_lin = pango_lin.replace(" ", "")
          pango_lin = list(pango_lin.split(","))
-    if mutation is not None and type(mutation) == str:
+    if mutation is not None and isinstance(mutation, list):
           mutation = mutation.replace(" ", "")
           mutation = list(mutation.split(","))
     if isinstance(pango_lin, list):
@@ -184,8 +184,8 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
         lineages = '' + ' OR '.join(pango_lin) 
     else:
         lineages = '' + ' OR '.join(pango_lin) + ' AND ' + ' AND '.join(mutation) + '' 
-    raw_data = get_outbreak_data_no_paging('genomics/lineage-mutations', f'pangolin_lineage={lineages}').json()['results']
-    df = pd.DataFrame(raw_data[lineages]) 
+    raw_data = get_outbreak_data('genomics/lineage-mutations', f'pangolin_lineage={lineages}', collect_all = True)
+    df = pd.DataFrame(raw_data)
           
     if freq != 0.8:
         if isinstance(freq, float) and freq > 0 and freq < 1:
