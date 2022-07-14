@@ -112,7 +112,8 @@ def cases_by_location(location, server=server, auth=auth):
         args = f'q=location_id:{locations}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}'
         df = get_outbreak_data(covid19_endpoint, args, collect_all=True) 
         for i in location:  # checks each entry in location for invalid location ids after request
-                valid_loc = df.loc[df['_id'].str.startswith(i)]
+                check = i[0:2] #checks for first 3 letters from string input in df; if they're there, the df passed
+                valid_loc = df.loc[df['_id'].str.startswith(check)]
                 if valid_loc.empty:
                     print('{} is not a valid location ID'.format(i))
         if not df.empty:
