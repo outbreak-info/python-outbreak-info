@@ -118,20 +118,6 @@ def cases_by_location(location, server=server, auth=auth):
             print('{} is not a valid location ID'.format(i))
 
 
-def get_outbreak_data_no_paging(endpoint, argstring, server=server, auth=auth):
-    """Works similarly to get_outbreak_data. Used for API enpoints
-       that do not support paging
-    
-    Arguments: 
-        endpoint: directory in server the data is stored
-        argstring: feature arguments to provide to API call
-    
-    Returns: 
-        A request object containing the raw data"""
-    auth = {'Authorization': str(auth)}
-    return requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth)
-
-
 def prevalence_by_location(location, startswith=None, server=server, auth=auth):
     lins = get_outbreak_data('genomics/prevalence-by-location-all-lineages',
                              f'location_id={location}&sort=date&ndays=2048&nday_threshold=0&other_threshold=0')
@@ -176,12 +162,13 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
         lineages = '' + ' OR '.join(pango_lin)
     else:
         lineages = '' + ' OR '.join(pango_lin) + ' AND ' + ' AND '.join(mutation) + ''
-    raw_data = get_outbreak_data_no_paging('genomics/lineage-mutations', f'pangolin_lineage={lineages}').json()[
-        'results']
-    df = pd.DataFrame(raw_data[lineages])
+    raw_data = get_outbreak_data('genomics/lineage-mutations', f'pangolin_lineage={lineages}', collect_all=False)
+    df = pd.DataFrame(raw_data['results'][lineages])
 
     if freq != 0.8:
         if isinstance(freq, float) and freq > 0 and freq < 1:
             return df.loc[df['prevalence'] >= freq]
     else:
         return df
+    
+
