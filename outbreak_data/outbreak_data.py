@@ -1,6 +1,6 @@
 import requests
 import pandas as pd
-import re
+
 
 server = 'api.outbreak.info'  # or 'dev.outbreak.info'
 auth = ***REMOVED***  # keep this private!
@@ -105,7 +105,8 @@ def cases_by_location(location, server=server, auth=auth):
     try:
         locations = '(' + ' OR '.join(location) + ')'
         args = f'q=location_id:{locations}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}'
-        df = get_outbreak_data(covid19_endpoint, args, collect_all=True)
+        raw_data = get_outbreak_data(covid19_endpoint, args, collect_all=True)
+        df = pd.DataFrame(raw_data['hits'])
         for i in location:  # checks each entry in location for invalid location ids after request
                 check = i[0:2] #checks for first 3 letters from string input in df; if they're there, the df passed
                 valid_loc = df.loc[df['_id'].str.startswith(check)]
@@ -121,6 +122,7 @@ def cases_by_location(location, server=server, auth=auth):
 def prevalence_by_location(location, startswith=None, server=server, auth=auth):
     lins = get_outbreak_data('genomics/prevalence-by-location-all-lineages',
                              f'location_id={location}&sort=date&ndays=2048&nday_threshold=0&other_threshold=0')
+    df = pd.DataFrame(lins['results'])
 
     """Loads prevalence data from a location
             Arguments:
@@ -131,8 +133,8 @@ def prevalence_by_location(location, startswith=None, server=server, auth=auth):
                 A pandas dataframe"""
 
     if startswith is not None:
-        return lins.loc[lins['lineage'].str.startswith(startswith)]
-    return lins
+        return df.loc[df['lineage'].str.startswith(startswith)]
+    return df
 
 
 def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=auth):
@@ -170,5 +172,3 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
             return df.loc[df['prevalence'] >= freq]
     else:
         return df
-    
-
