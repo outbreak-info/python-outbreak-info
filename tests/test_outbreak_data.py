@@ -48,3 +48,34 @@ def test_cases_by_location():
     Main test
     """
     pass
+
+def _test_lineage_mutations():
+    """
+    Main test
+    
+    Tests:
+
+Ensure that 
+
+1. Passing a single mutation as a string
+2. List of mutations
+3. Lineage as string
+4. List of lineages
+
+    """
+    # Make as a Testclass?
+    #1 lineage as string
+    df = outbreak_data.lineage_mutations('P.1')
+    find = list(df['mutation'])
+    gamma = ['orf1a:s1188l','orf1a:k1795q', 'orf1a:del3675/3677', 'orf1b:p314l','s:l18f', 's:t20N','s:p26s','s:d138y',
+             's:r190s','s:k417t','s:e484k', 's:n501y', 's:d614g',
+             's:h655y', 's:t1027i', 's:v1176f','orf3a:s253p','orf8:s84l','orf8:e92k','n:P80r','n:r203k','n:g204r']
+    count = 0
+    for i in gamma:
+        if i not in find:
+            count = (count + 1)
+            print('Misses:  ' + count) 
+        assert i in find
+   #checks to see if lineage has gamma mutations
+   
+   
