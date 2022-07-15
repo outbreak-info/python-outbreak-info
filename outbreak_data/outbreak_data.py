@@ -93,7 +93,7 @@ def cases_by_location(location, server=server, auth=auth):
     Loads data from a location if input is a string, or from multiple locations
     if location is a list of string locations.
     Since this API endpoint supports paging, collect_all is used to return all data.
-    :param location: A string or list of strings
+    :param location: A string or list of strings, separate multiple locations by ","
     :return: A pandas dataframe
     """
     # location names can be further checked to verify validity // proper format
@@ -138,7 +138,7 @@ def prevalence_by_location(location, startswith=None, server=server, auth=auth):
 
 
 def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=auth):
-    """Retrieves data from all mutations in a specified lineage above a frequency threshold
+    """Retrieves data from all mutations in a specified lineage above a frequency threshold.
        Mutiple queries for lineages and mutations can be separated by ','
     
           Arguments:
@@ -150,7 +150,7 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
 
     # Turns any string input into list format: most universal
 
-    if type(pango_lin) == str:
+    if isinstance(pango_lin, str):
         pango_lin = pango_lin.replace(" ", "")
         pango_lin = list(pango_lin.split(","))
     if mutation is not None and type(mutation) == str:
@@ -166,9 +166,10 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
         lineages = '' + ' OR '.join(pango_lin) + ' AND ' + ' AND '.join(mutation) + ''
     raw_data = get_outbreak_data('genomics/lineage-mutations', f'pangolin_lineage={lineages}', collect_all=False)
     df = pd.DataFrame(raw_data['results'][lineages])
-
     if freq != 0.8:
         if isinstance(freq, float) and freq > 0 and freq < 1:
             return df.loc[df['prevalence'] >= freq]
     else:
         return df
+
+foo = cases_by_location('USA')
