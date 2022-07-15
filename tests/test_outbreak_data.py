@@ -27,7 +27,7 @@ def _test_get_multiple_locations():
     """
     location = '(USA_US-CA OR USA_US-NY)'
     out = outbreak_data.get_outbreak_data('covid19/query',
-                                          f'location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{outbreak_data.nopage}')
+                                          f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{outbreak_data.nopage}')
     assert(len(out.admin1.unique()) == 2)
 
 
