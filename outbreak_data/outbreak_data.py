@@ -24,20 +24,31 @@ def get_outbreak_data(endpoint, argstring, server=server, auth=auth):
     return requests.get(f'https://{server}/{endpoint}?q={argstring}', headers=auth)
 
 
-def cases_by_location(location, server=server, auth=auth):
+def cases_by_location(location, server=server, auth=auth, pull_smoothed=0):
     """
     Loads data from a location; Use 'OR' between locations to get multiple.
-    
-    Arguments:
-        location: A string 
-    
-    Returns:
-        A pandas dataframe
-    
-    """
-    raw_data = get_outbreak_data('covid19/query', f'location_id{location}&sort=date&fields=date,confirmed_rolling,admin1&{nopage}', server, auth)
-   
-    return pd.DataFrame(raw_data.json()['hits'])
+#    Arguments:
+#        location: A string
+#    Returns:
+#        A pandas dataframe
+#    """
+    df=pd.DataFrame(raw_data.json()['hits'])
+    refined_table=df.drop(columns=['_score', 'admin1'], axis=1)
+    if pull_smoothed == 0:
+        confirmed='confirmed_numIncrease'
+        return refined_table
+    elif pull_smoothed == 1:
+        confirmed='confirmed_rolling'
+        return refined_table
+    elif pull_smoothed == 2:
+        confirmed='confirmed_rolling','confirmed_numIncrease'
+        return refined_table
+    else:
+        print("invalid parameter value!")
+
+    raw_data = get_outbreak_data(covid19_endpoint,
+                                                 f'location_id:{location}&sort=date&fields=date,{confirmed},admin1&{nopage}', server, auth)
+
 
 
 def page_cases_by_location(location, num_pages, server=server, auth=auth, covid19_endpoint=covid19_endpoint, pull_smoothed=0):
