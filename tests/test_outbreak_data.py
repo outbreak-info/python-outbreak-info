@@ -7,75 +7,85 @@ from datetime import datetime
 from urllib.parse import urljoin
 # Used to introduce delays between tests to avoid overloading the API.
 from time import sleep, time
+import sys
+sys.path.append('/Users/sarahrandall/Python-outbreak-info/outbreak_data')
 from outbreak_data import outbreak_data
 
 
-def _test_get_location():
-    """
-    Test the ability of get data to return a location's case data within a
-    pandas dataframe
-    """
-    location = 'USA_US-CA'
-    out = outbreak_data.get_outbreak_data('covid19/query',
-                            f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{outbreak_data.nopage}')
-    assert(out.admin1.unique()[0] == 'California')
+# def _test_get_location():
+#     """
+#     Test the ability of get data to return a location's case data within a
+#     pandas dataframe
+#     """
+#     location = 'USA_US-CA'
+#     out = outbreak_data.get_outbreak_data('covid19/query',
+#                             f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{outbreak_data.nopage}')
+#     assert(out.admin1.unique()[0] == 'California')
 
 
-def _test_get_multiple_locations():
-    """
-    Test the ability of get data to return multiple locations.
-    """
-    location = '(USA_US-CA OR USA_US-NY)'
-    out = outbreak_data.get_outbreak_data('covid19/query',
-                                          f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{outbreak_data.nopage}')
-    assert(len(out.admin1.unique()) == 2)
+# def _test_get_multiple_locations():
+#     """
+#     Test the ability of get data to return multiple locations.
+#     """
+#     location = '(USA_US-CA OR USA_US-NY)'
+#     out = outbreak_data.get_outbreak_data('covid19/query',
+#                                           f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{outbreak_data.nopage}')
+#     assert(len(out.admin1.unique()) == 2)
 
 
-def _test_page_data():
-    pass
+# def _test_page_data():
+#     pass
 
 
-def test_get_outbreak_data():
-    """
-    Main test
-    """
-    _test_get_location()
-    _test_get_multiple_locations()
+# def test_get_outbreak_data():
+#     """
+#     Main test
+#     """
+#     _test_get_location()
+#     _test_get_multiple_locations()
 
 
-def test_cases_by_location():
-    """
-    Main test
-    """
-    pass
+# def test_cases_by_location():
+#     """
+#     Main test
+#     """
+#     pass
 
-def _test_lineage_mutations():
-    """
-    Main test
+class Test_Lineage_Mutations:
     
-    Tests:
+    gamma = ['orf1a:s1188l','orf1a:k1795q', 'orf1a:del3675/3677', 'orf1b:p314l','orf1b:e1264d', 's:l18f', 's:t20n','s:p26s','s:d138y',
+               's:r190s','s:k417t','s:e484k', 's:n501y', 's:d614g',
+               's:h655y', 's:t1027i', 's:v1176f','orf3a:s253p','orf8:s84l','orf8:e92k','n:p80r','n:r203k','n:g204r']
 
-Ensure that 
+    alpha = ['orf1a:t1001i','orf1a:a1708d', 'orf1a:i2230t', 'orf1a:del3675/3677', 'orf1b:p314l','s:del69/70', 's:del144/144','s:n501y','s:a570d',
+            's:r190s','s:k417t','s:e484k', 's:n501y', 's:d614g',
+            's:d614g', 's:p681h', 's:t716i','s:s982a','s:d1118h','orf8:q27','orf8:r52i','orf8:y73c','orf8:s84l', 
+            'n:d3l', 'n:r203k','n:g204r', 'n:s235f']   
+    
+    def test_one(self): #  Test 1: lineage as string
+        
+        df = outbreak_data.lineage_mutations('P.1') # P.1 contains all gamma mutations
+        find = list(df['mutation'])
 
-1. Passing a single mutation as a string
-2. List of mutations
-3. Lineage as string
-4. List of lineages
+        g_miss_count = 0 
+        for i in find:
+           if i in self.gamma:
+                pass
+           else:
+               g_miss_count +=1
 
-    """
-    # Make as a Testclass?
-    #1 lineage as string
-    df = outbreak_data.lineage_mutations('P.1')
-    find = list(df['mutation'])
-    gamma = ['orf1a:s1188l','orf1a:k1795q', 'orf1a:del3675/3677', 'orf1b:p314l','s:l18f', 's:t20N','s:p26s','s:d138y',
-             's:r190s','s:k417t','s:e484k', 's:n501y', 's:d614g',
-             's:h655y', 's:t1027i', 's:v1176f','orf3a:s253p','orf8:s84l','orf8:e92k','n:P80r','n:r203k','n:g204r']
-    count = 0
-    for i in gamma:
-        if i not in find:
-            count = (count + 1)
-            print('Misses:  ' + count) 
-        assert i in find
+        a_miss_count = 0 
+        for i in find:
+           if i in self.alpha:
+                 pass
+           else:
+              a_miss_count +=1
+
+        assert g_miss_count == 0    
+        assert a_miss_count > 0
+
+     # def test_two(self): # Test 2: 
+        
    #checks to see if lineage has gamma mutations
    
    
