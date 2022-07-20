@@ -85,47 +85,59 @@ class Test_Lineage_Mutations:
         assert a_miss_count > 0
 
     def test_two(self): # Test 2: lineages in list 
-          # test each lineage seperately then test if combined result matches
-          df1 = outbreak_data.lineage_mutations('P.1') # gamma
-          find1 = list(df1['mutation'])
+    
+        """AND logic is typically intersection, "OR" logic refer to something that's in one or the other - it could be an overlapping mutation or it could be unique.
+        Use OR for lineages and "AND" for mutations that get passed
+        For example, if  mutation "mut_A" occurs in lineage "A" but not in lineage "B", and you query for lineage "A", OR lineage "B", 
+        then "mut_A" should always be returned. 
+        If "mut_A" happens to overlap in lineage "A" and lineage "B", "mut_A" should still be returned. 
+        Evaluates each query/condition for "is this mutation in this lineage?" separately then combines.
+        """
+        # test each lineage seperately then test if combined result matches
+        df1 = outbreak_data.lineage_mutations('P.1') # gamma
+        find1 = list(df1['mutation'])
 
-          df2 = outbreak_data.lineage_mutations('B.1.1.7') # alpha
-          find2 = list(df2['mutation'])
+        df2 = outbreak_data.lineage_mutations('B.1.1.7') # alpha
+        find2 = list(df2['mutation'])
+        # Note: df1, df2, find1 and find2 not required for this test to run smoothly
 
-          df3 = outbreak_data.lineage_mutations('P.1, B.1.1.7') # gamma or alpha logic test
-          find3 = list(df3['mutation'])
+        df3 = outbreak_data.lineage_mutations('P.1, B.1.1.7') # gamma or alpha logic test
+        find3 = list(df3['mutation'])
 
-          f1 = [] #unique to gamma
-          f2 = [] # unique to alpha
-          shared = [] # shared mutations
+        f1 = [] #unique to gamma
+        f2 = [] # unique to alpha
+        shared = [] # shared mutations
 
-          # Finds unique mutations in each variant
-          for i in find3:
-                if i in self.gamma and i in self.alpha:
-                    shared.append(i)
-                    continue
-                elif i in self.gamma:
-                        f1.append(i)
-                elif i in self.alpha:
-                        f2.append(i)
-                       
-          # df3 dataframe includes all mutations alpha and gamma have in common including alpha's unique lineages 
-          # there are no mutations unique to gamma since they would be found in both[]
+        # Finds unique mutations in each variant
+        for i in find3:
+              if i in find1 and i in find2:
+                  shared.append(i)
+              elif i in find1:
+                      f1.append(i)
+              elif i in find2:
+                      f2.append(i)
+                     
+        # df3 dataframe includes all mutations alpha and gamma have in common including alpha's unique lineages 
+        # there are no mutations unique to gamma since they would be found in both[]
 
-          if len(shared) == 0:
-              assert find3.empty
-
-          for i in shared:
-              assert i in find3
-              
-          if len(f1) != 0:
-              for i in f1:
-                    assert i in find3
-
-          if len(f2) != 0:
-              for i in f2:
+        if len(shared) == 0: 
+            assert find3.empty  # this line most likely will never run, as lineage_mutations will catch this now
+            
+        for i in shared:
+            assert i in find3
+            
+        if len(f1) != 0:
+            for i in f1:
                   assert i in find3
 
-      
+        if len(f2) != 0:
+            for i in f2:
+                assert i in find3
+                
+    # def test_three(self):
+    #     pass
+        
+
+     
    
    
