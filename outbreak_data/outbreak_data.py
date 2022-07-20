@@ -147,12 +147,10 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
              :param freq: a number between 0 and 1 specifying the frequency threshold above which to return mutations (default = 0.8)
           Returns:
               A pandas dataframe"""
-
     # Turns any string input into list format: most universal
-
     if isinstance(pango_lin, str):
         pango_lin = pango_lin.replace(" ", "")
-        pango_lin = list(pango_lin.split(","))
+        pango_lin = list(pango_lin.split(", "))
     if mutation is not None and type(mutation) == str:
         mutation = mutation.replace(" ", "")
         mutation = list(mutation.split(","))
