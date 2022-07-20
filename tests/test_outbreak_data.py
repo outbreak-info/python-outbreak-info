@@ -59,7 +59,7 @@ class Test_Lineage_Mutations:
 
     alpha = ['orf1a:t1001i','orf1a:a1708d', 'orf1a:i2230t', 'orf1a:del3675/3677', 'orf1b:p314l','s:del69/70', 's:del144/144','s:n501y','s:a570d',
             's:r190s','s:k417t','s:e484k', 's:n501y', 's:d614g',
-            's:d614g', 's:p681h', 's:t716i','s:s982a','s:d1118h','orf8:q27','orf8:r52i','orf8:y73c','orf8:s84l', 
+            's:d614g', 's:p681h', 's:t716i','s:s982a','s:d1118h','orf8:q27*','orf8:r52i','orf8:y73c','orf8:s84l', 
             'n:d3l', 'n:r203k','n:g204r', 'n:s235f']   
     
     def test_one(self): #  Test 1: lineage as string
@@ -84,8 +84,48 @@ class Test_Lineage_Mutations:
         assert g_miss_count == 0    
         assert a_miss_count > 0
 
-     # def test_two(self): # Test 2: 
-        
-   #checks to see if lineage has gamma mutations
+    def test_two(self): # Test 2: lineages in list 
+          # test each lineage seperately then test if combined result matches
+          df1 = outbreak_data.lineage_mutations('P.1') # gamma
+          find1 = list(df1['mutation'])
+
+          df2 = outbreak_data.lineage_mutations('B.1.1.7') # alpha
+          find2 = list(df2['mutation'])
+
+          df3 = outbreak_data.lineage_mutations('P.1, B.1.1.7') # gamma or alpha logic test
+          find3 = list(df3['mutation'])
+
+          f1 = [] #unique to gamma
+          f2 = [] # unique to alpha
+          shared = [] # shared mutations
+
+          # Finds unique mutations in each variant
+          for i in find3:
+                if i in self.gamma and i in self.alpha:
+                    shared.append(i)
+                    continue
+                elif i in self.gamma:
+                        f1.append(i)
+                elif i in self.alpha:
+                        f2.append(i)
+                       
+          # df3 dataframe includes all mutations alpha and gamma have in common including alpha's unique lineages 
+          # there are no mutations unique to gamma since they would be found in both[]
+
+          if len(shared) == 0:
+              assert find3.empty
+
+          for i in shared:
+              assert i in find3
+              
+          if len(f1) != 0:
+              for i in f1:
+                    assert i in find3
+
+          if len(f2) != 0:
+              for i in f2:
+                  assert i in find3
+
+      
    
    
