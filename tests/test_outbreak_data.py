@@ -101,7 +101,8 @@ class Test_Lineage_Mutations:
         find2 = list(df2['mutation'])
         # Note: df1, df2, find1 and find2 not required for this test to run smoothly
 
-        df3 = outbreak_data.lineage_mutations('P.1, B.1.1.7') # gamma or alpha logic test
+        args = ['B.1.1.7','P.1']
+        df3 = outbreak_data.lineage_mutations(args) # gamma or alpha logic test
         find3 = list(df3['mutation'])
 
         f1 = [] #unique to gamma
@@ -118,19 +119,19 @@ class Test_Lineage_Mutations:
                       f2.append(i)
                      
         # df3 dataframe includes all mutations alpha and gamma have in common including alpha's unique lineages 
-        # there are no mutations unique to gamma since they would be found in both[]
 
         if len(shared) == 0: 
             assert find3.empty  # this line most likely will never run, as lineage_mutations will catch this now
             
         for i in shared:
             assert i in find3
-            
-        if len(f1) != 0:
+        
+
+        if args[0] == 'P.1' and len(f1) != 0:
             for i in f1:
                   assert i in find3
 
-        if len(f2) != 0:
+        if args[0] == 'B.1.1.7' and len(f2) != 0:
             for i in f2:
                 assert i in find3
                 
