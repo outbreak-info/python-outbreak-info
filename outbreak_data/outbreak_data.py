@@ -170,4 +170,6 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
         if isinstance(freq, float) and freq > 0 and freq < 1:
             return df.loc[df['prevalence'] >= freq]
     else:
+        if df.empty: # returns NoneType object - no matches could be found
+            raise TypeError('No matches could be found')
         return df
