@@ -139,7 +139,12 @@ def prevalence_by_location(location, startswith=None, server=server, auth=auth):
 
 def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=auth):
     """Retrieves data from all mutations in a specified lineage above a frequency threshold.
-       Mutiple queries for lineages and mutations can be separated by ','
+       Mutiple queries for lineages and mutations can be separated by ','  
+       
+       Use 'OR' in a string to return overlapping mutations in multiple lineages: 'BA.2 OR BA.1'
+       
+       AND is only useful for one lineage + mutation1 + mutation2 .... combinations
+       P.1 AND S:P681H,P.1 OR B.1.1.7 
     
           Arguments:
              :param pango_lin: A string or list; loads data for all mutations in a specified PANGO lineage 
@@ -151,7 +156,6 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
     OR_stat = False
     if isinstance(pango_lin, list):
         pass
-    
     if isinstance(pango_lin, str) and ' OR ' in pango_lin: #lineages with OR logic
         OR_stat = True
         pango_lin = pango_lin.replace(" OR ", ",")
@@ -160,20 +164,16 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
         if mutation is not None and type(mutation) == str:
             mutation = mutation.replace(" ", "")
             mutation = list(mutation.split(","))   # deals with string format for mutations
-       
-            
     elif isinstance(pango_lin, str):  # for just returning lineages 
         pango_lin = pango_lin.replace(" ", "")
         pango_lin = list(pango_lin.split(","))  # deals with string format for pango_lin
         if mutation is not None and type(mutation) == str:
             mutation = mutation.replace(" ", "")
             mutation = list(mutation.split(","))   # deals with string format for mutations
-        
-         
     if OR_stat and mutation is None:
         lineages = '' + ' OR '.join(pango_lin)
     elif OR_stat and mutation is not None:
-        lineages = '' + ' OR '.join(pango_lin) + ' AND ' + ' AND '.join(mutation) + ''
+        lineages = '' + pango_lin[0] + ' AND ' + ' AND '.join(mutation) + ',' + '' + ' OR '.join(pango_lin)
     elif mutation is None:
         lineages = '' + ','.join(pango_lin)
     elif mutation is not None:
@@ -182,8 +182,16 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
     raw_data = get_outbreak_data('genomics/lineage-mutations', f'pangolin_lineage={lineages}', collect_all=False)
     
     if OR_stat == False: # no OR logic
-        for i in pango_lin: # Returns multiple lineages using ,
+        for i in pango_lin: # Returns multiple lineages using ","
             if i == pango_lin[0]:
+                df = pd.DataFrame(raw_data['results'][i])
+            else:
+                newdf = pd.DataFrame(raw_data['results'][i]) # append each dfs
+                df = pd.concat([df, newdf], sort=False)  
+    elif OR_stat == True and mutation is not None:
+        lineages= list(lineages.split(","))
+        for i in lineages: # Returns multiple lineages using ","
+            if i == lineages[0]:
                 df = pd.DataFrame(raw_data['results'][i])
             else:
                 newdf = pd.DataFrame(raw_data['results'][i]) # append each dfs
@@ -194,8 +202,5 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
         if isinstance(freq, float) and freq > 0 and freq < 1:
             return df.loc[df['prevalence'] >= freq]
     else:
-        if df.empty: # returns NoneType object - no matches could be found
-            raise TypeError('No matches could be found')
         return df
     
-foo = lineage_mutations('BA.1, BA.2')
