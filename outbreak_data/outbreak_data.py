@@ -11,7 +11,6 @@ covid19_endpoint = 'covid19/query'
 def get_outbreak_data(endpoint, argstring, server=server, auth=auth, collect_all=False, curr_page=0):
     """
     Receives raw data using outbreak API.
-
     :param endpoint: directory in server the data is stored
     :param argstring: feature arguments to provide to API call
     :param server: Server to request from
@@ -44,7 +43,7 @@ def get_outbreak_data(endpoint, argstring, server=server, auth=auth, collect_all
         for k in data_json.keys():
             try:
                 data_json[k].extend(in_req[k])
-            except TypeError('No matches could be found'):
+            except TypeError:
                 continue
         return data_json
 
@@ -184,7 +183,7 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
   
     raw_data = get_outbreak_data('genomics/lineage-mutations', f'pangolin_lineage={lineages}', collect_all=False)
     
-    if OR_stat == False and mutation is None: # no OR logic
+    if OR_stat == False and mutation is None: # no OR logic. just lineages
         for i in pango_lin: # Returns multiple lineages using ","
             if i == pango_lin[0]:
                 df = pd.DataFrame(raw_data['results'][i])
@@ -206,7 +205,3 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
             return df.loc[df['prevalence'] >= freq]
     else:
         return df
-
-
-
-
