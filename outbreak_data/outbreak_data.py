@@ -150,7 +150,7 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
     # Turns any string input into list format: most universal
     if isinstance(pango_lin, str):
         pango_lin = pango_lin.replace(" ", "")
-        pango_lin = list(pango_lin.split(", "))
+        pango_lin = list(pango_lin.split(","))
     if mutation is not None and type(mutation) == str:
         mutation = mutation.replace(" ", "")
         mutation = list(mutation.split(","))
@@ -171,3 +171,5 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
         if df.empty: # returns NoneType object - no matches could be found
             raise TypeError('No matches could be found')
         return df
+    
+foo = lineage_mutations('BA.1, BA.2')
