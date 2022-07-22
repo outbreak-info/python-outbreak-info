@@ -148,22 +148,48 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
           Returns:
               A pandas dataframe"""
     # Turns any string input into list format: most universal
-    if isinstance(pango_lin, str):
-        pango_lin = pango_lin.replace(" ", "")
-        pango_lin = list(pango_lin.split(","))
-    if mutation is not None and type(mutation) == str:
-        mutation = mutation.replace(" ", "")
-        mutation = list(mutation.split(","))
+    OR_stat = False
     if isinstance(pango_lin, list):
         pass
-    if mutation is not None and isinstance(mutation, list):
-        pass
-    if mutation is None:
+    
+    if isinstance(pango_lin, str) and ' OR ' in pango_lin: #lineages with OR logic
+        OR_stat = True
+        pango_lin = pango_lin.replace(" OR ", ",")
+        # pango_lin = pango_lin.replace("", ", ")
+        pango_lin = list(pango_lin.split(","))  # deals with string format for pango_lin
+        if mutation is not None and type(mutation) == str:
+            mutation = mutation.replace(" ", "")
+            mutation = list(mutation.split(","))   # deals with string format for mutations
+       
+            
+    elif isinstance(pango_lin, str):  # for just returning lineages 
+        pango_lin = pango_lin.replace(" ", "")
+        pango_lin = list(pango_lin.split(","))  # deals with string format for pango_lin
+        if mutation is not None and type(mutation) == str:
+            mutation = mutation.replace(" ", "")
+            mutation = list(mutation.split(","))   # deals with string format for mutations
+        
+         
+    if OR_stat and mutation is None:
         lineages = '' + ' OR '.join(pango_lin)
-    else:
+    elif OR_stat and mutation is not None:
         lineages = '' + ' OR '.join(pango_lin) + ' AND ' + ' AND '.join(mutation) + ''
+    elif mutation is None:
+        lineages = '' + ','.join(pango_lin)
+    elif mutation is not None:
+        lineages = '' + ','.join(pango_lin) + ' AND ' + ' AND '.join(mutation) + ''
+  
     raw_data = get_outbreak_data('genomics/lineage-mutations', f'pangolin_lineage={lineages}', collect_all=False)
-    df = pd.DataFrame(raw_data['results'][lineages])
+    
+    if OR_stat == False: # no OR logic
+        for i in pango_lin: # Returns multiple lineages using ,
+            if i == pango_lin[0]:
+                df = pd.DataFrame(raw_data['results'][i])
+            else:
+                newdf = pd.DataFrame(raw_data['results'][i]) # append each dfs
+                df = pd.concat([df, newdf], sort=False)
+    else:
+        df = pd.DataFrame(raw_data['results'][lineages]) 
     if freq != 0.8:
         if isinstance(freq, float) and freq > 0 and freq < 1:
             return df.loc[df['prevalence'] >= freq]
