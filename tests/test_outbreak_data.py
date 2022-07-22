@@ -2,6 +2,30 @@ from outbreak_data import outbreak_data
 import pandas as pd
 
 
+def _test_missing_auth():
+    missing_auth = ''
+    location = 'USA_US-CA'
+    out = outbreak_data.get_outbreak_data('covid19/query',
+                                          f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1'
+                                          f'&{outbreak_data.nopage}', auth=missing_auth, collect_all=True)
+    assert isinstance(out, type(None)), f'get_outbreak_data returning data despite authentication error'
+
+
+def _test_malformed_auth():
+    malformed_auth = 'Bearer qfsb1pkhk6138ly1rfk1cbgityi9b73boygqe5r39sxpmz3djtu1qkdqtj2wu6ft'
+    location = 'USA_US-CA'
+    out = outbreak_data.get_outbreak_data('covid19/query',
+                                          f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1'
+                                          f'&{outbreak_data.nopage}', auth=malformed_auth, collect_all=True)
+
+    assert isinstance(out, type(None)), f'get_outbreak_data not returning correct data for {location}'
+
+
+def test_outbreak_auth():
+    _test_missing_auth()
+    _test_malformed_auth()
+
+
 def _test_get_location():
     """
     Test the ability of get data to return a location's case data within a
