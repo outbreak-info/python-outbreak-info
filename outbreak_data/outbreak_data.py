@@ -22,19 +22,20 @@ def get_outbreak_data(endpoint, argstring, server=server, auth=auth, collect_all
     """
     auth = {'Authorization': str(auth)}
     # initial request // used to collect data during recursion or as output of single API call
-    in_req = requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth).json()
+    in_req = requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth)
+    in_json = in_req.json()
     # checking that the request contains data
-    contains_data = ('hits' in in_req.keys()) | ('results' in in_req.keys())
+    contains_data = ('hits' in in_json.keys()) | ('results' in in_json.keys())
     if collect_all is False:
-        return in_req
+        return in_json
     elif collect_all and not contains_data:
         return
     elif collect_all and contains_data:
         # initial dict for collecting new json data
-        data_json = {k: v if isinstance(v, list) else [v] for k, v in in_req.items()}
+        data_json = {k: v if isinstance(v, list) else [v] for k, v in in_json.items()}
         del data_json['_scroll_id']
         # recursion during collection
-        scroll_id = in_req['_scroll_id']
+        scroll_id = in_json['_scroll_id']
         fetching_page = '&fetch_all=True&page='
         page = fetching_page + str(curr_page)
         to_scroll = 'scroll_id=' + scroll_id + page
