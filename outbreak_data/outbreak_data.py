@@ -52,7 +52,7 @@ def page_cases_by_location(location, num_pages, server=server, auth=auth, covid1
     """
     Loads data from a location; Use 'OR' between locations to get multiple.
     Uses a paging mechanism.
-=======
+
 # minimal working version
 # def cases_by_location(location, server=server, auth=auth):
 #     """
@@ -154,7 +154,7 @@ def prevalence_by_location(location, startswith=None, server=server, auth=auth):
 
     """
     auth = {'Authorization': str(auth)}                     
-=======
+
 
 def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=auth):
     """Retrieves data from all mutations in a specified lineage above a frequency threshold.
