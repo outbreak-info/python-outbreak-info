@@ -137,16 +137,13 @@ def prevalence_by_location(location, startswith=None, server=server, auth=auth):
 
 def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=auth):
     """Retrieves data from all mutations in a specified lineage above a frequency threshold.
-       Mutiple queries for lineages and mutations can be separated by ','  
-       
-       Use 'OR' in a string to return overlapping mutations in multiple lineages: 'BA.2 OR BA.1'
-       
-       AND is only useful for one lineage + mutation1 + mutation2 .... combinations
-       P.1 AND S:P681H,P.1 OR B.1.1.7 
-    
+       - Mutiple queries for lineages and mutations can be separated by ","
+       - Use 'OR' in a string to return overlapping mutations in multiple lineages: 'BA.2 OR BA.1'
+       - param mutation is only useful for one lineage + mutation1 + mutation2 .... combinations
+
           Arguments:
              :param pango_lin: A string or list; loads data for all mutations in a specified PANGO lineage 
-             :param mutation: A string or list; loads data for lineages containing a specified mutation
+             :param mutation: A string or list; loads data of mutations for sequences classified as a specified PANGO lineage with mutation
              :param freq: a number between 0 and 1 specifying the frequency threshold above which to return mutations (default = 0.8)
           Returns:
               A pandas dataframe"""
@@ -203,4 +200,4 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
             return df.loc[df['prevalence'] >= freq]
     else:
         return df
-
+        
