@@ -119,10 +119,6 @@ def cases_by_location(location, server=server, auth=auth):
 
 
 def prevalence_by_location(location, startswith=None, server=server, auth=auth):
-    lins = get_outbreak_data('genomics/prevalence-by-location-all-lineages',
-                             f'location_id={location}&sort=date&ndays=2048&nday_threshold=0&other_threshold=0')
-    df = pd.DataFrame(lins['results'])
-
     """Loads prevalence data from a location
             Arguments:
                 :param location: A string
@@ -130,7 +126,10 @@ def prevalence_by_location(location, startswith=None, server=server, auth=auth):
                 :param startswith: A string; loads data for all lineages beginning with first letter(s) of name
             Returns:
                 A pandas dataframe"""
-
+                
+    lins = get_outbreak_data('genomics/prevalence-by-location-all-lineages',
+                             f'location_id={location}&sort=date&ndays=2048&nday_threshold=0&other_threshold=0')
+    df = pd.DataFrame(lins['results'])
     if startswith is not None:
         return df.loc[df['lineage'].str.startswith(startswith)]
     return df
@@ -155,31 +154,30 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
     OR_stat = False
     if isinstance(pango_lin, list):
         pass
-    
     if isinstance(pango_lin, str) and ' OR ' in pango_lin: #lineages with OR logic
         OR_stat = True
         pango_lin = pango_lin.replace(" OR ", ",")
         # pango_lin = pango_lin.replace("", ", ")
         pango_lin = list(pango_lin.split(","))  # deals with string format for pango_lin
-        if mutation is not None and type(mutation) == str:
+        if mutation is not None and isinstance(mutation, str):
             mutation = mutation.replace(" ", "")
             mutation = list(mutation.split(","))   # deals with string format for mutations
-            
     elif isinstance(pango_lin, str):  # for just returning lineages 
         pango_lin = pango_lin.replace(" ", "")
         pango_lin = list(pango_lin.split(","))  # deals with string format for pango_lin
-        if mutation is not None and type(mutation) == str:
+        if mutation is not None and isinstance(mutation, str):
             mutation = mutation.replace(" ", "")
             mutation = list(mutation.split(","))   # deals with string format for mutations
-            
     if OR_stat and mutation is None:
         lineages = '' + ' OR '.join(pango_lin)
     elif OR_stat and mutation is not None:
         lineages = '' + pango_lin[0] + ' AND ' + ' AND '.join(mutation) + ',' + '' + ' OR '.join(pango_lin)
     elif mutation is None:
         lineages = '' + ','.join(pango_lin)
-    else:
+    elif len(pango_lin) > 1:
         lineages = '' + pango_lin[0] + ' AND ' + ' AND '.join(mutation) + ','  + ','.join(pango_lin) + ''
+    else:
+        lineages = '' + pango_lin[0] + ' AND ' + ' AND '.join(mutation) + '' 
   
     raw_data = get_outbreak_data('genomics/lineage-mutations', f'pangolin_lineage={lineages}', collect_all=False)
     
@@ -205,3 +203,4 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
             return df.loc[df['prevalence'] >= freq]
     else:
         return df
+
