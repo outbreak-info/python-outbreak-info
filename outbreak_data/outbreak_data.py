@@ -168,6 +168,17 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
               A pandas dataframe"""
 
 
+def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=auth):
+    """Retrieves data from all mutations in a specified lineage above a frequency threshold.
+       Mutiple queries for lineages and mutations can be separated by ','
+    
+          Arguments:
+             :param pango_lin: A string or list; loads data for all mutations in a specified PANGO lineage 
+             :param mutation: A string or list; loads data for lineages containing a specified mutation
+             :param freq: a number between 0 and 1 specifying the frequency threshold above which to return mutations (default = 0.8)
+          Returns:
+              A pandas dataframe"""
+
     # Turns any string input into list format: most universal
 
     if isinstance(pango_lin, str):
