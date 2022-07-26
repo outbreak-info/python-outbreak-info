@@ -8,21 +8,26 @@ nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer E
 covid19_endpoint = 'covid19/query'
 
 
-def get_outbreak_data(endpoint, argstring, server=server, auth=auth, collect_all=False, curr_page=0):
+def get_outbreak_data(endpoint, argstring, server=server, auth_key=auth, collect_all=False, curr_page=0):
+    global auth
     """
     Receives raw data using outbreak API.
 
     :param endpoint: directory in server the data is stored
     :param argstring: feature arguments to provide to API call
     :param server: Server to request from
-    :param auth: Auth key
+    :param auth_key: Auth key
     :param collect_all: if True, returns all data.
     :param curr_page: iterator state for paging
     :return: A request object containing the raw data
     """
-    auth = {'Authorization': str(auth)}
+    if 'Bearer' not in auth_key:
+        return None
+    elif auth_key != auth:
+        return None
+    auth_key = {'Authorization': str(auth_key)}
     # initial request // used to collect data during recursion or as output of single API call
-    in_req = requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth)
+    in_req = requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth_key)
     in_json = in_req.json()
     # checking that the request contains data
     contains_data = ('hits' in in_json.keys()) | ('results' in in_json.keys())
