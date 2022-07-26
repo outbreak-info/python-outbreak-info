@@ -48,46 +48,7 @@ def get_outbreak_data(endpoint, argstring, server=server, auth=auth, collect_all
         return data_json
 
 
-# minimal working version
-# def cases_by_location(location, server=server, auth=auth):
-#     """
-#     Loads data from a location; Use 'OR' between locations to get multiple.
-#     Since this API endpoint supports paging, collect_all is used to return all data.
-#     :param location: A string
-#     :return: A pandas dataframe
-#     """
-#     args = f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}'
-#     return get_outbreak_data(covid19_endpoint, args, collect_all=True)
-
-# Hritika's smoothed-data version (WIP)
-# def cases_by_location(location, server=server, auth=auth, pull_smoothed=0):
-#    """
-#    Loads data from a location; Use 'OR' between locations to get multiple.
-#    Arguments:
-#        location: A string
-#    Returns:
-#        A pandas dataframe
-#    """
-#    raw_data = get_outbreak_data(covid19_endpoint,
-#                                                 f'location_id:{location}&sort=date&fields=date,{confirmed},admin1&{nopage}',
-#                                                 server, auth)
-#    print_raw=raw_data.json()['hits']
-#    print_raw_table=pd.DataFrame(print_raw)
-#    refined_table=print_raw_table.drop(columns=['_score', 'admin1'], axis=1)
-#    if pull_smoothed == 0:
-#        confirmed='confirmed_numIncrease'
-#        print(refined_table)
-#    elif pull_smoothed == 1:
-#        confirmed='confirmed_rolling'
-#        print(refined_table)
-#    elif pull_smoothed == 2:
-#        confirmed='confirmed_rolling','confirmed_numIncrease'
-#        print(refined_table)
-#    else:
-#        print("invalid parameter value!")
-
-# Sarah's multiple-locations version (WIP)
-def cases_by_location(location, server=server, auth=auth):
+def cases_by_location(location, server=server, auth=auth, pull_smoothed=0):
     """
     Loads data from a location if input is a string, or from multiple locations
     if location is a list of string locations.
@@ -101,24 +62,35 @@ def cases_by_location(location, server=server, auth=auth):
         location = list(location.split(","))
     if not isinstance(location, list) or len(location) == 0:
         raise ValueError('Please enter at least 1 valid location id')
+    if pull_smoothed == 0:
+        confirmed='confirmed_numIncrease'
+    elif pull_smoothed == 1:
+        confirmed='confirmed_rolling'
+    elif pull_smoothed == 2:
+        confirmed='confirmed_rolling, confirmed_numIncrease'
+    else:
+        raise Exception("invalid parameter value for pull_smoothed!")
     try:
         locations = '(' + ' OR '.join(location) + ')'
-        args = f'q=location_id:{locations}&sort=date&fields=date,confirmed_numIncrease,admin1&{nopage}'
+        args = f'q=location_id:{locations}&sort=date&fields=date,{confirmed},admin1&{nopage}'
         raw_data = get_outbreak_data(covid19_endpoint, args, collect_all=True)
         df = pd.DataFrame(raw_data['hits'])
+        refined_table=df.drop(columns=['_score', 'admin1'], axis=1)
         for i in location:  # checks each entry in location for invalid location ids after request
                 check = i[0:2] #checks for first 3 letters from string input in df; if they're there, the df passed
                 valid_loc = df.loc[df['_id'].str.startswith(check)]
                 if valid_loc.empty:
-                    print('{} is not a valid location ID'.format(i))
+                    raise Exception('{} is not a valid location ID'.format(i))
         if not df.empty:
             return df
+            return refined_table
     except:
         for i in location:
-            print('{} is not a valid location ID'.format(i))
+            raise Exception('{} is not a valid location ID'.format(i))
 
 
 def prevalence_by_location(location, startswith=None, server=server, auth=auth):
+
     """Loads prevalence data from a location
             Arguments:
                 :param location: A string
@@ -200,4 +172,3 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
             return df.loc[df['prevalence'] >= freq]
     else:
         return df
-        
