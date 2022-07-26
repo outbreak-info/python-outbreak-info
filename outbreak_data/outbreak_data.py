@@ -5,6 +5,8 @@ server = 'api.outbreak.info'  # or 'dev.outbreak.info'
 auth = ***REMOVED***  # keep this private!
 nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer ES versions as well
 covid19_endpoint = 'covid19/query'
+lineage_endpoint = 'genomics/lineage-mutations'
+prevalence_endpoint = 'genomics/prevalence-by-location-all-lineages'
 valid_servers = [server, 'dev.outbreak.info', 'test.outbreak.info']
 
 
