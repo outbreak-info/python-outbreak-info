@@ -1,5 +1,6 @@
 import pandas as pd
 import requests
+import warnings
 
 server = 'api.outbreak.info'  # or 'dev.outbreak.info'
 auth = 'Bearer 0ed52bbfb6c79d1fd8e9c6f267f9b6311c885a4c4c6f037d6ab7b3a40d586ad0'  # keep this private!
@@ -7,30 +8,26 @@ nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer E
 covid19_endpoint = 'covid19/query'
 lineage_endpoint = 'genomics/lineage-mutations'
 prevalence_endpoint = 'genomics/prevalence-by-location-all-lineages'
-valid_servers = [server, 'dev.outbreak.info', 'test.outbreak.info']
 
 
-def get_outbreak_data(endpoint, argstring, server_url=None, auth_key=auth, collect_all=False, curr_page=0):
+def get_outbreak_data(endpoint, argstring, server=server, auth=auth, collect_all=False, curr_page=0):
     """
     Receives raw data using outbreak API.
 
     :param endpoint: directory in server the data is stored
     :param argstring: feature arguments to provide to API call
-    :param server_url: Server to request from
-    :param auth_key: Auth key (defaults to acceptable state)
+    :param server: Server to request from
+    :param auth: Auth key (defaults to acceptable state)
     :param collect_all: if True, returns all data.
     :param curr_page: iterator state for paging
     :return: A request object containing the raw data
     """
-    if auth_key != auth:
-        raise ValueError('Incorrect/Missing authentication key')
-    if isinstance(server_url, type(None)):
-        server_url = server
-    elif server_url not in valid_servers:
-        raise NameError('Incorrect/Missing server name')
-    auth_key = {'Authorization': str(auth_key)}
+    # To secure against None type
+    if isinstance(server, type(None)):
+        server = server
+    auth = {'Authorization': str(auth)}
     # initial request // used to collect data during recursion or as output of single API call
-    in_req = requests.get(f'https://{server_url}/{endpoint}?{argstring}', headers=auth_key)
+    in_req = requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth)
     if in_req.headers.get('content-type') != 'application/json; charset=UTF-8':
         raise ValueError('Warning!: Potentially missing endpoint. Data not being returned by server.')
     if 400 <= in_req.status_code <= 499:
@@ -44,9 +41,9 @@ def get_outbreak_data(endpoint, argstring, server_url=None, auth_key=auth, colle
     contains_data = hits | results
     if collect_all is False:
         if hits and (len(in_json['hits']) == 0):
-            print('Warning!: Data has "hits" but length of data is 0')
+            warnings.warn('Warning!: Data has "hits" but length of data is 0')
         elif results and (len(in_json['results']) == 0):
-            print('Warning!: Data has "results" but length of data is 0')
+            warnings.warn('Warning!: Data has "results" but length of data is 0')
         return in_json
     elif collect_all and not contains_data:
         return
@@ -59,12 +56,12 @@ def get_outbreak_data(endpoint, argstring, server_url=None, auth_key=auth, colle
         fetching_page = '&fetch_all=True&page='
         page = fetching_page + str(curr_page)
         to_scroll = 'scroll_id=' + scroll_id + page
-        in_req = get_outbreak_data(endpoint, to_scroll, server_url=server_url, collect_all=True, curr_page=curr_page+1)
+        in_req = get_outbreak_data(endpoint, to_scroll, server=server, collect_all=True, curr_page=curr_page+1)
         if not isinstance(in_req, type(None)):
             if hits and len(in_req['hits']) == 0:
-                print('Warning!: Recursion step has "hits" key but empty data value')
+                warnings.warn('Warning!: Recursion step has "hits" key but empty data value')
             elif results and len(in_req['results']) == 0:
-                print('Warning!: Recursion step has "results" key but empty data value')
+                warnings.warn('Warning!: Recursion step has "results" key but empty data value')
             in_req = {k: v if isinstance(v, list) else [v] for k, v in in_req.items()}
         for k in data_json.keys():
             try:
