@@ -1,5 +1,6 @@
 import pandas as pd
 import pytest
+import requests
 
 from outbreak_data import outbreak_data
 test_server = 'test.outbreak.info'
@@ -8,10 +9,10 @@ null_server = 'null.outbreak.info'
 
 def _test_network_codes():
     location = 'AUS_SouthAustralia'
-    with pytest.raises(NameError):
+    with pytest.raises(requests.ConnectionError):
         out = outbreak_data.get_outbreak_data('covid19/query',
                                               f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,'
-                                              f'admin1&{outbreak_data.nopage}', server_url=null_server, collect_all=True)
+                                              f'admin1&{outbreak_data.nopage}', server=null_server, collect_all=True)
         assert isinstance(out, type(None)), f'get_outbreak_data server not returning None despite ConnectionError'
 
 
@@ -36,32 +37,6 @@ def test_response_codes():
     _test_client_codes()
 
 
-def _test_missing_auth():
-    missing_auth = ''
-    location = 'USA_US-CA'
-    with pytest.raises(ValueError):
-        out = outbreak_data.get_outbreak_data('covid19/query', f'q=location_id:{location}&sort=date&fields=date,confir'
-                                                               f'med_numIncrease,admin1&{outbreak_data.nopage}',
-                                              server_url=test_server, auth_key=missing_auth)
-        assert isinstance(out, type(None)), f'get_outbreak_data returning data despite authentication error'
-
-
-def _test_malformed_auth():
-    malformed_auth = 'Bearer qfsb1pkhk6138ly1rfk1cbgityi9b73boygqe5r39sxpmz3djtu1qkdqtj2wu6ft'
-    location = 'USA_US-CA'
-    with pytest.raises(ValueError):
-        out = outbreak_data.get_outbreak_data('covid19/query', f'q=location_id:{location}&sort=date&fields=date,confir'
-                                                               f'med_numIncrease,admin1&{outbreak_data.nopage}',
-                                              server_url=test_server, auth_key=malformed_auth)
-
-        assert isinstance(out, type(None)), f'get_outbreak_data not returning correct data for {location}'
-
-
-def test_outbreak_auth():
-    _test_missing_auth()
-    _test_malformed_auth()
-
-
 def _test_get_location():
     """
     Test the ability of get data to return a location's case data within a
@@ -70,7 +45,7 @@ def _test_get_location():
     location = 'AUS_SouthAustralia'
     out = outbreak_data.get_outbreak_data('covid19/query',
                                           f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,admin1'
-                                          f'&{outbreak_data.nopage}', server_url=test_server)
+                                          f'&{outbreak_data.nopage}', server=test_server)
     df = pd.DataFrame(out['hits'])
     assert df.admin1.unique()[0] == 'South Australia', f'get_outbreak_data not returning correct data for {location}'
 
@@ -85,7 +60,7 @@ def _test_get_multiple_locations():
     out = outbreak_data.get_outbreak_data('covid19/query',
                                           f'q=location_id:{locations}'
                                           f'&sort=date&fields=date,confirmed_numIncrease,admin1&{outbreak_data.nopage}',
-                                          server_url=test_server)
+                                          server=test_server)
     df = pd.DataFrame(out['hits'])
     # test server so far only supports one location
     assert len(df.admin1.unique()) == len(location[:1]), f'get_outbreak_data returning incorrect number of locations, ' \
