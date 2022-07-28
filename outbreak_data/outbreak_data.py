@@ -1,11 +1,13 @@
-import requests
 import pandas as pd
-
+import requests
+import warnings
 
 server = 'api.outbreak.info'  # or 'dev.outbreak.info'
 auth = ***REMOVED***  # keep this private!
 nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer ES versions as well
 covid19_endpoint = 'covid19/query'
+lineage_endpoint = 'genomics/lineage-mutations'
+prevalence_endpoint = 'genomics/prevalence-by-location-all-lineages'
 
 
 def get_outbreak_data(endpoint, argstring, server=server, auth=auth, collect_all=False, curr_page=0):
@@ -14,31 +16,51 @@ def get_outbreak_data(endpoint, argstring, server=server, auth=auth, collect_all
     :param endpoint: directory in server the data is stored
     :param argstring: feature arguments to provide to API call
     :param server: Server to request from
-    :param auth: Auth key
+    :param auth: Auth key (defaults to acceptable state)
     :param collect_all: if True, returns all data.
     :param curr_page: iterator state for paging
     :return: A request object containing the raw data
     """
+    # To secure against None type
+    if isinstance(server, type(None)):
+        server = server
     auth = {'Authorization': str(auth)}
     # initial request // used to collect data during recursion or as output of single API call
-    in_req = requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth).json()
+    in_req = requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth)
+    if in_req.headers.get('content-type') != 'application/json; charset=UTF-8':
+        raise ValueError('Warning!: Potentially missing endpoint. Data not being returned by server.')
+    if 400 <= in_req.status_code <= 499:
+        raise NameError(f'Request error (client-side/Error might be endpoint): {in_req.status_code}')
+    elif 500 <= in_req.status_code <= 599:
+        raise NameError(f'Request error (server-side): {in_req.status_code}')
+    in_json = in_req.json()
     # checking that the request contains data
-    contains_data = ('hits' in in_req.keys()) | ('results' in in_req.keys())
+    hits = 'hits' in in_json.keys()
+    results = 'results' in in_json.keys()
+    contains_data = hits | results
     if collect_all is False:
-        return in_req
+        if hits and (len(in_json['hits']) == 0):
+            warnings.warn('Warning!: Data has "hits" but length of data is 0')
+        elif results and (len(in_json['results']) == 0):
+            warnings.warn('Warning!: Data has "results" but length of data is 0')
+        return in_json
     elif collect_all and not contains_data:
         return
     elif collect_all and contains_data:
         # initial dict for collecting new json data
-        data_json = {k: v if isinstance(v, list) else [v] for k, v in in_req.items()}
+        data_json = {k: v if isinstance(v, list) else [v] for k, v in in_json.items()}
         del data_json['_scroll_id']
         # recursion during collection
-        scroll_id = in_req['_scroll_id']
+        scroll_id = in_json['_scroll_id']
         fetching_page = '&fetch_all=True&page='
         page = fetching_page + str(curr_page)
         to_scroll = 'scroll_id=' + scroll_id + page
-        in_req = get_outbreak_data(endpoint, to_scroll, collect_all=True, curr_page=curr_page + 1)
+        in_req = get_outbreak_data(endpoint, to_scroll, server=server, collect_all=True, curr_page=curr_page+1)
         if not isinstance(in_req, type(None)):
+            if hits and len(in_req['hits']) == 0:
+                warnings.warn('Warning!: Recursion step has "hits" key but empty data value')
+            elif results and len(in_req['results']) == 0:
+                warnings.warn('Warning!: Recursion step has "results" key but empty data value')
             in_req = {k: v if isinstance(v, list) else [v] for k, v in in_req.items()}
         for k in data_json.keys():
             try:
@@ -159,5 +181,4 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
             return df.loc[df['prevalence'] >= freq]
     else:
         return df
-    
 
