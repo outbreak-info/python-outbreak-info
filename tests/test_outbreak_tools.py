@@ -1,4 +1,3 @@
-import pytest
 from outbreak_tools import outbreak_tools
 import altair as alt
 

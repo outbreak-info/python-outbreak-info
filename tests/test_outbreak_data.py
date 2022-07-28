@@ -36,6 +36,39 @@ def test_response_codes():
     _test_network_codes()
     _test_client_codes()
 
+test_server = 'test.outbreak.info'
+null_server = 'null.outbreak.info'
+
+
+def _test_network_codes():
+    location = 'AUS_SouthAustralia'
+    with pytest.raises(requests.ConnectionError):
+        out = outbreak_data.get_outbreak_data('covid19/query',
+                                              f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,'
+                                              f'admin1&{outbreak_data.nopage}', server=null_server, collect_all=True)
+        assert isinstance(out, type(None)), f'get_outbreak_data server not returning None despite ConnectionError'
+
+
+def _test_client_codes():
+    location = 'AUS_SouthAustralia'
+
+    with pytest.raises(ValueError):
+        out = outbreak_data.get_outbreak_data('covid19/null',
+                                              f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,'
+                                              f'admin1&{outbreak_data.nopage}', collect_all=True)
+        assert isinstance(out, type(None)), f'get_outbreak_data server not returning None despite missing JSON'
+
+    with pytest.raises(ValueError):
+        out = outbreak_data.get_outbreak_data('',
+                                              f'q=location_id:{location}&sort=date&fields=date,confirmed_numIncrease,'
+                                              f'admin1&{outbreak_data.nopage}', collect_all=True)
+        assert isinstance(out, type(None)), f'get_outbreak_data server not returning None despite missing JSON'
+
+
+def test_response_codes():
+    _test_network_codes()
+    _test_client_codes()
+
 
 def _test_get_location():
     """
@@ -220,6 +253,4 @@ class Test_Lineage_Mutations:
               invalid = True
               
         assert(invalid)
-        
-   
-   
+
