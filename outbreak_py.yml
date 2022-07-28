@@ -33,6 +33,7 @@ dependencies:
   - pycparser=2.21=pyhd3eb1b0_0
   - pyopenssl=22.0.0=pyhd3eb1b0_0
   - pysocks=1.7.1=py39hecd8cb5_0
+  - pytest=6.2.3=py37hecd8cb5_2
   - python=3.9.12=hdfd78df_1
   - python-dateutil=2.8.2=pyhd8ed1ab_0
   - python_abi=3.9=2_cp39
