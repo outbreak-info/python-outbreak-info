@@ -2,6 +2,15 @@ import altair as alt
 from outbreak_data import outbreak_data
 
 
+def id_lookup(location):
+    """
+    Helps find location ID for use with outbreak_data.py
+    :param location:
+    :return: location_id
+    """
+    return ...
+
+
 def plot_increase(location):
     """
     Visualizes the confirmed increase in number of cases
