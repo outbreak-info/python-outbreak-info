@@ -1,8 +1,5 @@
 import pandas as pd
-<<<<<<< Updated upstream
 import requests
-=======
->>>>>>> Stashed changes
 import warnings
 
 server = 'api.outbreak.info'  # or 'dev.outbreak.info'
