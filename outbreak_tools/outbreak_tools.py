@@ -35,7 +35,3 @@ def plot_increase(location, smoothed=True):
     ).interactive()
 
     return base
-
-
-
-
