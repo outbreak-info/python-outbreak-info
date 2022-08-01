@@ -1,5 +1,8 @@
 import pandas as pd
+<<<<<<< Updated upstream
 import requests
+=======
+>>>>>>> Stashed changes
 import warnings
 
 server = 'api.outbreak.info'  # or 'dev.outbreak.info'
@@ -27,6 +30,8 @@ def get_outbreak_data(endpoint, argstring, server=server, auth=auth, collect_all
     auth = {'Authorization': str(auth)}
     # initial request // used to collect data during recursion or as output of single API call
     in_req = requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth)
+    print(f'https://{server}/{endpoint}?{argstring}')
+    print(in_req.status_code)
     if in_req.headers.get('content-type') != 'application/json; charset=UTF-8':
         raise ValueError('Warning!: Potentially missing endpoint. Data not being returned by server.')
     if 400 <= in_req.status_code <= 499:
