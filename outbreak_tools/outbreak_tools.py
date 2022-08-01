@@ -11,20 +11,26 @@ def id_lookup(location):
     return ...
 
 
-def plot_increase(location):
+def plot_increase(location, smoothed=True):
     """
     Visualizes the confirmed increase in number of cases
 
     :param location: Location as a string or list of location strings
-    :param num_pages: Amount of pages (1000 obs/page) of data to use
-    :param all_data: Whether to use all data or num_pages
+    :param smoothed: Default True plots rolling averaged data
     :return: An interactive altair plot
     """
-    data = outbreak_data.cases_by_location(location)
+    smooth = 1
+    y_col = 'confirmed_rolling:Q'
+    plot_title = 'SARS-CoV-2 7-Day Rolling Increase'
+    if not smoothed:
+        smooth = 0
+        y_col = 'confirmed_numIncrease:Q'
+        plot_title = 'SARS-CoV-2 Increase'
+    data = outbreak_data.cases_by_location(location, pull_smoothed=smooth)
     # base feature viz // amount of new covid cases
-    base = alt.Chart(data).mark_line().encode(
+    base = alt.Chart(data, title=plot_title).mark_line().encode(
         x='date:T',
-        y='confirmed_numIncrease:Q',
+        y=y_col,
         color='admin1:N'
     ).interactive()
 
