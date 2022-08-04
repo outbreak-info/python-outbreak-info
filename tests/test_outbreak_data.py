@@ -43,8 +43,20 @@ def test_get_outbreak_data():
     _test_get_multiple_locations()
 
 
-def test_cases_by_location():
-    """
-    Main test
-    """
+def test_cases_by_location(location_in, server_in, pull_smoothed_in): #outer function
+    prev_data=#downloaded data
+    params_dic={'location':location_in, 'server':server_in, 'pull_smoothed':pull_smoothed_in}
+    test_confirmed(prev_data, saveCases, params_dic)
     pass
+
+
+def test_confirmed(prev_data, saveCases, params_dic): #inner function
+    out=outbreak_data.cases_by_location(**params_dic)
+    csv_out = out.to_csv(index=False)      
+    assert(params['location'] in out.admin1.unique(), 'missing location in data')
+    assert(prev_data == csv_out, 'old csv data does not match the current csv')
+    if saveCases:
+           return csv_out
+    
+ #server: 'test.outbreak.info'   
+           
