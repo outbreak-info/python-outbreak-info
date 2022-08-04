@@ -1,69 +1,103 @@
 import altair as alt
 from outbreak_data import outbreak_data
 import pandas as pd
+import re
 
-
-def id_lookup(locations):
+def id_lookup(locations, table = False):
     """
     Helps find location ID for use with outbreak_data.py
     Requires integration with get_outbreak_data
-    :param locations:
+    :param locations: A string or list of location names
     :return: location_id
     """
+    #setting max_colwidth for showing full-name completely in table
+    pd.set_option("max_colwidth", 400)
     locIds_of_interest=[]
     locIds_not_found=[]
+    if isinstance(locations, str):
+        locations = [locations]
+    #first pass of the query tries every location name as-is & collects malformed queries
     for i in locations:
         locId_arg = "name=" + i
         results = outbreak_data.get_outbreak_data('genomics/location', locId_arg)
-        hits = None
-        if(len(results) >= 1):
-            hits = results
-        if(len(hits) == 0):
-            locIds_not_found.extend([i])
-        else:
-            df = pd.DataFrame(hits['results'])
-            if (df.shape[0]==1):
-                locIds_of_interest.extend([df.id.unique()[0]])
-            else:
+        if results != None:
+            if (len(results) == 0):
                 locIds_not_found.extend([i])
-
+            else:
+                df = pd.DataFrame(results['results'])
+                #print(df.columns)
+                if (df.shape[0]==1):
+                    locIds_of_interest.extend([df.id.unique()[0]])
+                else:
+                    locIds_not_found.extend([i])
+        #everything matches up
         if (len(locIds_of_interest)==len(locations)):
             return locIds_of_interest
+        #any locations not found require further investigation (*name* must be a catch-all?)
         if (len(locIds_of_interest)!=len(locations)):
             locations_not_found=[]
             for i in locIds_not_found:
                 locs=''.join(['*', i, '*'])
                 locations_not_found.extend([locs])
-            for i in range(0, len(locations_not_found)):
-                locId = "name=" + locations_not_found[i]
-                results = outbreak_data.get_outbreak_data('genomics/location', locId)
-                hits = pd.DataFrame()
-                if(len(results) >= 1):
-                    hits = pd.DataFrame(results['results'])
-                if(hits.shape[0] == 0):
-                    next
+
+    #using genomic endpoint to parse location names and corrects malformed queries
+    hits = pd.DataFrame()
+    for i in range(0, len(locations_not_found)):
+        locId = "name=" + locations_not_found[i]
+        results = outbreak_data.get_outbreak_data('genomics/location', locId)
+        hits = pd.DataFrame()
+        if(len(results) >= 1):
+            hits = pd.DataFrame(results['results'])
+        if(hits.shape[0] == 0):
+            next
+        else:
+            #replacing code with meaning
+            hits.admin_level.replace(-1, "World Bank Region", inplace=True)
+            hits.admin_level.replace(0, "country", inplace=True)
+            hits.admin_level.replace(1, "state/province", inplace=True)
+            hits.admin_level.replace(1.5, "metropolitan area", inplace=True)
+            hits.admin_level.replace(2, "county", inplace=True)
+            hits['full'] = hits.label + ' ' + " (" + ' ' + hits.admin_level + ' ' + ")"
+            if not table:
+                print("Query given: ", locations_not_found[i].strip('*'))
+                # ask questions about ambiguous names (one-to-many)
+                print("\n")
+                display(hits['full'][:10])
+                print('Int values must be entered in comma seperated format.')
+                loc_sel = input("Enter the indices of locations of interest in dataframe above: ")
+                if loc_sel == '':
+                    raise ValueError('Input string is empty, enter single or multiple int comma seperated value/s before submitting.')
+                input_locs = list(loc_sel.split(','))
+                for i in range(len(input_locs)):
+                    val = re.search(r' *[0-9]+', input_locs[i])
+                    if (isinstance(val, re.Match)):
+                        if (val.group() != ''):
+                            val = int(val.group())
+                            input_locs[i] = val
+                all_int = all([isinstance(x, int) for x in input_locs])
+                if all_int:
+                    locIds_of_interest.extend(hits.iloc[input_locs, :].id)
                 else:
-                    df.admin_level.replace(-1, "World Bank Region", inplace=True)
-                    df.admin_level.replace(0, "country", inplace=True)
-                    df.admin_level.replace(1, "state/province", inplace=True)
-                    df.admin_level.replace(1.5, "metropolitan area", inplace=True)
-                    df.admin_level.replace(2, "county", inplace=True)
-                    df['full'] = df.label + ' ' + " (" + ' ' + df.admin_level + ' ' + ")"
-                    for i in df.full:
-                        print(i)
-                        print("\n")
-                        loc_sel = input("Is this a location of interest? (Y/N): ")
-                        if ((loc_sel == "Y")|(loc_sel == "y")):
-                            locIds_of_interest.extend(df.id[df.full==i])
-                            break
-                        if ((loc_sel != "Y")&(loc_sel != "y")&(loc_sel != "N")&(loc_sel != "n")):
-                            print("Expected input is Y or N\n\n")
-                            print('\n')
-                            print(i)
-                            loc_sel = input("Is this a location of interest? (Y/N): ")
-                            if ((loc_sel == "Y")|(loc_sel == "y")):
-                                locIds_of_interest.extend(df.id[df.full==i])
-                                break
+                    print("Input entries are all not int. Please try again.")
+                    print('\n')
+                    display(hits['full'][:10])
+                    loc_sel = input("Enter the indices of locations of interest in dataframe above: ")
+                    if loc_sel == '':
+                        raise ValueError('Input string is empty, enter single or multiple int comma seperated value/s before submitting.')
+                    input_locs = list(loc_sel.split(','))
+                    for i in range(len(input_locs)):
+                        val = re.search(r' *[0-9]+', input_locs[i])
+                        if (isinstance(val, re.Match)):
+                            if (val.group() != ''):
+                                val = int(val.group())
+                                input_locs[i] = val
+                    all_int = all([isinstance(x, int) for x in input_locs])
+                    if all_int:
+                        locIds_of_interest.extend(hits.iloc[input_locs, :].id)
+            print('\n')
+    if table:
+        #necessary identification
+        return hits.loc[:, ['id', 'label', 'admin_level']][:10]
     return locIds_of_interest
 
 
