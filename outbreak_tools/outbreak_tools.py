@@ -2,18 +2,24 @@ import altair as alt
 from outbreak_data import outbreak_data
 import pandas as pd
 import re
+import warnings
 
-def id_lookup(locations, table = False):
+
+def id_lookup(locations, max_results = 10, table = False):
     """
     Helps find location ID for use with outbreak_data.py
     Requires integration with get_outbreak_data
     :param locations: A string or list of location names
+    :param max_results: Int, of how many results to return
+    :param table: If True, returns all results as pandas DataFrame
     :return: location_id
     """
+    warnings.filterwarnings("ignore", message='Warning!: Data has "results" but length of data is 0')
     #setting max_colwidth for showing full-name completely in table
-    pd.set_option("max_colwidth", 400)
+    pd.set_option("max_colwidth", 300)
     locIds_of_interest=[]
     locIds_not_found=[]
+    locations_not_found=[]
     if isinstance(locations, str):
         locations = [locations]
     #first pass of the query tries every location name as-is & collects malformed queries
@@ -35,13 +41,13 @@ def id_lookup(locations, table = False):
             return locIds_of_interest
         #any locations not found require further investigation (*name* must be a catch-all?)
         if (len(locIds_of_interest)!=len(locations)):
-            locations_not_found=[]
+            not_found=[]
             for i in locIds_not_found:
                 locs=''.join(['*', i, '*'])
-                locations_not_found.extend([locs])
-
+                not_found.extend([locs])
+            locations_not_found = not_found
+    all_hits = None
     #using genomic endpoint to parse location names and corrects malformed queries
-    hits = pd.DataFrame()
     for i in range(0, len(locations_not_found)):
         locId = "name=" + locations_not_found[i]
         results = outbreak_data.get_outbreak_data('genomics/location', locId)
@@ -58,11 +64,17 @@ def id_lookup(locations, table = False):
             hits.admin_level.replace(1.5, "metropolitan area", inplace=True)
             hits.admin_level.replace(2, "county", inplace=True)
             hits['full'] = hits.label + ' ' + " (" + ' ' + hits.admin_level + ' ' + ")"
+            hits = hits[:max_results]
+            hits.index= pd.MultiIndex.from_arrays([[locations_not_found[i].strip('*')] * len(hits.index)
+                                                      ,list(hits.index)], names=['Query', 'Index'])
+            if isinstance(all_hits, pd.core.frame.DataFrame):
+                all_hits = all_hits.append(hits)
+            else:
+                all_hits = hits.copy()
             if not table:
-                print("Query given: ", locations_not_found[i].strip('*'))
                 # ask questions about ambiguous names (one-to-many)
                 print("\n")
-                display(hits['full'][:10])
+                display(hits['full'])
                 print('Int values must be entered in comma seperated format.')
                 loc_sel = input("Enter the indices of locations of interest in dataframe above: ")
                 if loc_sel == '':
@@ -80,7 +92,7 @@ def id_lookup(locations, table = False):
                 else:
                     print("Input entries are all not int. Please try again.")
                     print('\n')
-                    display(hits['full'][:10])
+                    display(hits['full'])
                     loc_sel = input("Enter the indices of locations of interest in dataframe above: ")
                     if loc_sel == '':
                         raise ValueError('Input string is empty, enter single or multiple int comma seperated value/s before submitting.')
@@ -94,10 +106,10 @@ def id_lookup(locations, table = False):
                     all_int = all([isinstance(x, int) for x in input_locs])
                     if all_int:
                         locIds_of_interest.extend(hits.iloc[input_locs, :].id)
-            print('\n')
+                print('\n')
     if table:
         #necessary identification
-        return hits.loc[:, ['id', 'label', 'admin_level']][:10]
+        return all_hits.loc[:, ['id', 'label', 'admin_level']]
     return locIds_of_interest
 
 
