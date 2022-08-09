@@ -108,17 +108,7 @@ def test_cases_by_location():
 
 class Test_Lineage_Mutations:
     
-    alpha = ['orf1a:t1001i','orf1a:a1708d', 'orf1a:i2230t', 'orf1a:del3675/3677', 'orf1b:p314l','s:del69/70', 's:del144/144','s:n501y','s:a570d',
-            's:r190s','s:k417t','s:e484k', 's:n501y', 's:d614g',
-            's:d614g', 's:p681h', 's:t716i','s:s982a','s:d1118h','orf8:q27','orf8:r52i','orf8:y73c','orf8:s84l', 
-            'n:d3l', 'n:r203k','n:g204r', 'n:s235f']   # for B.1.1.7
-     
-    gamma = ['orf1a:s1188l','orf1a:k1795q', 'orf1a:del3675/3677', 'orf1b:p314l','orf1b:e1264d', 's:l18f', 's:t20n','s:p26s','s:d138y',
-               's:r190s','s:k417t','s:e484k', 's:n501y', 's:d614g',
-               's:h655y', 's:t1027i', 's:v1176f','orf3a:s253p','orf8:s84l','orf8:e92k','n:p80r','n:r203k','n:g204r']  #for P.1
-    
-    f1 = [] #unique to BA.2
-    f2 = [] # unique to B.1.1.7
+   val1 = pd.read_csv('')
     
     def test_one(self): #  Test 1: lineage as string
         
