@@ -1,8 +1,8 @@
-import altair as alt
 from outbreak_data import outbreak_data
 import pandas as pd
 import re
 import warnings
+from IPython.display import display
 
 
 def id_lookup(locations, max_results = 10, table = False):
@@ -111,31 +111,3 @@ def id_lookup(locations, max_results = 10, table = False):
         #necessary identification
         return all_hits.loc[:, ['id', 'label', 'admin_level']]
     return locIds_of_interest
-
-
-def plot_case_increase(location, smoothed=True):
-    """
-    Visualizes the confirmed increase in number of cases
-
-    :param location: Location as a string or list of location strings
-    :param smoothed: Default True plots rolling averaged data
-    :return: An interactive altair plot
-    """
-    smooth = 1
-    y_col = 'confirmed_rolling:Q'
-    plot_title = 'Confirmed Cases (7-Day Rolling)'
-    if not smoothed:
-        smooth = 0
-        y_col = 'confirmed_numIncrease:Q'
-        plot_title = 'SARS-CoV-2 Increase'
-    data = outbreak_data.cases_by_location(location, pull_smoothed=smooth)
-    data['date'] = data['date'].apply(pd.to_datetime)
-    data = data.where(data['date'].apply(lambda x: x > pd.Timestamp(year=2022, month =5, day=26))).dropna(how='all')
-    # base feature viz // amount of new covid cases
-    base = alt.Chart(data, title=plot_title).mark_line().encode(
-        x='date:T',
-        y=y_col,
-        color='admin1:N'
-    )
-
-    return base
