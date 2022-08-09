@@ -143,7 +143,7 @@ class Test_Lineage_Mutations:
      
 
         
-def test_lineage_mutataions():
+def test_lineage_mutations():
     """
     Main test
     """

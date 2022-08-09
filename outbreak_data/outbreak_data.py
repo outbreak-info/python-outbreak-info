@@ -2,12 +2,13 @@ import pandas as pd
 import requests
 import warnings
 
-server = 'test.outbreak.info'  # or 'dev.outbreak.info'
+server = 'api.outbreak.info'  # or 'dev.outbreak.info'
 auth = 'Bearer 0ed52bbfb6c79d1fd8e9c6f267f9b6311c885a4c4c6f037d6ab7b3a40d586ad0'  # keep this private!
 nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer ES versions as well
 covid19_endpoint = 'covid19/query'
 lineage_endpoint = 'genomics/lineage-mutations'
 prevalence_endpoint = 'genomics/prevalence-by-location-all-lineages'
+
 
 
 def get_outbreak_data(endpoint, argstring, server=server, auth=auth, collect_all=False, curr_page=0):
@@ -181,55 +182,4 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
             return df.loc[df['prevalence'] >= freq]
     else:
         return df
-    
-val1 = pd.read_csv('test_one.csv')
-# val2 = pd.read_csv('test_two.csv')
-# val3 = pd.read_csv('test_three.csv')
-# val4 = pd.read_csv('test_four.csv')
-
-
-t1 = lineage_mutations('BA.2')
-
-t1.to_csv('result_one.csv')
-
-
-t1 = pd.read_csv('result_one.csv')
-
-
-
-# print(repr(t1.columns))
-# print(repr(val1.columns))
-
-# print(t1.dtypes)
-# print(val1.dtypes)
-
-# print(t1 == val1)
-# print(t1.index == val1.index)
-print(t1.equals(val1))
-
-
-
-# if val1.equals(t1):
-#     print('True')
-# else:
-#     print(val1.compare(t1))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
