@@ -5,6 +5,7 @@ import altair as alt
 def _test_single_location():
     location = 'USA_US-CA'
     plot = outbreak_tools.plot_case_increase(location)
+
     assert(type(plot) == alt.vegalite.v4.api.Chart)
 
 

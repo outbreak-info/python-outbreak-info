@@ -136,8 +136,9 @@ class Test_Lineage_Mutations:
         val3 = pd.read_csv('result_three.csv')
         assert t3.equals(val3)
     
+    
     def test_four(self): # mutation as list: AND logic
-       
+    
         t4 = pd.read_csv('test_four.csv')
 
         val4 = outbreak_data.lineage_mutations('BA.2','s:p681h', server=test_server)
