@@ -111,34 +111,43 @@ class Test_Lineage_Mutations:
     
     def test_one(self): #  Test 1: lineage as string
     
-       val1 = pd.read_csv('test_one.csv')
-       t1 = outbreak_data.lineage_mutations('BA.2', server=test_server)
-       t1.to_csv('result_one.csv')
-       t1 = pd.read_csv('result_one.csv')
+       t1 = pd.read_csv('test_one.csv')
+
+       val1 = outbreak_data.lineage_mutations('BA.2', server=test_server)
+       val1.to_csv('result_one.csv')
+       val1 = pd.read_csv('result_one.csv')
        assert t1.equals(val1)
 
     def test_two(self): # Test 2: lineages in list: OR logic
     
-        val2 = pd.read_csv('test_two.csv')
-        t2 = outbreak_data.lineage_mutations('BA.2 OR B.1.1.7', server=test_server)
-        t2.to_csv('result_two.csv')
-        t2 = pd.read_csv('result_two.csv')
+      
+        t2 = pd.read_csv('test_two.csv')
+
+        val2 = outbreak_data.lineage_mutations('BA.2 OR B.1.1.7', server=test_server)
+        val2.to_csv('result_two.csv')
+        val2 = pd.read_csv('result_two.csv')
         assert t2.equals(val2)
                 
     def test_three(self):  # lineages in list; returning muliple lineages
     
-        val3 = pd.read_csv('test_three.csv')
-        t3 = outbreak_data.lineage_mutations('BA.2, B.1.1.7', server=test_server)
-        t3.to_csv('result_three.csv')
-        t3 = pd.read_csv('result_three.csv')
+        
+        
+        t3 = pd.read_csv('test_three.csv')
+        
+        val3 = outbreak_data.lineage_mutations('BA.2, B.1.1.7', server=test_server)
+        val3.to_csv('result_three.csv')
+        val3 = pd.read_csv('result_three.csv')
+
         assert t3.equals(val3)
     
     def test_four(self): # mutation as list: AND logic
     
-        val4 = pd.read_csv('test_four.csv')
-        t4 = outbreak_data.lineage_mutations('BA.2','s:p681h', server=test_server)
-        t4.to_csv('result_four.csv')
-        t4 = pd.read_csv('result_four.csv')
+       
+        t4 = pd.read_csv('test_four.csv')
+
+        val4 = outbreak_data.lineage_mutations('BA.2','s:p681h', server=test_server)
+        val4.to_csv('result_four.csv')
+        val4 = pd.read_csv('result_four.csv')
         assert t4.equals(val4)
      
 
