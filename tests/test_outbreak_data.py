@@ -71,7 +71,6 @@ def _test_get_multiple_locations():
         assert location_names[i] == output_names[i], f'output locations {location_names} do not correspond to input' \
                                                      f' codes: {location}'
 
-
 def test_get_outbreak_data():
     """
     Main test
@@ -146,8 +145,7 @@ class Test_Lineage_Mutations:
         val4 = pd.read_csv('result_four.csv')
         assert t4.equals(val4)
      
-
-        
+       
 def test_lineage_mutations():
     """
     Main test
