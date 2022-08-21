@@ -1,6 +1,8 @@
 import pandas as pd
+from pandas.testing import assert_frame_equal
 import pytest
 import requests
+import os
 
 from outbreak_data import outbreak_data
 test_server = 'test.outbreak.info'
@@ -64,12 +66,12 @@ def _test_get_multiple_locations():
     df = pd.DataFrame(out['hits'])
     # test server so far only supports one location
     assert len(df.admin1.unique()) == len(location[:1]), f'get_outbreak_data returning incorrect number of locations, ' \
-                                                     f'expected {len(location[1:])}'
+                                                      f'expected {len(location[1:])}'
     location_names = sorted(['South Australia'])
     output_names = sorted(df.admin1.unique())
     for i in range(len(location_names)):
         assert location_names[i] == output_names[i], f'output locations {location_names} do not correspond to input' \
-                                                     f' codes: {location}'
+                                                      f' codes: {location}'
 
 
 def test_get_outbreak_data():
@@ -90,12 +92,12 @@ def _test_cases_multiple_location():
     locations = ['USA_US-CA', 'USA_US-NY', 'USA_US-TX']
     out = outbreak_data.cases_by_location(locations)
     assert len(out.admin1.unique()) == len(locations), f'cases_by_location returning an incorrect number of locations,'\
-                                                       f' expected {len(locations)}'
+                                                        f' expected {len(locations)}'
     location_names = sorted(['California', 'New York', 'Texas'])
     output_names = sorted(out.admin1.unique())
     for i in range(len(location_names)):
         assert location_names[i] == output_names[i], f'output locations {location_names} do not correspond to input' \
-                                                     f' codes: {locations}'
+                                                      f' codes: {locations}'
 
 
 def test_cases_by_location():
@@ -108,43 +110,47 @@ def test_cases_by_location():
 
 class Test_Lineage_Mutations:
     
-    
     def test_one(self): #  Test 1: lineage as string
     
-       t1 = pd.read_csv('test_one.csv')
-
-       val1 = outbreak_data.lineage_mutations('BA.2', server=test_server)
-       val1.to_csv('result_one.csv')
-       val1 = pd.read_csv('result_one.csv')
-       assert t1.equals(val1)
+        t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_one.csv'), index_col=0)
+        val1 =  outbreak_data.lineage_mutations('BA.2', server=test_server)
+        t1 = t1.astype(str)
+        val1 = val1.astype(str)
+        t1["prevalence"]=t1["prevalence"].values.astype('float')
+        val1["prevalence"]=val1["prevalence"].values.astype('float')
+        assert assert_frame_equal(t1, val1) is None
 
     def test_two(self): # Test 2: lineages in list: OR logic
       
-        t2 = pd.read_csv('test_two.csv')
-
+        t2 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_two.csv'), index_col=0)
         val2 = outbreak_data.lineage_mutations('BA.2 OR B.1.1.7', server=test_server)
-        val2.to_csv('result_two.csv')
-        val2 = pd.read_csv('result_two.csv')
-        assert t2.equals(val2)
+        
+        t2 = t2.astype(str)
+        val2 = val2.astype(str)
+        t2["prevalence"]=t2["prevalence"].values.astype('float')
+        val2["prevalence"]=val2["prevalence"].values.astype('float')
+        assert assert_frame_equal(t2, val2) is None
                 
     def test_three(self):  # lineages in list; returning muliple lineages
     
-        t3 = pd.read_csv('test_three.csv')
-        
+        t3 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_three.csv'), index_col=0)
         val3 = outbreak_data.lineage_mutations('BA.2, B.1.1.7', server=test_server)
-        val3.to_csv('result_three.csv')
-        val3 = pd.read_csv('result_three.csv')
-        assert t3.equals(val3)
+        t3 = t3.astype(str)
+        val3 = val3.astype(str)
+        t3["prevalence"]=t3["prevalence"].values.astype('float')
+        val3["prevalence"]=val3["prevalence"].values.astype('float')
+        assert assert_frame_equal(t3, val3) is None
     
     
     def test_four(self): # mutation as list: AND logic
     
-        t4 = pd.read_csv('test_four.csv')
-
+        t4 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_four.csv'), index_col=0)
         val4 = outbreak_data.lineage_mutations('BA.2','s:p681h', server=test_server)
-        val4.to_csv('result_four.csv')
-        val4 = pd.read_csv('result_four.csv')
-        assert t4.equals(val4)
+        t4 = t4.astype(str)
+        val4 = val4.astype(str)
+        t4["prevalence"]=t4["prevalence"].values.astype('float')
+        val4["prevalence"]=val4["prevalence"].values.astype('float')
+        assert assert_frame_equal(t4, val4) is None
      
        
 def test_lineage_mutations():
@@ -155,3 +161,6 @@ def test_lineage_mutations():
     Test_Lineage_Mutations().test_two()
     Test_Lineage_Mutations().test_three()
     Test_Lineage_Mutations().test_four()
+    
+    
+    
