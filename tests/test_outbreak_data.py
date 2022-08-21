@@ -168,7 +168,6 @@ class Test_Prevalence_By_Location:
     def test_one(self): #  Test 1: lineage as string
         t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'prev1.csv'), index_col=0)
         val1 = outbreak_data.prevalence_by_location('USA_US-CO', server=test_server)
-        
         t1 = t1.astype(str)
         val1 = val1.astype(str)
         t1["prevalence"]=t1["prevalence"].values.astype('float')
