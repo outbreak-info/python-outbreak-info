@@ -165,7 +165,7 @@ def test_lineage_mutations():
     
 class Test_Prevalence_By_Location:
     
-    def test_one(self): #  Test 1: lineage as string
+    def test_one(self): # Test 1: Pulls up every lineage on file in USA_US-CO
         t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'prev1.csv'), index_col=0)
         val1 = outbreak_data.prevalence_by_location('USA_US-CO', server=test_server)
         t1 = t1.astype(str)
@@ -176,7 +176,7 @@ class Test_Prevalence_By_Location:
         val1["prevalence_rolling"]=val1["prevalence_rolling"].values.astype('float')
         assert assert_frame_equal(t1, val1) is None
 
-    def test_two(self): # Test 2: lineages in list: OR logic
+    def test_two(self): # Test 2: Pulls up every lineage starting with b.1 on file in USA_US-NY
       
         t2 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'prev2.csv'), index_col=0)
         val2 = outbreak_data.prevalence_by_location('USA_US-NY', startswith='b.1', server=test_server)
