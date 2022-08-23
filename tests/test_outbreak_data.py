@@ -196,4 +196,3 @@ def test_prevalence():
     """
     Test_Prevalence_By_Location().test_one()
     Test_Prevalence_By_Location().test_two()
-
