@@ -118,7 +118,7 @@ class Test_Lineage_Mutations:
         val1 = val1.astype(str)
         t1["prevalence"]=t1["prevalence"].values.astype('float')
         val1["prevalence"]=val1["prevalence"].values.astype('float')
-        assert assert_frame_equal(t1, val1) is None
+        assert_frame_equal(t1, val1)
 
     def test_two(self): # Test 2: lineages in list: OR logic
       
@@ -129,7 +129,7 @@ class Test_Lineage_Mutations:
         val2 = val2.astype(str)
         t2["prevalence"]=t2["prevalence"].values.astype('float')
         val2["prevalence"]=val2["prevalence"].values.astype('float')
-        assert assert_frame_equal(t2, val2) is None
+        assert_frame_equal(t2, val2)
                 
     def test_three(self):  # lineages in list; returning muliple lineages
     
@@ -139,7 +139,7 @@ class Test_Lineage_Mutations:
         val3 = val3.astype(str)
         t3["prevalence"]=t3["prevalence"].values.astype('float')
         val3["prevalence"]=val3["prevalence"].values.astype('float')
-        assert assert_frame_equal(t3, val3) is None
+        assert_frame_equal(t3, val3)
     
     
     def test_four(self): # mutation as list: AND logic
@@ -150,7 +150,7 @@ class Test_Lineage_Mutations:
         val4 = val4.astype(str)
         t4["prevalence"]=t4["prevalence"].values.astype('float')
         val4["prevalence"]=val4["prevalence"].values.astype('float')
-        assert assert_frame_equal(t4, val4) is None
+        assert_frame_equal(t4, val4)
      
        
 def test_lineage_mutations():
@@ -174,7 +174,7 @@ class Test_Prevalence_By_Location:
         val1["prevalence"]=val1["prevalence"].values.astype('float')
         t1["prevalence_rolling"]=t1["prevalence_rolling"].values.astype('float')
         val1["prevalence_rolling"]=val1["prevalence_rolling"].values.astype('float')
-        assert assert_frame_equal(t1, val1) is None
+        assert_frame_equal(t1, val1)
 
     def test_two(self): # Test 2: Pulls up every lineage starting with b.1 on file in USA_US-NY
       
@@ -187,7 +187,7 @@ class Test_Prevalence_By_Location:
         val2["prevalence"]=val2["prevalence"].values.astype('float')
         t2["prevalence_rolling"]=t2["prevalence_rolling"].values.astype('float')
         val2["prevalence_rolling"]=val2["prevalence_rolling"].values.astype('float')
-        assert assert_frame_equal(t2, val2) is None
+        assert_frame_equal(t2, val2)
         
 
 def test_prevalence():
