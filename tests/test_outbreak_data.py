@@ -118,7 +118,7 @@ class Test_Lineage_Mutations:
         val1 = val1.astype(str)
         t1["prevalence"]=t1["prevalence"].values.astype('float')
         val1["prevalence"]=val1["prevalence"].values.astype('float')
-        assert assert_frame_equal(t1, val1) is None
+        assert_frame_equal(t1, val1)
 
     def test_two(self): # Test 2: lineages in list: OR logic
       
@@ -129,7 +129,7 @@ class Test_Lineage_Mutations:
         val2 = val2.astype(str)
         t2["prevalence"]=t2["prevalence"].values.astype('float')
         val2["prevalence"]=val2["prevalence"].values.astype('float')
-        assert assert_frame_equal(t2, val2) is None
+        assert_frame_equal(t2, val2)
                 
     def test_three(self):  # lineages in list; returning muliple lineages
     
@@ -139,7 +139,7 @@ class Test_Lineage_Mutations:
         val3 = val3.astype(str)
         t3["prevalence"]=t3["prevalence"].values.astype('float')
         val3["prevalence"]=val3["prevalence"].values.astype('float')
-        assert assert_frame_equal(t3, val3) is None
+        assert_frame_equal(t3, val3)
     
     
     def test_four(self): # mutation as list: AND logic
@@ -150,7 +150,7 @@ class Test_Lineage_Mutations:
         val4 = val4.astype(str)
         t4["prevalence"]=t4["prevalence"].values.astype('float')
         val4["prevalence"]=val4["prevalence"].values.astype('float')
-        assert assert_frame_equal(t4, val4) is None
+        assert_frame_equal(t4, val4)
      
        
 def test_lineage_mutations():
@@ -163,4 +163,36 @@ def test_lineage_mutations():
     Test_Lineage_Mutations().test_four()
     
     
+class Test_Prevalence_By_Location:
     
+    def test_one(self): # Test 1: Pulls up every lineage on file in USA_US-CO
+        t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'prev1.csv'), index_col=0)
+        val1 = outbreak_data.prevalence_by_location('USA_US-CO', server=test_server)
+        t1 = t1.astype(str)
+        val1 = val1.astype(str)
+        t1["prevalence"]=t1["prevalence"].values.astype('float')
+        val1["prevalence"]=val1["prevalence"].values.astype('float')
+        t1["prevalence_rolling"]=t1["prevalence_rolling"].values.astype('float')
+        val1["prevalence_rolling"]=val1["prevalence_rolling"].values.astype('float')
+        assert_frame_equal(t1, val1)
+
+    def test_two(self): # Test 2: Pulls up every lineage starting with b.1 on file in USA_US-NY
+      
+        t2 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'prev2.csv'), index_col=0)
+        val2 = outbreak_data.prevalence_by_location('USA_US-NY', startswith='b.1', server=test_server)
+        
+        t2 = t2.astype(str)
+        val2 = val2.astype(str)
+        t2["prevalence"]=t2["prevalence"].values.astype('float')
+        val2["prevalence"]=val2["prevalence"].values.astype('float')
+        t2["prevalence_rolling"]=t2["prevalence_rolling"].values.astype('float')
+        val2["prevalence_rolling"]=val2["prevalence_rolling"].values.astype('float')
+        assert_frame_equal(t2, val2)
+        
+
+def test_prevalence():
+    """
+    Main test
+    """
+    Test_Prevalence_By_Location().test_one()
+    Test_Prevalence_By_Location().test_two()
