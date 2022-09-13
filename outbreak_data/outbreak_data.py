@@ -181,4 +181,61 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
             return df.loc[df['prevalence'] >= freq]
     else:
         return df
+    
+def global_prevalence(pango_lin, mutations=None, cumulative=None):
+   
+    # Takes multiple mutations but only one pango_lin
+    
+    if isinstance(mutations, type(list)) or isinstance(mutations,type(None)):
+        pass
+    elif isinstance(mutations, str):
+         mutations = mutations.replace(" ", "")
+         mutations = list(mutations.split(","))   # deals with string format for mutations
+    if mutations != None and cumulative == True:
+        mutations = '' + ','.join(mutations)
+        query = '' + pango_lin + '&' + f'mutations={mutations}' + '&' + 'cumulative=true'
+    elif mutations != None:
+        mutations = '' + ','.join(mutations)
+        query =  '' + pango_lin + '&' + f'mutations={mutations}'
+    elif cumulative == True:
+        query = '' + pango_lin + '&' + 'cumulative=true'
+    else:
+        query = '' + pango_lin
+      
+    raw_data = get_outbreak_data('genomics/global-prevalence', f'pangolin_lineage={query}')
+   
+    if cumulative:
+        data = {'Values' : raw_data['results']}
+        df = pd.DataFrame(data) 
+    else:
+        df = pd.DataFrame(raw_data['results'])
+    return df
+
+
+def sequence_counts(loc_id=None, cumulative=None, sub_admin=None):
+    
+    if loc_id and cumulative and sub_admin:
+        query = '' + f'location_id={loc_id}&cumulative=true&subadmin=true'
+    elif loc_id and cumulative:
+        query = '' + f'location_id={loc_id}&cumulative=true'
+    elif cumulative:
+        query = '' + 'cumulative=true'
+    elif loc_id:
+        query = '' + f'location_id={loc_id}'
+    else:
+        query = ''
+            
+    raw_data = get_outbreak_data('genomics/sequence-count', f'{query}')
+    
+    if cumulative and sub_admin is None:
+        data = {'Values' : raw_data['results']}
+        df = pd.DataFrame(data) 
+    else:
+        df = pd.DataFrame(raw_data['results'])
+    return df
+
+
+
+
+
 
