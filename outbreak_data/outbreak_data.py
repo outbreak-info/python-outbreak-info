@@ -6,8 +6,6 @@ server = 'api.outbreak.info'  # or 'dev.outbreak.info'
 auth = 'Bearer 0ed52bbfb6c79d1fd8e9c6f267f9b6311c885a4c4c6f037d6ab7b3a40d586ad0'  # keep this private!
 nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer ES versions as well
 covid19_endpoint = 'covid19/query'
-lineage_endpoint = 'genomics/lineage-mutations'
-prevalence_endpoint = 'genomics/prevalence-by-location-all-lineages'
 
 
 def get_outbreak_data(endpoint, argstring, server=server, auth=auth, collect_all=False, curr_page=0):
@@ -212,16 +210,16 @@ def global_prevalence(pango_lin, mutations=None, cumulative=None):
     return df
 
 
-def sequence_counts(loc_id=None, cumulative=None, sub_admin=None):
+def sequence_counts(location=None, cumulative=None, sub_admin=None, server=):
     
-    if loc_id and cumulative and sub_admin:
-        query = '' + f'location_id={loc_id}&cumulative=true&subadmin=true'
-    elif loc_id and cumulative:
-        query = '' + f'location_id={loc_id}&cumulative=true'
+    if location and cumulative and sub_admin:
+        query = '' + f'location_id={location}&cumulative=true&subadmin=true'
+    elif location and cumulative:
+        query = '' + f'location_id={location}&cumulative=true'
     elif cumulative:
         query = '' + 'cumulative=true'
-    elif loc_id:
-        query = '' + f'location_id={loc_id}'
+    elif location:
+        query = '' + f'location_id={location}'
     else:
         query = ''
             
@@ -234,8 +232,33 @@ def sequence_counts(loc_id=None, cumulative=None, sub_admin=None):
         df = pd.DataFrame(raw_data['results'])
     return df
 
-
-
-
-
-
+def mutation_across_lineage(mutation, location=None, pango_lin=None, freq=None):  #Under what conditions would it be usefule to have mutations=None?
+    
+    if isinstance(mutation, type(list)):
+        pass
+    elif isinstance(mutation, str):
+         mutation = mutation.replace(" ", "")
+         mutation = list(mutation.split(","))
+    
+    mutations = '' + ' AND '.join(mutation) + ''   
+         
+    if location and pango_lin:
+        query = '' + f'mutations={mutations}&location_id={location}&pangolin_lineage={pango_lin}'
+    elif location:
+        query = '' + f'mutations={mutations}&location_id={location}'
+    else:
+        query = '' + f'mutations={mutations}'
+        
+    raw_data = get_outbreak_data('genomics/mutations-by-lineage', f'{query}')
+    
+    for i in mutation: # Returns multiple lineages using ","
+        if i == mutation[0]:
+            df = pd.DataFrame(raw_data['results'][i])
+        else:
+            newdf = pd.DataFrame(raw_data['results'][i]) # append each df
+            df = pd.concat([df, newdf], sort=False)  
+    
+    if isinstance(freq, float) and freq > 0 and freq < 1:
+        return df.loc[df['prevalence'] >= freq]
+    return df
+    
