@@ -6,6 +6,7 @@ server = 'api.outbreak.info'  # or 'dev.outbreak.info'
 auth = 'Bearer 0ed52bbfb6c79d1fd8e9c6f267f9b6311c885a4c4c6f037d6ab7b3a40d586ad0'  # keep this private!
 nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer ES versions as well
 covid19_endpoint = 'covid19/query'
+test_server = 'test.outbreak.info'
 
 
 def get_outbreak_data(endpoint, argstring, server=server, auth=auth, collect_all=False, curr_page=0):
@@ -180,7 +181,7 @@ def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=au
     else:
         return df
     
-def global_prevalence(pango_lin, mutations=None, cumulative=None):
+def global_prevalence(pango_lin, mutations=None, cumulative=None, server=test_server):
    
     # Takes multiple mutations but only one pango_lin
     
@@ -210,7 +211,7 @@ def global_prevalence(pango_lin, mutations=None, cumulative=None):
     return df
 
 
-def sequence_counts(location=None, cumulative=None, sub_admin=None, server=):
+def sequence_counts(location=None, cumulative=None, sub_admin=None, server=test_server):
     
     if location and cumulative and sub_admin:
         query = '' + f'location_id={location}&cumulative=true&subadmin=true'
@@ -232,7 +233,7 @@ def sequence_counts(location=None, cumulative=None, sub_admin=None, server=):
         df = pd.DataFrame(raw_data['results'])
     return df
 
-def mutation_across_lineage(mutation, location=None, pango_lin=None, freq=None):  #Under what conditions would it be usefule to have mutations=None?
+def mutation_across_lineage(mutation, location=None, pango_lin=None, freq=None, server=test_server):  #Under what conditions would it be usefule to have mutations=None?
     
     if isinstance(mutation, type(list)):
         pass
@@ -261,4 +262,31 @@ def mutation_across_lineage(mutation, location=None, pango_lin=None, freq=None):
     if isinstance(freq, float) and freq > 0 and freq < 1:
         return df.loc[df['prevalence'] >= freq]
     return df
-    
+
+
+import os
+from pandas.testing import assert_frame_equal
+os.chdir('/Users/sarahrandall/Python-outbreak-info/tests')
+# alpha = sequence_counts()
+# psi = sequence_counts('USA_US-CA')
+# beta  = sequence_counts('USA', cumulative=True)
+# gamma = sequence_counts('USA', True, True)
+# zeta = global_prevalence('ba.2', 'orf1a:t842i')
+# eta = mutation_across_lineage('orf1a:g1307s', 'USA')
+
+# phi
+
+# alpha.to_csv('seq_count1.csv')
+# psi.to_csv('seq_count2.csv')
+# beta.to_csv('seq_count3.csv')
+# gamma.to_csv('seq_count4.csv')
+# zeta.to_csv('global_prev_test.csv')
+# eta.to_csv('mut_across_lin_test.csv')
+
+
+
+
+
+
+
+
