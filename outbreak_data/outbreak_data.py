@@ -262,31 +262,3 @@ def mutation_across_lineage(mutation, location=None, pango_lin=None, freq=None, 
     if isinstance(freq, float) and freq > 0 and freq < 1:
         return df.loc[df['prevalence'] >= freq]
     return df
-
-
-import os
-from pandas.testing import assert_frame_equal
-os.chdir('/Users/sarahrandall/Python-outbreak-info/tests')
-# alpha = sequence_counts()
-# psi = sequence_counts('USA_US-CA')
-# beta  = sequence_counts('USA', cumulative=True)
-# gamma = sequence_counts('USA', True, True)
-# zeta = global_prevalence('ba.2', 'orf1a:t842i')
-# eta = mutation_across_lineage('orf1a:g1307s', 'USA')
-
-# phi
-
-# alpha.to_csv('seq_count1.csv')
-# psi.to_csv('seq_count2.csv')
-# beta.to_csv('seq_count3.csv')
-# gamma.to_csv('seq_count4.csv')
-# zeta.to_csv('global_prev_test.csv')
-# eta.to_csv('mut_across_lin_test.csv')
-
-
-
-
-
-
-
-
