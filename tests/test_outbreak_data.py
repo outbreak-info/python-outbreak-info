@@ -180,7 +180,6 @@ class Test_Prevalence_By_Location:
       
         t2 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'prev2.csv'), index_col=0)
         val2 = outbreak_data.prevalence_by_location('USA_US-NY', startswith='b.1', server=test_server)
-        
         t2 = t2.astype(str)
         val2 = val2.astype(str)
         t2["prevalence"]=t2["prevalence"].values.astype('float')
@@ -196,3 +195,76 @@ def test_prevalence():
     """
     Test_Prevalence_By_Location().test_one()
     Test_Prevalence_By_Location().test_two()
+    
+    
+
+class Test_Sequence_Counts:
+    
+    def test_one(self):
+        t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'seq_count1.csv'), index_col=0)
+        val1 = outbreak_data.sequence_counts(server=test_server)
+        t1 = t1.astype(str)
+        val1 = val1.astype(str)
+        assert_frame_equal(t1, val1)
+        
+    def test_two(self):
+        t2 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'seq_count2.csv'), index_col=0)
+        val2 = outbreak_data.sequence_counts('USA_US-CA', server=test_server)
+        t2 = t2.astype(str)
+        val2 = val2.astype(str)
+        assert_frame_equal(t2, val2)
+    
+    def test_three(self):
+        t3 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'seq_count3.csv'), index_col=0)
+        val3 = outbreak_data.sequence_counts('USA', cumulative=True, server=test_server)
+        t3 = t3.astype(str)
+        val3 = val3.astype(str)
+        assert_frame_equal(t3, val3)
+        
+    def test_four(self):
+        t4 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'seq_count4.csv'), index_col=0)
+        val4 = outbreak_data.sequence_counts('USA', True, True, server=test_server)
+        t4 = t4.astype(str)
+        val4 = val4.astype(str)
+        assert_frame_equal(t4, val4)
+
+def test_seq_counts():
+    """
+    Main test
+    """
+    Test_Sequence_Counts().test_one()
+    Test_Sequence_Counts().test_two()
+    Test_Sequence_Counts().test_three()
+    Test_Sequence_Counts().test_four()
+    
+    
+def _test_global_prevalence():
+    t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'global_prev_test.csv'), index_col=0)
+    val1 = outbreak_data.global_prevalence('ba.2', 'orf1a:t842i', server=test_server)
+    t1 = t1.astype(str)
+    val1 = val1.astype(str)
+    t1[["total_count_rolling", "lineage_count_rolling", "proportion", 'proportion_ci_lower', 'proportion_ci_upper' ]]=t1[["total_count_rolling", "lineage_count_rolling","proportion", 'proportion_ci_lower', 'proportion_ci_upper' ]].values.astype('float')
+    val1[["total_count_rolling", "lineage_count_rolling", "proportion", 'proportion_ci_lower', 'proportion_ci_upper' ]]=val1[["total_count_rolling", "lineage_count_rolling", "proportion", 'proportion_ci_lower', 'proportion_ci_upper' ]].values.astype('float')
+    assert_frame_equal(t1, val1)
+    
+def test_global_prevalence():
+    """
+    Main test
+    """
+    _test_global_prevalence()
+    
+def _mutation_across_lineage():
+    t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'mut_across_lin_test.csv'), index_col=0)
+    val1 = outbreak_data.mutation_across_lineage('orf1a:g1307s', 'USA', server=test_server)
+    t1 = t1.astype(str)
+    val1 = val1.astype(str)
+    t1[[ "proportion", 'proportion_ci_lower', 'proportion_ci_upper' ]]=t1[["proportion", 'proportion_ci_lower', 'proportion_ci_upper' ]].values.astype('float')
+    val1[["proportion", 'proportion_ci_lower', 'proportion_ci_upper' ]]=val1[["proportion", 'proportion_ci_lower', 'proportion_ci_upper' ]].values.astype('float')
+    assert_frame_equal(t1, val1)
+        
+def mutation_across_lineage():
+    """
+    Main test
+    """
+    _mutation_across_lineage()
+    
