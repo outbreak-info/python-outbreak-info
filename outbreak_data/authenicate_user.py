@@ -24,7 +24,7 @@ def get_authentication():
     #open hidden file 
        with open(auth_token_filename, "r") as A:
           read_token = A.read()
-
+          
     #get token
     token = read_token
 
@@ -48,8 +48,6 @@ def set_authentication(token):
       A.write(token)
    
     #handle the error in which it doesn't write properly
-    
-    #os.path.join(os.path.dirname(__file__)
     hidden_file = os.path.join(curr_dir, auth_token_filename)
     if not os.path.isfile(hidden_file):  #check to see if file was saved in directory
         assert (FileNotFoundError)
@@ -80,7 +78,7 @@ def authenticate_user():
     auth_url = data['authn_url']
 
     #ask the user to open the browser and authenticate the url
-    print("Please open this url and authenticate with your GISAID credentials: ", auth_url)
+    print("Please open this url in a web browswer and authenticate with your GISAID credentials: ", auth_url)
 
     #set authentication token
     set_authentication(token)
@@ -90,6 +88,17 @@ def authenticate_user():
     while(True):
         print(f"Waiting for authorization response... [Press Ctrl-C to abort]")
         time.sleep(5)
+        
+        # response = code authenticates something
+        
+        
+    # if (response.status_code == 200):
+    #     print("\nAuthenticated successfully!\n")
+    #     # printTerms()
+    #     # authToken = response$headers$`x-auth-token`
+    #     if(authToken == None):
+    #       setAuthToken(authToken)
+     
         
     
     
