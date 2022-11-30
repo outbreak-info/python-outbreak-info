@@ -7,7 +7,6 @@ TODO:
 """
 
 import os 
-import sys
 import requests
 
 
@@ -24,12 +23,12 @@ def get_authentication():
         
     #open hidden file 
        with open(auth_token_filename, "r") as A:
+          global read_token
           read_token = A.read()
           
     #get token
-    global read_token
-
-    return(read_token)
+    if(read_token):
+       return(read_token)
 
 
 def set_authentication(token):
@@ -58,7 +57,7 @@ def set_authentication(token):
         
 def print_terms():
     print("""
-    TERMS OF USE for R Package and
+    TERMS OF USE for Python Package and
     Reminder of GISAID's Database Access Agreement
     Your ability to access and use Data in GISAID, including your access and
     use of same via R Package, is subject to the terms and conditions of
@@ -114,43 +113,38 @@ def authenticate_user():
 
     #set authentication token
     set_authentication(token)
-    
-    print(token)
-    print(get_authentication())
 
     #wait until the authorization goes through using a while loop
     import time
+    start_time = time.time()
+    time.sleep(5)
+   
     while(True):
         print(f"Waiting for authorization response... [Press Ctrl-C to abort]")
-        time.sleep(5)
         
         #get request the OUTBREAK_INFO_AUTH url using the token as header like this: 
-        """
-        headers = {'foobar': 'raboof'}
-        r = requests.get('http://himom.com', headers=headers)
-        THIS SHOULD LOOK FAMILIAR, this style of using headers is how we originally passed the OAuth token when it was
-        hard coded into outbreak_data.py
-        """
-        r ="" #placeholder line
+        headers = {'Authorization': str(read_token)}
+        r = requests.get(OUTBREAK_INFO_AUTH, headers=headers)
+       
         #check if the response came through properly
         if (r.status_code == 200):
-        #   print("Authenticated successfully!")
-        #print the terms of service if it did
-        #   print_terms()
+          print("Authenticated successfully!")
+          print_terms()
+          
         #parse the header back from the response
-        #   authToken = response$headers$`x-auth-token`
-        #   if(authToken == None):
-            #if it hasn't been proerply set, set the token
-                #set_authentication(authToken)
-            #if all of this code gets executed, break
-            break
-        #address what happend is it fails
+          authToken = r.headers['X-Auth-Token']
+          if (authToken == None):
+              set_authentication(authToken)
+          break  #Should a specific exception + error message be given here?
+      
         else:
             print("Authenication failed, trying again in 5 seconds...")
         time.sleep(5)
 
-        #if the time is over 60 seconds
-            #print("Aborting, please try again.")
+        if (time.time() - start_time > 60):
+            print("Aborting, please try again.")
+            break
+       
 
 
     
