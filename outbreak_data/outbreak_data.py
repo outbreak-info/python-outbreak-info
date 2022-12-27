@@ -285,7 +285,6 @@ def mutations_by_lineage(mutation, location=None, pango_lin=None, freq=None, ser
     if isinstance(freq, float) and freq > 0 and freq < 1:
         return df.loc[df['prevalence'] >= freq]
     return df
-
     
 def daily_prev_by_location(pango_lin, location='USA', mutations=None, cumulative=None):
     """Returns the daily prevalence of a PANGO lineage by location.
