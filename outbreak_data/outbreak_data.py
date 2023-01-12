@@ -19,10 +19,14 @@ def check_user_authentication():
     try:
         token = authenticate_user.get_authentication()
     except:
-        #TODO
+        print("Issue retrieving token, please reauthenticate.")
+        sys.exit(1)
+    if token == "":
+        print("Issue retrieving token, please reauthenticate.")
+        sys.exit(1)
     return(token)
 
-def get_outbreak_data(endpoint, argstring, server=server, auth=auth, collect_all=False, curr_page=0):
+def get_outbreak_data(endpoint, argstring, server=server, auth=None, collect_all=False, curr_page=0):
     """
     Receives raw data using outbreak API.
     :param endpoint: directory in server the data is stored
@@ -37,10 +41,13 @@ def get_outbreak_data(endpoint, argstring, server=server, auth=auth, collect_all
     if isinstance(server, type(None)):
         server = server
     
-    #check the authentication
-    check_user_authentication()
+    if auth is None:
+        #check the authentication
+        token = check_user_authentication()
+    else:
+        token = auth
 
-    auth = {'Authorization': str(auth)}
+    auth = {'Authorization': str(token)}
     # initial request // used to collect data during recursion or as output of single API call
     in_req = requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth)
     if in_req.headers.get('content-type') != 'application/json; charset=UTF-8':
@@ -86,7 +93,7 @@ def get_outbreak_data(endpoint, argstring, server=server, auth=auth, collect_all
         return data_json
 
 
-def cases_by_location(location, server=server, auth=auth, pull_smoothed=0):
+def cases_by_location(location, server=server, auth=None, pull_smoothed=0):
     """
     Loads data from a location if input is a string, or from multiple locations
     if location is a list of string locations.
@@ -127,7 +134,7 @@ def cases_by_location(location, server=server, auth=auth, pull_smoothed=0):
             raise Exception('{} is not a valid location ID'.format(i))
 
 
-def prevalence_by_location(location, startswith=None, server=server, auth=auth):
+def prevalence_by_location(location, startswith=None, server=server, auth=None):
 
     """Loads prevalence data from a location
             Arguments:
@@ -145,7 +152,7 @@ def prevalence_by_location(location, startswith=None, server=server, auth=auth):
     return df
 
 
-def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=auth):
+def lineage_mutations(pango_lin, mutation=None, freq=0.8, server=server, auth=None):
     """Retrieves data from all mutations in a specified lineage above a frequency threshold.
        - Mutiple queries for lineages and mutations can be separated by ","
        - Use 'OR' in a string to return overlapping mutations in multiple lineages: 'BA.2 OR BA.1'
