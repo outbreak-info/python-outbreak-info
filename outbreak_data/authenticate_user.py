@@ -5,7 +5,7 @@ Script to generate authentication token for Python package.
 import os
 import time
 import requests
-
+import webbrowser
 
 OUTBREAK_INFO_AUTH = "https://api.outbreak.info/genomics/get-auth-token"
 AUTH_TOKEN_FILENAME = os.path.join(os.path.dirname(__file__), "../.Python_outbreak_info_token.txt")
@@ -15,16 +15,19 @@ def get_authentication():
     Get the authentication token from a 'hidden' file.
     """
     #check for hidden file
-    if (AUTH_TOKEN_FILENAME):
-        
-    #open hidden file 
-       with open(AUTH_TOKEN_FILENAME, "r") as A:
+    if os.path.isfile(AUTH_TOKEN_FILENAME): 
+        #open hidden file 
+        with open(AUTH_TOKEN_FILENAME, "r") as A:
           read_token = A.read()
+        if len(read_token) != 0:
+           return(read_token)
+        else:
+            print("No token found, please reauthenticate user.")
+            sys.exit(1)
 
-    #get token
-    if(read_token):
-       return(read_token)
-
+    else:
+        print("No token generated, please authenticate user.")
+        sys.exit(1)
 
 def set_authentication(token):
     """
@@ -97,6 +100,7 @@ def authenticate_new_user():
 
     #ask the user to open the browser and authenticate the url
     print("Please open this url in a web browswer and authenticate with your GISAID credentials: ", auth_url)
+    webbrowser.open(auth_url, new=0, autoraise=True)
 
     #set authentication token
     set_authentication(token)
@@ -110,7 +114,7 @@ def authenticate_new_user():
         #get request the OUTBREAK_INFO_AUTH url using the token as header like this: 
         headers = {'Authorization': str(get_authentication())}
         r = requests.get(OUTBREAK_INFO_AUTH, headers=headers)
-        print(r.content)       
+
         #check if the response came through properly
         if (r.status_code == 200):
           print("Authenticated successfully!")
