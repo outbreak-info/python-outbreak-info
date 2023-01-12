@@ -1,22 +1,25 @@
-import pandas as pd
+import sys
 import requests
 import warnings
+import pandas as pd
 
-from . import authenticate_user
+from outbreak_data import authenticate_user
 
 server = 'api.outbreak.info'  # or 'dev.outbreak.info'
-auth = 'Bearer 0ed52bbfb6c79d1fd8e9c6f267f9b6311c885a4c4c6f037d6ab7b3a40d586ad0'  # keep this private!
+#auth = 'Bearer 0ed52bbfb6c79d1fd8e9c6f267f9b6311c885a4c4c6f037d6ab7b3a40d586ad0'  # keep this private!
 nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer ES versions as well
 covid19_endpoint = 'covid19/query'
 test_server = 'test.outbreak.info'
 
-
 def check_user_authentication():
     """
+    Get the authorization token.
     :return token: the users authorization token
     """
-    token = authenticate_user.get_authentication()
-
+    try:
+        token = authenticate_user.get_authentication()
+    except:
+        #TODO
     return(token)
 
 def get_outbreak_data(endpoint, argstring, server=server, auth=auth, collect_all=False, curr_page=0):

@@ -1,31 +1,26 @@
 """
 Script to generate authentication token for Python package.
-
-TODO:
-    Document everything correctyl with docstring.
-    Make sure edge cases are handled properly (ie. what happens if a token isn't returned)
 """
 
-import os 
+import os
+import time
 import requests
 
 
-
 OUTBREAK_INFO_AUTH = "https://api.outbreak.info/genomics/get-auth-token"
-
+AUTH_TOKEN_FILENAME = os.path.join(os.path.dirname(__file__), "../.Python_outbreak_info_token.txt")
 
 def get_authentication():
     """
     Get the authentication token from a 'hidden' file.
     """
     #check for hidden file
-    if (auth_token_filename):
+    if (AUTH_TOKEN_FILENAME):
         
     #open hidden file 
-       with open(auth_token_filename, "r") as A:
-          global read_token
+       with open(AUTH_TOKEN_FILENAME, "r") as A:
           read_token = A.read()
-          
+
     #get token
     if(read_token):
        return(read_token)
@@ -38,22 +33,14 @@ def set_authentication(token):
     #get the working directory
     curr_dir = os.getcwd() #should try to generalize working directory using paths
     
-    #write the authentication token to a file
-    global auth_token_filename 
-    auth_token_filename = ".Python_outbreak_info_token.txt"
-   
-
     #open file in write mode
-    with open(auth_token_filename, "w") as A:
+    with open(AUTH_TOKEN_FILENAME, "w") as A:
       A.write(token)
    
     #handle the error in which it doesn't write properly
-    hidden_file = os.path.join(curr_dir, auth_token_filename)
+    hidden_file = os.path.join(curr_dir, AUTH_TOKEN_FILENAME)
     if not os.path.isfile(hidden_file):  #check to see if file was saved in directory
-        assert (FileNotFoundError)
-        
-    get_authentication()
-        
+        assert (FileNotFoundError)        
         
 def print_terms():
     print("""
@@ -86,7 +73,7 @@ def print_terms():
     WE DO NOT SUPPORT THIRD PARTY APPLICATIONS. THIS PACKAGE IS MEANT FOR RESEARCH AND VISUALIZATION PURPOSES ONLY. 
     If you want to build third party applications, please contact GISAID via https://www.gisaid.org/help/contact/.""")
 
-def authenticate_user():
+def authenticate_new_user():
     """
     Authenticate a user for genomics API access.
     """
@@ -115,17 +102,15 @@ def authenticate_user():
     set_authentication(token)
 
     #wait until the authorization goes through using a while loop
-    import time
     start_time = time.time()
-    time.sleep(5)
-   
+    time.sleep(5) 
     while(True):
         print(f"Waiting for authorization response... [Press Ctrl-C to abort]")
         
         #get request the OUTBREAK_INFO_AUTH url using the token as header like this: 
-        headers = {'Authorization': str(read_token)}
+        headers = {'Authorization': str(get_authentication())}
         r = requests.get(OUTBREAK_INFO_AUTH, headers=headers)
-       
+        print(r.content)       
         #check if the response came through properly
         if (r.status_code == 200):
           print("Authenticated successfully!")
@@ -150,7 +135,7 @@ def authenticate_user():
     
 #this is just to help you test, delete everything below here in the final version
 def main():
-    authenticate_user()
+    authenticate_new_user()
 
 if __name__ == "__main__":
     main()
