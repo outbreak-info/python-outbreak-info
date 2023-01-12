@@ -2,12 +2,22 @@ import pandas as pd
 import requests
 import warnings
 
+from . import authenticate_user
+
 server = 'api.outbreak.info'  # or 'dev.outbreak.info'
 auth = ***REMOVED***  # keep this private!
 nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer ES versions as well
 covid19_endpoint = 'covid19/query'
 test_server = 'test.outbreak.info'
 
+
+def check_user_authentication():
+    """
+    :return token: the users authorization token
+    """
+    token = authenticate_user.get_authentication()
+
+    return(token)
 
 def get_outbreak_data(endpoint, argstring, server=server, auth=auth, collect_all=False, curr_page=0):
     """
@@ -23,6 +33,10 @@ def get_outbreak_data(endpoint, argstring, server=server, auth=auth, collect_all
     # To secure against None type
     if isinstance(server, type(None)):
         server = server
+    
+    #check the authentication
+    check_user_authentication()
+
     auth = {'Authorization': str(auth)}
     # initial request // used to collect data during recursion or as output of single API call
     in_req = requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth)
