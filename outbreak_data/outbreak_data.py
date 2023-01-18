@@ -9,7 +9,6 @@ server = 'api.outbreak.info'  # or 'dev.outbreak.info'
 nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer ES versions as well
 covid19_endpoint = 'covid19/query'
 test_server = 'test.outbreak.info'
-
 def check_user_authentication():
     """
     Get the authorization token.
@@ -45,10 +44,11 @@ def get_outbreak_data(endpoint, argstring, server=server, auth=None, collect_all
         token = check_user_authentication()
     else:
         token = auth
-
+    token = 'Bearer ' + token
     auth = {'Authorization': str(token)}
     # initial request // used to collect data during recursion or as output of single API call
-    in_req = requests.get(f'https://{server}/{endpoint}?{argstring}', headers=auth)
+    url = f'https://{server}/{endpoint}?{argstring}'
+    in_req = requests.get(url, headers=auth)
     if in_req.headers.get('content-type') != 'application/json; charset=UTF-8':
         raise ValueError('Warning!: Potentially missing endpoint. Data not being returned by server.')
     if 400 <= in_req.status_code <= 499:
