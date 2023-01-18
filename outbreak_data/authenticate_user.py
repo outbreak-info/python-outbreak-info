@@ -84,7 +84,8 @@ def authenticate_new_user():
 
     #POST request to the OUTBREAK TOKEN API to get a token 
     r = requests.post(OUTBREAK_INFO_AUTH)
-    
+    print(r.status_code)
+    print(r.json())
     if (r.status_code != 200):
         print("Could not get authentication-token")
         r.raise_for_status()
