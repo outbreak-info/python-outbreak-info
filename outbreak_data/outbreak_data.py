@@ -174,8 +174,9 @@ def lineage_mutations(pango_lin, mutations=None, freq=0.8, server=server, auth=N
              :param mutation: A string or list; loads data of mutations for sequences classified as a specified PANGO lineage with mutation
              :param freq: A number between 0 and 1 specifying the frequency threshold above which to return mutations (default = 0.8)
              :return: A pandas dataframe"""
+
     # Turns any string input into list format: most universal
-    if isinstance(pango_lin, str):
+    if isinstance(pango_lin, str) is True:
       if 'OR' in pango_lin:
           lineages = pango_lin.split('OR')
           lineages = "OR".join(lineages)
@@ -186,20 +187,20 @@ def lineage_mutations(pango_lin, mutations=None, freq=0.8, server=server, auth=N
     elif isinstance(pango_lin, list):
          lineages = ",".join(pango_lin)
                   
-    if mutations: 
-        if isinstance(mutations, str):
-                mutations = mutations.replace(" ", "")
-                mutations = list(mutations.split(","))   # deals with string format for mutations
-        elif isinstance(mutations, list):
-             mutations = " AND ".join(mutations)
+    if mutations:
+        if isinstance(mutations, str) is True:
+            mutations = mutations.replace(" ", "")
+            mutations = list(mutations.split(","))   # deals with string format for mutations
+
+        if isinstance(mutations, list) is True:
+            mutations = " AND ".join(mutations)
         mutations = " AND " + mutations
         lineages = '' + lineages + '' + mutations # fixed function
-  
     raw_data = get_outbreak_data('genomics/lineage-mutations', f'pangolin_lineage={lineages}', collect_all=False)
+    #print(raw_data)
     key_list = raw_data['results']
     key_list = list(key_list)
-    
-    
+ 
     for i in key_list: # Returns multiple lineages using ","
         if i == key_list[0]:
             df = pd.DataFrame(raw_data['results'][i])
