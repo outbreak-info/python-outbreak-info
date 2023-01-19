@@ -1,0 +1,9 @@
+,mutation,mutation_count,lineage_count,lineage,gene,ref_aa,alt_aa,codon_num,codon_end,type,prevalence,change_length_nt
+0,n:r203k,2219699,2278538,BA.2 OR B.1.1.7,N,R,K,203,None,substitution,0.9741768625320271,None
+1,s:d614g,2269281,2278538,BA.2 OR B.1.1.7,S,D,G,614,None,substitution,0.9959373071680174,None
+2,orf1b:p314l,2265544,2278538,BA.2 OR B.1.1.7,ORF1b,P,L,314,None,substitution,0.9942972204106317,None
+3,s:p681h,2262509,2278538,BA.2 OR B.1.1.7,S,P,H,681,None,substitution,0.9929652259475155,None
+4,orf8:s84l,2243824,2278538,BA.2 OR B.1.1.7,ORF8,S,L,84,None,substitution,0.9847647921605872,None
+5,orf1a:del3675/3677,2214559,2278538,BA.2 OR B.1.1.7,ORF1a,ORF1A:DEL3675/3677,DEL3675/3677,3675,3677.0,deletion,0.9719210300640148,9.0
+6,s:n501y,2161900,2278538,BA.2 OR B.1.1.7,S,N,Y,501,None,substitution,0.9488101580926015,None
+7,n:g204r,2140828,2278538,BA.2 OR B.1.1.7,N,G,R,204,None,substitution,0.9395621227295748,None
