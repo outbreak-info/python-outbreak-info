@@ -252,18 +252,18 @@ def test_global_prevalence():
     """
     _test_global_prevalence()
     
-def _mutation_across_lineage():
+def _mutations_by_lineage():
     t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'mut_across_lin_test.csv'), index_col=0)
-    val1 = outbreak_data.mutation_across_lineage('orf1a:g1307s', 'USA', server=test_server)
+    val1 = outbreak_data.mutations_by_lineage('orf1a:g1307s', 'USA', server=test_server)
     t1 = t1.astype(str)
     val1 = val1.astype(str)
     t1[[ "proportion", 'proportion_ci_lower', 'proportion_ci_upper' ]]=t1[["proportion", 'proportion_ci_lower', 'proportion_ci_upper' ]].values.astype('float')
     val1[["proportion", 'proportion_ci_lower', 'proportion_ci_upper' ]]=val1[["proportion", 'proportion_ci_lower', 'proportion_ci_upper' ]].values.astype('float')
     assert_frame_equal(t1, val1)
         
-def mutation_across_lineage():
+def mutations_by_lineage():
     """
     Main test
     """
-    _mutation_across_lineage()
+    _mutations_by_lineage()
     
