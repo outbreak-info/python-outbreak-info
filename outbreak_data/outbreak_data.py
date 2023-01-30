@@ -197,10 +197,9 @@ def lineage_mutations(pango_lin, mutations=None, freq=0.8, server=server, auth=N
         mutations = " AND " + mutations
         lineages = '' + lineages + '' + mutations # fixed function
     raw_data = get_outbreak_data('genomics/lineage-mutations', f'pangolin_lineage={lineages}', collect_all=False)
-    #print(raw_data)
     key_list = raw_data['results']
     key_list = list(key_list)
- 
+
     for i in key_list: # Returns multiple lineages using ","
         if i == key_list[0]:
             df = pd.DataFrame(raw_data['results'][i])
@@ -265,7 +264,7 @@ def sequence_counts(location=None, cumulative=None, sub_admin=None, server=test_
         query = query + '&' + 'subadmin=true'
             
     raw_data = get_outbreak_data('genomics/sequence-count', f'{query}')
-    
+     
     if cumulative or sub_admin:
         data = {'Values' : raw_data['results']}
         df = pd.DataFrame(data) 
