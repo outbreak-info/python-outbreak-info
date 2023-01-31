@@ -290,16 +290,16 @@ def mutations_by_lineage(mutation, location=None, pango_lin=None, freq=None, ser
          mutation = list(mutation.split(","))
     
     mutations = '' + ' AND '.join(mutation) + ''   
-         
-    if location and pango_lin:
+    if location is not None and pango_lin is not None:
         query = '' + f'mutations={mutations}&location_id={location}&pangolin_lineage={pango_lin}'
-    elif location:
+    elif location is not None:
         query = '' + f'mutations={mutations}&location_id={location}'
+    elif pango_lin is not None:
+        query = '' + f'mutations={mutations}&pangolin_lineage={pango_lin}'
     else:
         query = '' + f'mutations={mutations}'
         
     raw_data = get_outbreak_data('genomics/mutations-by-lineage', f'{query}')
-    
     for i in mutation: # Returns multiple lineages using ","
         if i == mutation[0]:
             df = pd.DataFrame(raw_data['results'][i])
