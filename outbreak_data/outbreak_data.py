@@ -3,7 +3,7 @@ import requests
 import warnings
 import pandas as pd
 
-from outbreak_data import authenticate_user
+import authenticate_user
 
 server = 'api.outbreak.info'  # or 'dev.outbreak.info'
 nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer ES versions as well
@@ -274,10 +274,10 @@ def sequence_counts(location=None, cumulative=None, sub_admin=None, server=test_
 
 
 def mutations_by_lineage(mutation, location=None, pango_lin=None, freq=None, server=test_server):
-    """Returns the prevalence of a mutation across specified lineages by location
+    """Returns the prevalence of a mutation or series of mutations across specified lineages by location
 
         Arguments:
-        :param mutations: (Optional). List of mutations separated by AND.
+        :param mutations: (Optional). List of mutations. 
         :param location_id: (Optional). If not specified, return most recent date globally.
         :param pangolin_lineage: (Optional). If not specfied, returns all Pango lineages containing that mutation.
         :param frequency: (Optional) Minimimum frequency threshold for the prevalence of a mutation in a lineage.
@@ -289,7 +289,7 @@ def mutations_by_lineage(mutation, location=None, pango_lin=None, freq=None, ser
          mutation = mutation.replace(" ", "")
          mutation = list(mutation.split(","))
     
-    mutations = '' + ' AND '.join(mutation) + ''   
+    mutations = '' + ','.join(mutation) + ''   
     if location is not None and pango_lin is not None:
         query = '' + f'mutations={mutations}&location_id={location}&pangolin_lineage={pango_lin}'
     elif location is not None:
@@ -298,15 +298,10 @@ def mutations_by_lineage(mutation, location=None, pango_lin=None, freq=None, ser
         query = '' + f'mutations={mutations}&pangolin_lineage={pango_lin}'
     else:
         query = '' + f'mutations={mutations}'
-        
+
     raw_data = get_outbreak_data('genomics/mutations-by-lineage', f'{query}')
-    for i in mutation: # Returns multiple lineages using ","
-        if i == mutation[0]:
-            df = pd.DataFrame(raw_data['results'][i])
-        else:
-            newdf = pd.DataFrame(raw_data['results'][i]) # append each df
-            df = pd.concat([df, newdf], sort=False)  
-    
+    df = pd.DataFrame(raw_data['results'][mutations])
+
     if isinstance(freq, float) and freq > 0 and freq < 1:
         return df.loc[df['prevalence'] >= freq]
     return df
