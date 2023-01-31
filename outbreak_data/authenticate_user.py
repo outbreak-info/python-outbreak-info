@@ -84,8 +84,6 @@ def authenticate_new_user():
 
     #POST request to the OUTBREAK TOKEN API to get a token 
     r = requests.post(OUTBREAK_INFO_AUTH)
-    print(r.status_code)
-    print(r.json())
     if (r.status_code != 200):
         print("Could not get authentication-token")
         r.raise_for_status()
@@ -113,15 +111,16 @@ def authenticate_new_user():
         print(f"Waiting for authorization response... [Press Ctrl-C to abort]")
         
         #get request the OUTBREAK_INFO_AUTH url using the token as header like this: 
-        headers = {'Authorization': str(get_authentication())}
-        r = requests.get(OUTBREAK_INFO_AUTH, headers=headers)
 
+        headers = {'Authorization': 'Bearer ' + str(get_authentication())}
+
+        r = requests.get(OUTBREAK_INFO_AUTH, headers=headers)
         #check if the response came through properly
         if (r.status_code == 200):
           print("Authenticated successfully!")
           print_terms()
           
-        #parse the header back from the response
+          #parse the header back from the response
           authToken = r.headers['X-Auth-Token']
           if (authToken == None):
               set_authentication(authToken)

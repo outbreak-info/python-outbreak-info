@@ -110,9 +110,8 @@ def test_cases_by_location():
 
 class Test_Lineage_Mutations:
     
-    def test_one(self): #  Test 1: lineage as string
-    
-        t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_one.csv'), index_col=0)
+    def test_one(self): #  Test 1: lineage as string 
+        t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'test_one.csv'), index_col=0)
         val1 =  outbreak_data.lineage_mutations('BA.2', server=test_server)
         t1 = t1.astype(str)
         val1 = val1.astype(str)
@@ -122,7 +121,7 @@ class Test_Lineage_Mutations:
 
     def test_two(self): # Test 2: lineages in list: OR logic
       
-        t2 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_two.csv'), index_col=0)
+        t2 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'test_two.csv'), index_col=0)
         val2 = outbreak_data.lineage_mutations('BA.2 OR B.1.1.7', server=test_server)
         
         t2 = t2.astype(str)
@@ -133,7 +132,7 @@ class Test_Lineage_Mutations:
                 
     def test_three(self):  # lineages in list; returning muliple lineages
     
-        t3 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_three.csv'), index_col=0)
+        t3 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'test_three.csv'), index_col=0)
         val3 = outbreak_data.lineage_mutations('BA.2, B.1.1.7', server=test_server)
         t3 = t3.astype(str)
         val3 = val3.astype(str)
@@ -144,7 +143,7 @@ class Test_Lineage_Mutations:
     
     def test_four(self): # mutation as list: AND logic
     
-        t4 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_four.csv'), index_col=0)
+        t4 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'test_four.csv'), index_col=0)
         val4 = outbreak_data.lineage_mutations('BA.2','s:p681h', server=test_server)
         t4 = t4.astype(str)
         val4 = val4.astype(str)
@@ -166,7 +165,7 @@ def test_lineage_mutations():
 class Test_Prevalence_By_Location:
     
     def test_one(self): # Test 1: Pulls up every lineage on file in USA_US-CO
-        t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'prev1.csv'), index_col=0)
+        t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'prev1.csv'), index_col=0)
         val1 = outbreak_data.prevalence_by_location('USA_US-CO', server=test_server)
         t1 = t1.astype(str)
         val1 = val1.astype(str)
@@ -178,7 +177,7 @@ class Test_Prevalence_By_Location:
 
     def test_two(self): # Test 2: Pulls up every lineage starting with b.1 on file in USA_US-NY
       
-        t2 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'prev2.csv'), index_col=0)
+        t2 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'prev2.csv'), index_col=0)
         val2 = outbreak_data.prevalence_by_location('USA_US-NY', startswith='b.1', server=test_server)
         t2 = t2.astype(str)
         val2 = val2.astype(str)
@@ -201,28 +200,28 @@ def test_prevalence():
 class Test_Sequence_Counts:
     
     def test_one(self):
-        t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'seq_count1.csv'), index_col=0)
+        t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'seq_count1.csv'), index_col=0)
         val1 = outbreak_data.sequence_counts(server=test_server)
         t1 = t1.astype(str)
         val1 = val1.astype(str)
         assert_frame_equal(t1, val1)
         
     def test_two(self):
-        t2 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'seq_count2.csv'), index_col=0)
+        t2 = pd.read_csv(os.path.join(os.path.dirname(__file__),'test_data', 'seq_count2.csv'), index_col=0)
         val2 = outbreak_data.sequence_counts('USA_US-CA', server=test_server)
         t2 = t2.astype(str)
         val2 = val2.astype(str)
         assert_frame_equal(t2, val2)
     
     def test_three(self):
-        t3 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'seq_count3.csv'), index_col=0)
+        t3 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'seq_count3.csv'), index_col=0)
         val3 = outbreak_data.sequence_counts('USA', cumulative=True, server=test_server)
         t3 = t3.astype(str)
         val3 = val3.astype(str)
         assert_frame_equal(t3, val3)
         
     def test_four(self):
-        t4 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'seq_count4.csv'), index_col=0)
+        t4 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'seq_count4.csv'), index_col=0)
         val4 = outbreak_data.sequence_counts('USA', True, True, server=test_server)
         t4 = t4.astype(str)
         val4 = val4.astype(str)
@@ -239,7 +238,7 @@ def test_seq_counts():
     
     
 def _test_global_prevalence():
-    t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'global_prev_test.csv'), index_col=0)
+    t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'global_prev_test.csv'), index_col=0)
     val1 = outbreak_data.global_prevalence('ba.2', 'orf1a:t842i', server=test_server)
     t1 = t1.astype(str)
     val1 = val1.astype(str)
@@ -253,18 +252,18 @@ def test_global_prevalence():
     """
     _test_global_prevalence()
     
-def _mutation_across_lineage():
-    t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'mut_across_lin_test.csv'), index_col=0)
-    val1 = outbreak_data.mutation_across_lineage('orf1a:g1307s', 'USA', server=test_server)
+def _mutations_by_lineage():
+    t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'mut_across_lin_test.csv'), index_col=0)
+    val1 = outbreak_data.mutations_by_lineage('orf1a:g1307s', 'USA', server=test_server)
     t1 = t1.astype(str)
     val1 = val1.astype(str)
     t1[[ "proportion", 'proportion_ci_lower', 'proportion_ci_upper' ]]=t1[["proportion", 'proportion_ci_lower', 'proportion_ci_upper' ]].values.astype('float')
     val1[["proportion", 'proportion_ci_lower', 'proportion_ci_upper' ]]=val1[["proportion", 'proportion_ci_lower', 'proportion_ci_upper' ]].values.astype('float')
     assert_frame_equal(t1, val1)
         
-def mutation_across_lineage():
+def mutations_by_lineage():
     """
     Main test
     """
-    _mutation_across_lineage()
+    _mutations_by_lineage()
     
