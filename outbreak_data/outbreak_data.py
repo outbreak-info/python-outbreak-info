@@ -9,6 +9,7 @@ server = 'api.outbreak.info'  # or 'dev.outbreak.info'
 nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer ES versions as well
 covid19_endpoint = 'covid19/query'
 test_server = 'test.outbreak.info'
+
 def check_user_authentication():
     """
     Get the authorization token.
@@ -27,13 +28,15 @@ def check_user_authentication():
 def get_outbreak_data(endpoint, argstring, server=server, auth=None, collect_all=False, curr_page=0):
     """
     Receives raw data using outbreak API.
-    :param endpoint: directory in server the data is stored
-    :param argstring: feature arguments to provide to API call
-    :param server: Server to request from
-    :param auth: Auth key (defaults to acceptable state)
-    :param collect_all: if True, returns all data.
-    :param curr_page: iterator state for paging
-    :return: A request object containing the raw data
+
+    Arguments: 
+     :param endpoint: directory in server the data is stored
+     :param argstring: feature arguments to provide to API call
+     :param server: Server to request from
+     :param auth: Auth key (defaults to acceptable state)
+     :param collect_all: if True, returns all data.
+     :param curr_page: iterator state for paging
+     :return: A request object containing the raw data
     """
     # To secure against None type
     if isinstance(server, type(None)):
@@ -95,11 +98,12 @@ def get_outbreak_data(endpoint, argstring, server=server, auth=None, collect_all
 def cases_by_location(location, server=server, auth=None, pull_smoothed=0):
     """
     Loads data from a location if input is a string, or from multiple locations
-    if location is a list of string locations.
-    Since this API endpoint supports paging, collect_all is used to return all data.
-    :param location: A string or list of strings, separate multiple locations by ","
-    :param pull_smoothed: For every value >= 0, returns 1000 obs. (paging)
-    :return: A pandas dataframe
+    if location is a list of string locations. Since this API endpoint supports paging, collect_all is used to return all data.
+
+    Arguments:
+     :param location: A string or list of strings, separate multiple locations by ","
+     :param pull_smoothed: For every value >= 0, returns 1000 obs. (paging)
+     :return: A pandas dataframe
     """
     # location names can be further checked to verify validity // proper format
     if isinstance(location, str):  # Converts all location input strings into lists: best universal input 
@@ -135,17 +139,19 @@ def cases_by_location(location, server=server, auth=None, pull_smoothed=0):
 
 
 def prevalence_by_location(location, startswith=None, ndays=2048, nday_threshold=0, other_threshold=0, other_exclude=None, cumulative=None, server=server, auth=None):
+    """
+    Loads prevalence data from a location
 
-    """Loads prevalence data from a location
-            Arguments:
-                :param location: A string
-                :param startswith: A string; loads data for all lineages beginning with first letter(s) of name
-                :param other_threshold (Default: 0) Minimum prevalence threshold below which lineages must be accumulated under "Other".
-                :param nday_threshold (Default: 0) Minimum number of days in which the prevalence of a lineage must be below other_threshold to be accumulated under "Other".
-                :param ndays (Default: 2048) The number of days before the current date to be used as a window to accumulate linegaes under "Other".
-                :param other_exclude: Comma separated lineages that are NOT to be included under "Other" even if the conditions specified by the three thresholds above are met.
-                :param cumulative: (Default: false) If true return the cumulative prevalence.
-                :return: A pandas dataframe"""
+    Arguments:
+     :param location: A string
+     :param startswith: A string; loads data for all lineages beginning with first letter(s) of name
+     :param other_threshold (Default: 0) Minimum prevalence threshold below which lineages must be accumulated under "Other".
+     :param nday_threshold (Default: 0) Minimum number of days in which the prevalence of a lineage must be below other_threshold to be accumulated under "Other".
+     :param ndays (Default: 2048) The number of days before the current date to be used as a window to accumulate linegaes under "Other".
+     :param other_exclude: Comma separated lineages that are NOT to be included under "Other" even if the conditions specified by the three thresholds above are met.
+     :param cumulative: (Default: false) If true return the cumulative prevalence.
+     :return: A pandas dataframe
+    """
                 
     query =  f'location_id={location}&sort=date&ndays={ndays}&nday_threshold={nday_threshold}&other_threshold={other_threshold}'
    
@@ -163,7 +169,6 @@ def prevalence_by_location(location, startswith=None, ndays=2048, nday_threshold
 
 
 def lineage_mutations(pango_lin, mutations=None, freq=0.8, server=server, auth=None):
-
     """Retrieves data from all mutations in a specified lineage above a frequency threshold.
        - Mutiple queries for lineages and mutations can be separated by ","
        - Use 'OR' in a string to return overlapping mutations in multiple lineages: 'BA.2 OR BA.1'
@@ -247,13 +252,15 @@ def global_prevalence(pango_lin, mutations=None, cumulative=None, server=test_se
 
 
 def sequence_counts(location=None, cumulative=None, sub_admin=None, server=test_server):
-    """Returns number of sequences per day by location
+    """
+    Returns number of sequences per day by location
 
-        Arguments:
-        :param location_id: (Optional). If not specified, the global total counts are returned.
-        :param cumulative: (Optional). If true returns the cumulative number of sequences till date.
-        :param subadmin: (Optional). If true and cumulative=true, returns the cumulative number of sequences for the immedaite lower admin level.
-        :return: A pandas dataframe."""
+    Arguments:
+     :param location_id: (Optional). If not specified, the global total counts are returned.
+     :param cumulative: (Optional). If true returns the cumulative number of sequences till date.
+     :param subadmin: (Optional). If true and cumulative=true, returns the cumulative number of sequences for the immedaite lower admin level.
+     :return: A pandas dataframe.
+    """
         
     query = ''    
     if location:
@@ -274,15 +281,17 @@ def sequence_counts(location=None, cumulative=None, sub_admin=None, server=test_
 
 
 def mutations_by_lineage(mutation, location=None, pango_lin=None, freq=None, server=test_server):
-    """Returns the prevalence of a mutation or series of mutations across specified lineages by location
+    """
+    Returns the prevalence of a mutation or series of mutations across specified lineages by location
 
-        Arguments:
-        :param mutations: (Optional). List of mutations. 
-        :param location_id: (Optional). If not specified, return most recent date globally.
-        :param pangolin_lineage: (Optional). If not specfied, returns all Pango lineages containing that mutation.
-        :param frequency: (Optional) Minimimum frequency threshold for the prevalence of a mutation in a lineage.
-        :return: A pandas dataframe."""
-    
+    Arguments:
+     :param mutations: (Optional). List of mutations. 
+     :param location_id: (Optional). If not specified, return most recent date globally.
+     :param pangolin_lineage: (Optional). If not specfied, returns all Pango lineages containing that mutation.
+     :param frequency: (Optional) Minimimum frequency threshold for the prevalence of a mutation in a lineage.
+     :return: A pandas dataframe.
+    """
+
     if isinstance(mutation, list):
         pass
     elif isinstance(mutation, str):
@@ -405,13 +414,15 @@ def lineage_by_sub_admin(pango_lin, mutations=None, location=None, ndays=None, d
     
 
 def collection_date(pango_lin, mutations=None, location=None):
-    """Most recent collection date by location
+    """
+    Most recent collection date by location
 
     Arguments:
-    :param pango_lin: A string. (Required).
-    :param mutations: (Optional). A string or list of strings. Comma separated list of mutations.
-    :param location: (Optional). If not specified, return most recent date globally.
-    :return: A pandas dataframe."""
+     :param pango_lin: A string. (Required).
+     :param mutations: (Optional). A string or list of strings. Comma separated list of mutations.
+     :param location: (Optional). If not specified, return most recent date globally.
+     :return: A pandas dataframe.
+    """
     if mutations:
         if isinstance(mutations, list):
             mutations = ','.join(mutations)
@@ -459,11 +470,13 @@ def submission_date(pango_lin, mutations=None, location=None):
  
     
 def mutation_details(mutations):
-    """ Returns details of a mutation.
+    """ 
+    Returns details of a mutation.
     
     Arguments:
-    :param mutations: (Required). Comma separated list of mutations.
-    :return: A pandas dataframe."""
+     :param mutations: (Required). Comma separated list of mutations.
+     :return: A pandas dataframe.
+    """
     
     if isinstance(mutations, str):
          mutations = mutations.replace(" ", "")
@@ -488,11 +501,12 @@ def mutation_details(mutations):
 
 
 def daily_lag(location=None):
-    """Return the daily lag between collection and submission dates by location
+    """
+    Return the daily lag between collection and submission dates by location
 
     Arguments:
-    :param location_id: (Optional). If not specified, return lag globally.
-    :return: A pandas dataframe.
+     :param location_id: (Optional). If not specified, return lag globally.
+     :return: A pandas dataframe.
     """
     query = ''
     if location:
