@@ -1,1 +1,3 @@
 furo==2021.11.16
+sphinx>=6.1.3
+docutils>=0.19
