@@ -1,0 +1,11 @@
+,Key,Values
+0,mutation,ORF1a:T842I
+1,alt_codon,ATT
+2,is_synonymous,False
+3,codon_num,842
+4,ref_codon,ACT
+5,gene,ORF1a
+6,pos,2789
+7,alt_aa,I
+8,ref_aa,T
+9,type,substitution
