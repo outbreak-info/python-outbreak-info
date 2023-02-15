@@ -1,0 +1,10 @@
+Usage
+=====
+
+get_outbreak_data()
+-------------------
+
+
+you can use the ``outbreak_data.get_outbreak_data()`` function:
+
+.. autofunction:: outbreak_data.get_outbreak_data
