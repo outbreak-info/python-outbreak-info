@@ -3,7 +3,7 @@ import requests
 import warnings
 import pandas as pd
 
-import authenticate_user
+from outbreak_data import authenticate_user
 
 server = 'api.outbreak.info'  # or 'dev.outbreak.info'
 nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer ES versions as well
@@ -549,7 +549,7 @@ def wildcard_location(name, server=server):
     query = '' + '&' + f'name={name}'
     raw_data = get_outbreak_data('genomics/location', query, collect_all=False)
     r = raw_data['results']
-    keys = tuple(r[0])
+   
     for i in r: # for each seperate result
         values = tuple(i.values())
         if i == r[0]:
@@ -586,7 +586,6 @@ def wildcard_mutations(name, server=server):
     query = '' + '&' + f'name={name}'
     raw_data = get_outbreak_data('genomics/mutations', query, collect_all=False)
     r = raw_data['results']
-    keys = tuple(r[0])
     
     for i in r: # for each seperate result
         values = tuple(i.values())
@@ -598,4 +597,3 @@ def wildcard_mutations(name, server=server):
                       "total_count":values[1]}, index=[0]) # append each df
                 df = pd.concat([df, newdf], sort=False)
     return df
-
