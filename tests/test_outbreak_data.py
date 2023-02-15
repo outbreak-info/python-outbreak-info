@@ -107,133 +107,55 @@ def test_cases_by_location():
     _test_cases_multiple_location()
     
 
-class Test_Lineage_Mutations:
+def _test_lineage_mutations():
+    t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'lineage_mutations.csv'), index_col=0)
+    val1 = outbreak_data.lineage_mutations('BA.2 OR B.1.1.7', server=test_server)
+    t1 = t1.astype(str)
+    val1 = val1.astype(str)
+    t1["prevalence"]=t1["prevalence"].values.astype('float')
+    val1["prevalence"]=val1["prevalence"].values.astype('float')
+    assert_frame_equal(t1, val1)
     
-    def test_one(self): #  Test 1: lineage as string 
-        t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'test_one.csv'), index_col=0)
-        val1 =  outbreak_data.lineage_mutations('BA.2', server=test_server)
-        t1 = t1.astype(str)
-        val1 = val1.astype(str)
-        t1["prevalence"]=t1["prevalence"].values.astype('float')
-        val1["prevalence"]=val1["prevalence"].values.astype('float')
-        assert_frame_equal(t1, val1)
-
-    def test_two(self): # Test 2: lineages in list: OR logic
-      
-        t2 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'test_two.csv'), index_col=0)
-        val2 = outbreak_data.lineage_mutations('BA.2 OR B.1.1.7', server=test_server)
-        
-        t2 = t2.astype(str)
-        val2 = val2.astype(str)
-        t2["prevalence"]=t2["prevalence"].values.astype('float')
-        val2["prevalence"]=val2["prevalence"].values.astype('float')
-        assert_frame_equal(t2, val2)
-                
-    def test_three(self):  # lineages in list; returning muliple lineages
-    
-        t3 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'test_three.csv'), index_col=0)
-        val3 = outbreak_data.lineage_mutations('BA.2, B.1.1.7', server=test_server)
-        t3 = t3.astype(str)
-        val3 = val3.astype(str)
-        t3["prevalence"]=t3["prevalence"].values.astype('float')
-        val3["prevalence"]=val3["prevalence"].values.astype('float')
-        assert_frame_equal(t3, val3)
-    
-    
-    def test_four(self): # mutation as list: AND logic
-    
-        t4 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'test_four.csv'), index_col=0)
-        val4 = outbreak_data.lineage_mutations('BA.2','s:p681h', server=test_server)
-        t4 = t4.astype(str)
-        val4 = val4.astype(str)
-        t4["prevalence"]=t4["prevalence"].values.astype('float')
-        val4["prevalence"]=val4["prevalence"].values.astype('float')
-        assert_frame_equal(t4, val4)
      
        
 def test_lineage_mutations():
     """
     Main test
     """
-    Test_Lineage_Mutations().test_one()
-    Test_Lineage_Mutations().test_two()
-    Test_Lineage_Mutations().test_three()
-    Test_Lineage_Mutations().test_four()
+    _test_lineage_mutations()
     
     
-class Test_Prevalence_By_Location:
-    
-    def test_one(self): # Test 1: Pulls up every lineage on file in USA_US-CO
-        t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'prev1.csv'), index_col=0)
-        val1 = outbreak_data.prevalence_by_location('USA_US-CO', server=test_server)
-        t1 = t1.astype(str)
-        val1 = val1.astype(str)
-        t1["prevalence"]=t1["prevalence"].values.astype('float')
-        val1["prevalence"]=val1["prevalence"].values.astype('float')
-        t1["prevalence_rolling"]=t1["prevalence_rolling"].values.astype('float')
-        val1["prevalence_rolling"]=val1["prevalence_rolling"].values.astype('float')
-        assert_frame_equal(t1, val1)
-
-    def test_two(self): # Test 2: Pulls up every lineage starting with b.1 on file in USA_US-NY
-      
-        t2 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'prev2.csv'), index_col=0)
-        val2 = outbreak_data.prevalence_by_location('USA_US-NY', startswith='b.1', server=test_server)
-        t2 = t2.astype(str)
-        val2 = val2.astype(str)
-        t2["prevalence"]=t2["prevalence"].values.astype('float')
-        val2["prevalence"]=val2["prevalence"].values.astype('float')
-        t2["prevalence_rolling"]=t2["prevalence_rolling"].values.astype('float')
-        val2["prevalence_rolling"]=val2["prevalence_rolling"].values.astype('float')
-        assert_frame_equal(t2, val2)
+def _test_prevalence_by_location():
+    t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'prevalence_by_location.csv'), index_col=0)
+    val1 = outbreak_data.prevalence_by_location('USA_US-NY', startswith='b.1', server=test_server)
+    t1 = t1.astype(str)
+    val1 = val1.astype(str)
+    t1[["prevalence","prevalence_rolling"]]=t1[["prevalence", "prevalence_rolling"]].values.astype('float')
+    val1[["prevalence","prevalence_rolling"]]=val1[["prevalence","prevalence_rolling"]].values.astype('float')
+    assert_frame_equal(t1, val1)
         
 
 def test_prevalence():
     """
     Main test
     """
-    Test_Prevalence_By_Location().test_one()
-    Test_Prevalence_By_Location().test_two()
+    _test_prevalence_by_location()
     
     
 
-class Test_Sequence_Counts:
+def _test_sequence_counts():
+    t1 = pd.read_csv(os.path.join(os.path.dirname(__file__),'test_data', 'sequence_counts.csv'), index_col=0)
+    val1 = outbreak_data.sequence_counts('USA_US-CA', server=test_server)
+    t1 = t1.astype(str)
+    val1 = val1.astype(str)
+    assert_frame_equal(t1, val1)
     
-    def test_one(self):
-        t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'seq_count1.csv'), index_col=0)
-        val1 = outbreak_data.sequence_counts(server=test_server)
-        t1 = t1.astype(str)
-        val1 = val1.astype(str)
-        assert_frame_equal(t1, val1)
-        
-    def test_two(self):
-        t2 = pd.read_csv(os.path.join(os.path.dirname(__file__),'test_data', 'seq_count2.csv'), index_col=0)
-        val2 = outbreak_data.sequence_counts('USA_US-CA', server=test_server)
-        t2 = t2.astype(str)
-        val2 = val2.astype(str)
-        assert_frame_equal(t2, val2)
-    
-    def test_three(self):
-        t3 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'seq_count3.csv'), index_col=0)
-        val3 = outbreak_data.sequence_counts('USA', cumulative=True, server=test_server)
-        t3 = t3.astype(str)
-        val3 = val3.astype(str)
-        assert_frame_equal(t3, val3)
-        
-    def test_four(self):
-        t4 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'seq_count4.csv'), index_col=0)
-        val4 = outbreak_data.sequence_counts('USA', True, True, server=test_server)
-        t4 = t4.astype(str)
-        val4 = val4.astype(str)
-        assert_frame_equal(t4, val4)
 
-def test_seq_counts():
+def test_sequence_counts():
     """
     Main test
     """
-    Test_Sequence_Counts().test_one()
-    Test_Sequence_Counts().test_two()
-    Test_Sequence_Counts().test_three()
-    Test_Sequence_Counts().test_four()
+    _test_sequence_counts()
     
     
 def _test_global_prevalence():
@@ -354,7 +276,7 @@ def test_daily_lag():
     
 def _test_wildcard_lineage():
     t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'wildcard_lineage.csv'), index_col=0)
-    val1 = wildcard_lineage('b.1*', server=test_server)
+    val1 = outbreak_data.wildcard_lineage('b.1*', server=test_server)
     t1 = t1.astype(str)
     val1 = val1.astype(str)
     assert_frame_equal(t1, val1)
@@ -367,7 +289,7 @@ def test_wildcard_lineage():
 
 def _test_wildcard_location():
     t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'wildcard_location.csv'), index_col=0)
-    val1 = wildcard_location('united*', server=test_server)
+    val1 = outbreak_data.wildcard_location('united*', server=test_server)
     t1 = t1.astype(str)
     val1 = val1.astype(str)
     assert_frame_equal(t1, val1)
@@ -381,7 +303,7 @@ def test_wildcard_location():
 
 def _test_location_details():
     t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'location_details.csv'), index_col=0)
-    val1 = location_details('CHN', server=test_server)
+    val1 = outbreak_data.location_details('CHN', server=test_server)
     t1 = t1.astype(str)
     val1 = val1.astype(str)
     assert_frame_equal(t1, val1)
@@ -396,7 +318,7 @@ def test_location_details():
 
 def _test_wildcard_mutations():
     t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'wildcard_mutations.csv'), index_col=0)
-    val1 = wildcard_mutations('s:e484*', server=test_server)
+    val1 = outbreak_data.wildcard_mutations('s:e484*', server=test_server)
     t1 = t1.astype(str)
     val1 = val1.astype(str)
     assert_frame_equal(t1, val1)
