@@ -3,6 +3,7 @@ Script to generate authentication token for Python package.
 """
 
 import os
+import sys
 import time
 import requests
 import webbrowser
@@ -108,7 +109,7 @@ def authenticate_new_user():
     start_time = time.time()
     time.sleep(5) 
     while(True):
-        print(f"Waiting for authorization response... [Press Ctrl-C to abort]")
+        print("Waiting for authorization response... [Press Ctrl-C to abort]")
         
         #get request the OUTBREAK_INFO_AUTH url using the token as header like this: 
 
@@ -124,7 +125,7 @@ def authenticate_new_user():
           authToken = r.headers['X-Auth-Token']
           if (authToken == None):
               set_authentication(authToken)
-          break  #Should a specific exception + error message be given here?
+          break
       
         else:
             print("Authenication failed, trying again in 5 seconds...")
