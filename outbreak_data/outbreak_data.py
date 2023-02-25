@@ -3,7 +3,7 @@ import requests
 import warnings
 import pandas as pd
 
-import authenticate_user
+from outbreak_data import authenticate_user
 
 server = 'api.outbreak.info'  # or 'dev.outbreak.info'
 nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer ES versions as well
@@ -219,7 +219,7 @@ def lineage_mutations(pango_lin, mutations=None, freq=0.8, server=server, auth=N
         return df
     
 
-def global_prevalence(pango_lin, mutations=None, cumulative=None, server=test_server):
+def global_prevalence(pango_lin, mutations=None, cumulative=None, server=server):
    
     """Returns the global daily prevalence of a PANGO lineage
        
@@ -250,10 +250,8 @@ def global_prevalence(pango_lin, mutations=None, cumulative=None, server=test_se
         df = pd.DataFrame(raw_data['results'])
     return df
 
-
-def sequence_counts(location=None, cumulative=None, sub_admin=None, server=test_server):
-    """
-    Returns number of sequences per day by location
+def sequence_counts(location=None, cumulative=None, sub_admin=None, server=server):
+    """Returns number of sequences per day by location
 
     Arguments:
      :param location_id: (Optional). If not specified, the global total counts are returned.
@@ -279,10 +277,8 @@ def sequence_counts(location=None, cumulative=None, sub_admin=None, server=test_
         df = pd.DataFrame(raw_data['results'])
     return df
 
-
-def mutations_by_lineage(mutation, location=None, pango_lin=None, freq=None, server=test_server):
-    """
-    Returns the prevalence of a mutation or series of mutations across specified lineages by location
+def mutations_by_lineage(mutation, location=None, pango_lin=None, freq=None, server=server):
+    """Returns the prevalence of a mutation or series of mutations across specified lineages by location
 
     Arguments:
      :param mutations: (Optional). List of mutations. 
@@ -315,7 +311,7 @@ def mutations_by_lineage(mutation, location=None, pango_lin=None, freq=None, ser
         return df.loc[df['prevalence'] >= freq]
     return df
     
-def daily_prev_by_location(pango_lin, location='USA', mutations=None, cumulative=None):
+def daily_prev(pango_lin, location='USA', mutations=None, cumulative=None, server=server):
     """Returns the daily prevalence of a PANGO lineage by location.
    
        Arguments:
@@ -369,7 +365,7 @@ def daily_prev_by_location(pango_lin, location='USA', mutations=None, cumulative
  
 
 
-def lineage_by_sub_admin(pango_lin, mutations=None, location=None, ndays=None, detected=None):
+def lineage_by_sub_admin(pango_lin, mutations=None, location=None, ndays=0, detected=None, server=server):
     """Cumulative prevalence of a PANGO lineage by the immediate admin level of a location
 
         Arguments:
@@ -384,6 +380,7 @@ def lineage_by_sub_admin(pango_lin, mutations=None, location=None, ndays=None, d
         pango_lin = pango_lin.replace(" ", "")
     elif isinstance(pango_lin, list):
          pango_lin = ','.join(pango_lin)
+    query = pango_lin
          
     if mutations:
         if isinstance(mutations, list):
@@ -413,9 +410,8 @@ def lineage_by_sub_admin(pango_lin, mutations=None, location=None, ndays=None, d
     return df
     
 
-def collection_date(pango_lin, mutations=None, location=None):
-    """
-    Most recent collection date by location
+def collection_date(pango_lin, mutations=None, location=None, server=server):
+    """Most recent collection date by location
 
     Arguments:
      :param pango_lin: A string. (Required).
@@ -442,7 +438,7 @@ def collection_date(pango_lin, mutations=None, location=None):
     return df
 
 
-def submission_date(pango_lin, mutations=None, location=None):
+def submission_date(pango_lin, mutations=None, location=None, server=server):
     """Returns the most recent submission date by location
 
      Arguments:
@@ -468,10 +464,9 @@ def submission_date(pango_lin, mutations=None, location=None):
     df = pd.DataFrame(data) 
     return df
  
-    
-def mutation_details(mutations):
-    """ 
-    Returns details of a mutation.
+   
+def mutation_details(mutations, server=server):
+    """ Returns details of a mutation.
     
     Arguments:
      :param mutations: (Required). Comma separated list of mutations.
@@ -500,9 +495,8 @@ def mutation_details(mutations):
     return df
 
 
-def daily_lag(location=None):
-    """
-    Return the daily lag between collection and submission dates by location
+def daily_lag(location=None, server=server):
+    """Return the daily lag between collection and submission dates by location
 
     Arguments:
      :param location_id: (Optional). If not specified, return lag globally.
@@ -515,21 +509,19 @@ def daily_lag(location=None):
     raw_data = get_outbreak_data('genomics/collection-submission', query, collect_all=False)
     
     r = raw_data['results']
-    keys = tuple(r[0])
     
     for i in r: # for each seperate result
         values = tuple(i.values())
+        
         if i == r[0]:
-            df=pd.DataFrame({"Key": keys,
-                 "Values":values})
+            df=pd.DataFrame({"date_collected": values[0], "date_submitted": values[1], "total_count": values[2]}, index=[0])
         else:
-                newdf = pd.DataFrame({"Key": keys,
-                     "Values":values}) # append each df
-                df = pd.concat([df, newdf], axis=1, sort=False)
+                newdf = pd.DataFrame({"date_collected": values[0], "date_submitted": values[1], "total_count": values[2]}, index=[0]) # append each df
+                df = pd.concat([df, newdf], sort=False)
     return df
-     
+    
 
-def wildcard_lineage(name):
+def wildcard_lineage(name, server=server):
     """Match lineage name using wildcards. 
 
     Arguments:
@@ -539,21 +531,21 @@ def wildcard_lineage(name):
     query = '' + '&' + f'name={name}'
     raw_data = get_outbreak_data('genomics/lineage', query, collect_all=False)
     r = raw_data['results']
-    keys = tuple(r[0])
     
     for i in r: # for each seperate result
         values = tuple(i.values())
-        if i == r[0]:
-            df=pd.DataFrame({"Key": keys,
-                 "Values":values})
+        if i == r[0]: # follow new procedure as found for daily_lag
+            df=pd.DataFrame({"name": values[0],
+                  "total_count":values[1]}, index=[0])
         else:
-                newdf = pd.DataFrame({"Key": keys,
-                     "Values":values}) # append each df
-                df = pd.concat([df, newdf], axis=1, sort=False)
+                newdf = pd.DataFrame({"name": values[0],
+                      "total_count":values[1]}, index=[0]) # append each df
+                df = pd.concat([df, newdf], sort=False)
     return df
      
 
-def wildcard_location(name):
+
+def wildcard_location(name, server=server):
     """Match location name using wildcards. 
 
     Arguments:
@@ -563,20 +555,20 @@ def wildcard_location(name):
     query = '' + '&' + f'name={name}'
     raw_data = get_outbreak_data('genomics/location', query, collect_all=False)
     r = raw_data['results']
-    keys = tuple(r[0])
+   
     for i in r: # for each seperate result
         values = tuple(i.values())
         if i == r[0]:
-            df=pd.DataFrame({"Key": keys,
-                 "Values":values})
+            df=pd.DataFrame({"country": values[0], "country_id ": values[1],'id':values[2], "label":values[3],
+                             "admin_level":values[4], "total_count":values[5]}, index = [0])
         else:
-                newdf = pd.DataFrame({"Key": keys,
-                     "Values":values}) # append each df
-                df = pd.concat([df, newdf], axis=1, sort=False)
+                newdf = pd.DataFrame({"country": values[0], "country_id ": values[1],'id':values[2], "label":values[3], 
+                                      "admin_level":values[4], "total_count":values[5]}, index = [0]) # append each df
+                df = pd.concat([df, newdf], sort=False)
     return df
      
 
-def location_details(location):
+def location_details(location, server=server):
     """Get location details using location ID.
      
     Arguments:
@@ -590,7 +582,7 @@ def location_details(location):
     return df
 
     
-def wildcard_mutations(name):
+def wildcard_mutations(name, server=server):
     """Match mutations using wildcards.
     
      Arguments:
@@ -600,15 +592,14 @@ def wildcard_mutations(name):
     query = '' + '&' + f'name={name}'
     raw_data = get_outbreak_data('genomics/mutations', query, collect_all=False)
     r = raw_data['results']
-    keys = tuple(r[0])
     
     for i in r: # for each seperate result
         values = tuple(i.values())
         if i == r[0]:
-            df=pd.DataFrame({"Key": keys,
-                 "Values":values})
+            df=pd.DataFrame({"name": values[0],
+                  "total_count":values[1]}, index=[0])
         else:
-                newdf = pd.DataFrame({"Key": keys,
-                     "Values":values}) # append each df
-                df = pd.concat([df, newdf], axis=1, sort=False)
+                newdf = pd.DataFrame({"name": values[0],
+                      "total_count":values[1]}, index=[0]) # append each df
+                df = pd.concat([df, newdf], sort=False)
     return df
