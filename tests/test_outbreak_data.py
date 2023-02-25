@@ -4,6 +4,8 @@ import pytest
 import requests
 import os
 from outbreak_data import outbreak_data
+from outbreak_data import authenticate_user
+
 test_server = 'test.outbreak.info'
 null_server = 'null.outbreak.info'
 
