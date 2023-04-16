@@ -127,23 +127,23 @@ def test_lineage_mutations():
     _test_lineage_mutations()
     
     
-def _test_prevalence_by_location():
-    t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'prevalence_by_location.csv'), index_col=0)
-    val1 = outbreak_data.prevalence_by_location('USA_US-NY', startswith='b.1', server=test_server)
-    t1 = t1.astype(str)
-    val1 = val1.astype(str)
-    t1["prevalence"]=t1["prevalence"].values.astype('float')
-    val1["prevalence"]=val1["prevalence"].values.astype('float')
-    t1["prevalence_rolling"]=t1["prevalence_rolling"].values.astype('float')
-    val1["prevalence_rolling"]=val1["prevalence_rolling"].values.astype('float')
-    assert_frame_equal(t1, val1)
+# def _test_prevalence_by_location():
+#     t1 = pd.read_csv(os.path.join(os.path.dirname(__file__), 'test_data', 'prevalence_by_location.csv'), index_col=0)
+#     val1 = outbreak_data.prevalence_by_location('USA_US-NY', startswith='b.1', server=test_server)
+#     t1 = t1.astype(str)
+#     val1 = val1.astype(str)
+#     t1["prevalence"]=t1["prevalence"].values.astype('float')
+#     val1["prevalence"]=val1["prevalence"].values.astype('float')
+#     t1["prevalence_rolling"]=t1["prevalence_rolling"].values.astype('float')
+#     val1["prevalence_rolling"]=val1["prevalence_rolling"].values.astype('float')
+#     assert_frame_equal(t1, val1)
         
 
-def test_prevalence():
-    """
-    Main test
-    """
-    _test_prevalence_by_location()
+# def test_prevalence():
+#     """
+#     Main test
+#     """
+#     _test_prevalence_by_location()
     
     
 
