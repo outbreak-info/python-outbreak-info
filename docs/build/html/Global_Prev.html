@@ -13,8 +13,8 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
 
@@ -33,7 +33,6 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -90,7 +89,6 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="Outbreak_data%20Functions.html">get_outbreak_data()</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Cases_by_location.html">cases_by_location(location)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lineage_mutations.html">lineage_mutations(pango_lin, mutation, freq)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Prevalence_by_location.html">prevalence_by_location(location, startswith)</a></li>
@@ -102,6 +100,8 @@
 <li class="toctree-l1"><a class="reference internal" href="collection_date.html">collection_date(pango_lin, mutations=None, location=None)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mutation_details.html">mutation_details(mutations)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="daily_lag.html">daily_lag(location=None)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Outbreak_data%20Functions.html">get_outbreak_data()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="id_lookup.html">id_lookup(locations, max_results = 10, table = False)</a></li>
 </ul>
 
             
@@ -176,8 +176,8 @@
   <div class="section" id="global-prevalence-pango-lin-mutations-cumulative">
 <h1>global_prevalence(pango_lin, mutations, cumulative)<a class="headerlink" href="#global-prevalence-pango-lin-mutations-cumulative" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="outbreak_data.global_prevalence">
-<span class="sig-prename descclassname"><span class="pre">outbreak_data.</span></span><span class="sig-name descname"><span class="pre">global_prevalence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pango_lin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cumulative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test.outbreak.info'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#outbreak_data.global_prevalence" title="Permalink to this definition">¶</a></dt>
+<dt id="outbreak_data.global_prevalence">
+<code class="sig-prename descclassname"><span class="pre">outbreak_data.</span></code><code class="sig-name descname"><span class="pre">global_prevalence</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pango_lin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cumulative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test.outbreak.info'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#outbreak_data.global_prevalence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the global daily prevalence of a PANGO lineage</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><dl class="field-list simple">
@@ -198,6 +198,12 @@
 </dl>
 </dd></dl>
 
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Example usage:</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>             <span class="n">prevalence</span> <span class="o">=</span> <span class="n">outbreak_data</span><span class="o">.</span><span class="n">global_prevalence</span><span class="p">(</span><span class="s1">&#39;XBB.1.5.9&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
