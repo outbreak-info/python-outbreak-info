@@ -35,11 +35,11 @@ def update_all_sequence_counts():
     val1 =  outbreak_data.sequence_counts('USA_US-CA', server=test_server)
     val1.to_csv(save_file)
 
-def update_all_prevalence_by_location():
-    #test one
-    save_file = os.path.join(os.path.dirname(__file__), 'test_data', 'prevalence_by_location.csv')
-    val1 = outbreak_data.prevalence_by_location('USA_US-NY', startswith='b.1', server=test_server)
-    val1.to_csv(save_file)
+# def update_all_prevalence_by_location():
+#     #test one
+#     save_file = os.path.join(os.path.dirname(__file__), 'test_data', 'prevalence_by_location.csv')
+#     val1 = outbreak_data.prevalence_by_location('USA_US-NY', startswith='b.1', server=test_server)
+#     val1.to_csv(save_file)
 
 def update_all_daily_prev():
     #test one
@@ -107,7 +107,7 @@ def main():
     update_mutations_by_lineage()
     update_global_prevalence()
     update_all_sequence_counts()
-    update_all_prevalence_by_location()
+    # update_all_prevalence_by_location()
     update_all_daily_prev()
     update_all_lineage_by_sub_admin()
     update_all_collection_date()

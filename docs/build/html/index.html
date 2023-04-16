@@ -7,14 +7,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Welcome to the Python Outbreak.info API’s documentation! &mdash; Python Outbreak.info API 0.1 documentation</title>
+  <title>Welcome to the Python Outbreak.info package docs! &mdash; Python Outbreak.info API 0.1 documentation</title>
   
 
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
 
@@ -33,7 +33,6 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -43,7 +42,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="get_outbreak_data()" href="Outbreak_data%20Functions.html" /> 
+    <link rel="next" title="cases_by_location(location)" href="Cases_by_location.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -89,7 +88,6 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="Outbreak_data%20Functions.html">get_outbreak_data()</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Cases_by_location.html">cases_by_location(location)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lineage_mutations.html">lineage_mutations(pango_lin, mutation, freq)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Prevalence_by_location.html">prevalence_by_location(location, startswith)</a></li>
@@ -101,6 +99,8 @@
 <li class="toctree-l1"><a class="reference internal" href="collection_date.html">collection_date(pango_lin, mutations=None, location=None)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mutation_details.html">mutation_details(mutations)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="daily_lag.html">daily_lag(location=None)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Outbreak_data%20Functions.html">get_outbreak_data()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="id_lookup.html">id_lookup(locations, max_results = 10, table = False)</a></li>
 </ul>
 
             
@@ -153,7 +153,7 @@
     
       <li><a href="#" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Welcome to the Python Outbreak.info API’s documentation!</li>
+      <li>Welcome to the Python Outbreak.info package docs!</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -172,29 +172,48 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="welcome-to-the-python-outbreak-info-api-s-documentation">
-<h1>Welcome to the Python Outbreak.info API’s documentation!<a class="headerlink" href="#welcome-to-the-python-outbreak-info-api-s-documentation" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-</div>
+  <div class="section" id="welcome-to-the-python-outbreak-info-package-docs">
+<h1>Welcome to the Python Outbreak.info package docs!<a class="headerlink" href="#welcome-to-the-python-outbreak-info-package-docs" title="Permalink to this headline">¶</a></h1>
 <p>Here you can find information on the functions you will use to collect and analyze SARS-COV-2  data from the Outbreak.info API.
 Our package pulls data from the <a class="reference external" href="https://api.outbreak.info/">Outbreak.info API</a> and is reflected on our <a class="reference external" href="https://outbreak.info/">Outbreak.info web interface</a></p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>We recommend installing the package via pip using:</p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">python-outbreak-info</span></code></p>
+<p>Alternatively, the package can be directly installed from source via pip:</p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">git+https://github.com/outbreak-info/python-outbreak-info.git</span></code></p>
+</div>
 <div class="section" id="getting-started">
 <h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
-<p>To start using the Python Outbreak package, please run</p>
-<p><code class="docutils literal notranslate"><span class="pre">`</span>
-<span class="pre">python</span> <span class="pre">authenticate_user.py</span>
-<span class="pre">`</span></code></p>
-<p>and login using your GISAID credentials in order to generate an API key.</p>
+<p>The Python Outbreak.info package contains key functions for accessing genomic and epidemiological data for SARS-CoV-2. Access to genomic data requires logging in using GISAID credentials to generate an API key, using the <code class="docutils literal notranslate"><span class="pre">authenticate_new_user()</span></code> function. To perform authentication, you’ll need to first run</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">outbreak_data</span> <span class="kn">import</span> <span class="n">authenticate_user</span>
+<span class="n">authenticate_user</span><span class="o">.</span><span class="n">authenticate_new_user</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>and then you should be able access all of the functionality of the package. Most of the rest of the tools are available within the <code class="docutils literal notranslate"><span class="pre">outbreak_data</span></code> component of the package. For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">outbreak_data</span> <span class="kn">import</span> <span class="n">outbreak_data</span>
+<span class="n">lin_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;B.1.1.7&#39;</span><span class="p">,</span><span class="s1">&#39;B.1.351&#39;</span><span class="p">,</span><span class="s1">&#39;B.1.617.2&#39;</span><span class="p">]</span>
+<span class="c1"># request lineages occurring with minimum frequency of 0.05 (5%)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">outbreak_data</span><span class="o">.</span><span class="n">lineage_mutations</span><span class="p">(</span><span class="n">lin_list</span><span class="p">,</span><span class="n">freq</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="c1"># filter mutations and sort by codon number</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;gene&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;S&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;codon_num&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For location-specific analyses, users will need to supply the appropriate location code corresponding to their location of interest. To do this, we provide an ID lookup tool kit via the <code class="docutils literal notranslate"><span class="pre">outbreak_tools</span></code> part of the package. An example lookup should look like:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">outbreak_tools</span> <span class="kn">import</span> <span class="n">outbreak_tools</span>
+<span class="n">location_list</span> <span class="o">=</span> <span class="n">outbreak_tools</span><span class="o">.</span><span class="n">id_lookup</span><span class="p">([</span><span class="s1">&#39;Illinois&#39;</span><span class="p">,</span><span class="s1">&#39;South Africa&#39;</span><span class="p">,</span><span class="s1">&#39;Chile&#39;</span><span class="p">])</span>
+<span class="c1"># which returns [&#39;USA_US-IL&#39;, &#39;ZAF&#39;, &#39;CHL&#39;]</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This project is under active development.</p>
 </div>
 </div>
-<div class="section" id="contents">
-<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="core-outbreak-data-tools">
+<h2>Core Outbreak Data Tools<a class="headerlink" href="#core-outbreak-data-tools" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Outbreak_data%20Functions.html">get_outbreak_data()</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Cases_by_location.html">cases_by_location(location)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lineage_mutations.html">lineage_mutations(pango_lin, mutation, freq)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Prevalence_by_location.html">prevalence_by_location(location, startswith)</a></li>
@@ -206,8 +225,14 @@ Our package pulls data from the <a class="reference external" href="https://api.
 <li class="toctree-l1"><a class="reference internal" href="collection_date.html">collection_date(pango_lin, mutations=None, location=None)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mutation_details.html">mutation_details(mutations)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="daily_lag.html">daily_lag(location=None)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Outbreak_data%20Functions.html">get_outbreak_data()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="id_lookup.html">id_lookup(locations, max_results = 10, table = False)</a></li>
 </ul>
 </div>
+</div>
+<div class="section" id="example-analyses">
+<h2>Example analyses:<a class="headerlink" href="#example-analyses" title="Permalink to this headline">¶</a></h2>
+<p>Coming soon</p>
 </div>
 </div>
 
@@ -217,7 +242,7 @@ Our package pulls data from the <a class="reference external" href="https://api.
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="Outbreak_data%20Functions.html" class="btn btn-neutral float-right" title="get_outbreak_data()" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Cases_by_location.html" class="btn btn-neutral float-right" title="cases_by_location(location)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

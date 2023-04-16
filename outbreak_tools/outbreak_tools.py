@@ -2,7 +2,6 @@ from outbreak_data import outbreak_data
 import pandas as pd
 import re
 import warnings
-from IPython.display import display
 
 
 def id_lookup(locations, max_results = 10, table = False):
