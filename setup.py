@@ -16,9 +16,9 @@ description = ("Python interface to Outbreak.info,"
 
 
 setup(
-    name="python-outbreak-info",
+    name="python_outbreak_data",
     version="1.0",
-    packages=find_packages(),
+    packages=find_packages("outbreak_data", "outbreak_tools"),
     author="Outbreak.info dev team",
     license='MIT',
     author_email="lhughes@scripps.edu",
