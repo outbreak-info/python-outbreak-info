@@ -138,7 +138,7 @@ def cases_by_location(location, server=server, auth=None, pull_smoothed=0):
             raise Exception('{} is not a valid location ID'.format(i))
 
 
-def prevalence_by_location(location, startswith=None, ndays=2048, nday_threshold=0, other_threshold=0, other_exclude=None, cumulative=None, server=server, auth=None):
+def prevalence_by_location(location, startswith=None, ndays=2048, nday_threshold=1, other_threshold=0, other_exclude=None, cumulative=None, server=server, auth=None):
     """
     Loads prevalence data from a location
 
