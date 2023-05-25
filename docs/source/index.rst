@@ -70,4 +70,7 @@ Core Outbreak Data Tools
 
 Example analyses:
 --------------------------
-Coming soon 
+.. toctree::
+   Epidemiologic Data <epidem_analysis>
+   Lineage Prevalences <genomic_analysis> 
+

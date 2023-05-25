@@ -2,6 +2,8 @@
 Lineage and Mutation Analysis
 -----------------------------
 
+Python Outbreak Data package has contains multiple tools that can collect the most relevant genomic information on SARS-CoV-2. Using combination of these endpoints will allow you to get the information on variants of concern (VoC) and the current mutations to conduct your own multi-level genomic analysis on SARS-CoV-2. On this page, you'll find a few example workflws that demonstrate how the pulled data can be manipulated and visualized to track the progresion of SARS-CoV-2.
+
 Here is an example workflow that allows the user to manipulate the data to find all the XBB  lineages prevalent in India within a 1-year timeframe::
   
       import outbreak_data as od
@@ -47,11 +49,12 @@ Here is an example workflow that allows the user to manipulate the data to find 
 
 [985 rows x 6 columns]
 
-.. image:: prev_visual.*
+.. image:: graphs/prev_visual.png
 
-.. note:: The `Vega-Altair <https://altair-viz.github.io/index.html>`_ visualization package is used for demonstration purposes.         However, any Python visual package can be used to create graphi    cal representations of the data.
+.. note:: The `Vega-Altair <https://altair-viz.github.io/index.html>`_ visualization package is used for demonstration purposes.         However, any Python visual package can be used to create graphical representations of the data.
 
-# Finding the Most Prevalent Lineages 
+**Finding the Most Prevalent Lineages**
+ 
 If we wanted to determine and plot the top four most prevalent lineages in India, we can make a few queries and use a few simple commands to create a table that shows us what these lineages are::
 
     data=od.prevalence_by_location("IND")
@@ -79,7 +82,7 @@ If we wanted to determine and plot the top four most prevalent lineages in India
 
 Next we'll collect the prevalence data on each of the four lineages::
 
-    # Retrieve the official data on the prevalences of these lineages using `daily_prev <file:///Users/sarahrandall/Python-outbreak-info/docs/build/html/daily_prev.html>`_
+    # Retrieve the official data on the prevalences of these lineages using `daily_prev()`
     d1 = od.daily_prev('ba.2', "IND")
     d2 = od.daily_prev('ba.2.10.1', "IND")
     d3 = od.daily_prev('bq.1.1', "IND")
@@ -103,4 +106,4 @@ Next we'll collect the prevalence data on each of the four lineages::
 
     ## Use the visual package of your choice to create an area graph using your data
 
-.. image:: top4.*
+.. image:: graphs/top4.png

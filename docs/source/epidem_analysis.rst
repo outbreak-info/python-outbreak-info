@@ -47,7 +47,7 @@ For example, we can look at the pattern of infection count increases in Californ
 
 [93 rows x 5 columns]
 
-.. image:: ca_cases.*
+.. image:: graphs/ca_cases.png
 
 We can also do the same analysis over multiple locations and visualize them all at once::
     
@@ -61,4 +61,4 @@ We can also do the same analysis over multiple locations and visualize them all 
     state_count = state_count.sort_values(by = "date")
     state_count = state_count.loc[state_count["date"].between("2020-10-15", "2021-01-15")]
 
-multi_state_cases.*
+.. image:: graphs/multi_state_cases.png
