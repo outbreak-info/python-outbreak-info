@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>lineage_mutations(pango_lin, mutation, freq) &mdash; Python Outbreak.info API 0.1 documentation</title>
@@ -13,8 +14,8 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
 
@@ -33,6 +34,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -89,7 +91,6 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="Outbreak_data%20Functions.html">get_outbreak_data()</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Cases_by_location.html">cases_by_location(location)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">lineage_mutations(pango_lin, mutation, freq)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Prevalence_by_location.html">prevalence_by_location(location, startswith)</a></li>
@@ -97,10 +98,14 @@
 <li class="toctree-l1"><a class="reference internal" href="Seq_counts.html">sequence_counts(location, cumulative, sub_admin)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Mut_By_Lin.html">mutations_by_lineage(mutation, location, pango_lin)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="auth_setup.html">authenticate_new_user()</a></li>
-<li class="toctree-l1"><a class="reference internal" href="daily_prev_by_location.html">daily_prev_by_location(pango_lin, location=’USA’, mutations=None, cumulative=None)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="collection_date.html">collection_date(pango_lin, mutations=None, location=None)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mutation_details.html">mutation_details(mutations)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="daily_lag.html">daily_lag(location=None)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Outbreak_data_Functions.html">get_outbreak_data()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="id_lookup.html">id_lookup(locations, max_results = 10, table = False)</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="epidem_analysis.html">Analysis for Epidemiologic Data</a></li>
 </ul>
 
             
@@ -172,28 +177,28 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="lineage-mutations-pango-lin-mutation-freq">
+  <section id="lineage-mutations-pango-lin-mutation-freq">
 <h1>lineage_mutations(pango_lin, mutation, freq)<a class="headerlink" href="#lineage-mutations-pango-lin-mutation-freq" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="outbreak_data.lineage_mutations">
-<code class="sig-prename descclassname"><span class="pre">outbreak_data.</span></code><code class="sig-name descname"><span class="pre">lineage_mutations</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pango_lin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'api.outbreak.info'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#outbreak_data.lineage_mutations" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="outbreak_data.lineage_mutations">
+<span class="sig-prename descclassname"><span class="pre">outbreak_data.</span></span><span class="sig-name descname"><span class="pre">lineage_mutations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pango_lin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'api.outbreak.info'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#outbreak_data.lineage_mutations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves data from all mutations in a specified lineage above a frequency threshold.
 - Mutiple queries for lineages and mutations can be separated by “,”
 - Use ‘OR’ in a string to return overlapping mutations in multiple lineages: ‘BA.2 OR BA.1’
-- param mutation is only useful for one lineage + mutation1 + mutation2 …. combinations</p>
+- mutation is only useful for one lineage + mutation1 + mutation2 …. combinations</p>
 <blockquote>
 <div><dl class="simple">
 <dt>Arguments:</dt><dd><dl class="field-list simple">
-<dt class="field-odd">param pango_lin</dt>
+<dt class="field-odd">pango_lin</dt>
 <dd class="field-odd"><p>A string or list; loads data for all mutations in a specified PANGO lineage</p>
 </dd>
-<dt class="field-even">param mutation</dt>
+<dt class="field-even">mutation</dt>
 <dd class="field-even"><p>A string or list; loads data of mutations for sequences classified as a specified PANGO lineage with mutation</p>
 </dd>
-<dt class="field-odd">param freq</dt>
+<dt class="field-odd">freq</dt>
 <dd class="field-odd"><p>A number between 0 and 1 specifying the frequency threshold above which to return mutations (default = 0.8)</p>
 </dd>
-<dt class="field-even">return</dt>
+<dt class="field-even">Value</dt>
 <dd class="field-even"><p>A pandas dataframe</p>
 </dd>
 </dl>
@@ -220,7 +225,7 @@
 </pre></div>
 </div>
 </div>
-</div>
+</section>
 
 
            </div>
