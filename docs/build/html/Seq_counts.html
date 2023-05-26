@@ -89,7 +89,6 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="Outbreak_data%20Functions.html">get_outbreak_data()</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Cases_by_location.html">cases_by_location(location)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lineage_mutations.html">lineage_mutations(pango_lin, mutation, freq)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Prevalence_by_location.html">prevalence_by_location(location, startswith)</a></li>
@@ -97,10 +96,15 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">sequence_counts(location, cumulative, sub_admin)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Mut_By_Lin.html">mutations_by_lineage(mutation, location, pango_lin)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="auth_setup.html">authenticate_new_user()</a></li>
-<li class="toctree-l1"><a class="reference internal" href="daily_prev_by_location.html">daily_prev_by_location(pango_lin, location=’USA’, mutations=None, cumulative=None)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="collection_date.html">collection_date(pango_lin, mutations=None, location=None)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mutation_details.html">mutation_details(mutations)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="daily_lag.html">daily_lag(location=None)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Outbreak_data_Functions.html">get_outbreak_data()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="id_lookup.html">id_lookup(locations, max_results = 10, table = False)</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="epidem_analysis.html">Epidemiologic Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genomic_analysis.html">Lineage Prevalences</a></li>
 </ul>
 
             
@@ -180,16 +184,16 @@
 <dd><p>Returns number of sequences per day by location</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><dl class="field-list simple">
-<dt class="field-odd">param location_id</dt>
+<dt class="field-odd">location_id</dt>
 <dd class="field-odd"><p>(Optional). If not specified, the global total counts are returned.</p>
 </dd>
-<dt class="field-even">param cumulative</dt>
+<dt class="field-even">cumulative</dt>
 <dd class="field-even"><p>(Optional). If true returns the cumulative number of sequences till date.</p>
 </dd>
-<dt class="field-odd">param subadmin</dt>
+<dt class="field-odd">subadmin</dt>
 <dd class="field-odd"><p>(Optional). If true and cumulative=true, returns the cumulative number of sequences for the immedaite lower admin level.</p>
 </dd>
-<dt class="field-even">return</dt>
+<dt class="field-even">Value</dt>
 <dd class="field-even"><p>A pandas dataframe.</p>
 </dd>
 </dl>
