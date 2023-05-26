@@ -1,13 +1,16 @@
+Lineage and mutation prevalence analyses
+-----------------------------------------
 
-Lineage and Mutation Analysis
------------------------------
+The ``outbreak_data`` package has contains multiple tools that can collect the relevant genomic information on SARS-CoV-2. Using a combination of these endpoints will allow you to get the information on variants of concern (VoC) and the current mutations to conduct your own multi-level genomic analysis on SARS-CoV-2. On this page, you'll find a few example workflows that demonstrate data manipulation and visualization steps to track the progression of SARS-CoV-2.
 
-Python Outbreak Data package has contains multiple tools that can collect the most relevant genomic information on SARS-CoV-2. Using combination of these endpoints will allow you to get the information on variants of concern (VoC) and the current mutations to conduct your own multi-level genomic analysis on SARS-CoV-2. On this page, you'll find a few example workflws that demonstrate how the pulled data can be manipulated and visualized to track the progresion of SARS-CoV-2.
+Here is an example workflow that allows the user to manipulate the data to find all the XBB lineages prevalent in India within a 1-year timeframe::
 
-Here is an example workflow that allows the user to manipulate the data to find all the XBB  lineages prevalent in India within a 1-year timeframe::
-  
-      import outbreak_data as od
-      import pandas as pd
+      # Perform authentication if you haven't already
+      from outbreak_data import authenticate_user
+      authenticate_user.authenticate_new_user()
+
+      # Import outbreak_data package
+      from outbreak_data import outbreak_data as od
 
       # Get the prevalence of all circulating XBB lineages in India
       data = od.prevalence_by_location("IND", startswith = 'xbb')
@@ -46,8 +49,7 @@ Here is an example workflow that allows the user to manipulate the data to find 
     2793            0.014174  
     3381            0.045358  
     3981            0.084337  
-
-[985 rows x 6 columns]
+   [985 rows x 6 columns]
 
 .. image:: graphs/prev_visual.png
 

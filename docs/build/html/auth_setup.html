@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>authenticate_new_user() &mdash; Python Outbreak.info API 0.1 documentation</title>
@@ -14,8 +13,8 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
 
@@ -34,7 +33,6 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -44,7 +42,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="daily_prev_by_location(pango_lin, location=’USA’, mutations=None, cumulative=None)" href="daily_prev_by_location.html" />
+    <link rel="next" title="collection_date(pango_lin, mutations=None, location=None)" href="collection_date.html" />
     <link rel="prev" title="mutations_by_lineage(mutation, location, pango_lin)" href="Mut_By_Lin.html" /> 
 </head>
 
@@ -98,12 +96,15 @@
 <li class="toctree-l1"><a class="reference internal" href="Seq_counts.html">sequence_counts(location, cumulative, sub_admin)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Mut_By_Lin.html">mutations_by_lineage(mutation, location, pango_lin)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">authenticate_new_user()</a></li>
-<li class="toctree-l1"><a class="reference internal" href="daily_prev_by_location.html">daily_prev_by_location(pango_lin, location=’USA’, mutations=None, cumulative=None)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="collection_date.html">collection_date(pango_lin, mutations=None, location=None)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mutation_details.html">mutation_details(mutations)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="daily_lag.html">daily_lag(location=None)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Outbreak_data%20Functions.html">get_outbreak_data()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Outbreak_data_Functions.html">get_outbreak_data()</a></li>
 <li class="toctree-l1"><a class="reference internal" href="id_lookup.html">id_lookup(locations, max_results = 10, table = False)</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="epidem_analysis.html">Epidemiologic Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genomic_analysis.html">Lineage Prevalences</a></li>
 </ul>
 
             
@@ -175,15 +176,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="authenticate-new-user">
+  <div class="section" id="authenticate-new-user">
 <h1>authenticate_new_user()<a class="headerlink" href="#authenticate-new-user" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="authenticate_user.authenticate_new_user">
-<span class="sig-prename descclassname"><span class="pre">authenticate_user.</span></span><span class="sig-name descname"><span class="pre">authenticate_new_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#authenticate_user.authenticate_new_user" title="Permalink to this definition">¶</a></dt>
+<dt id="authenticate_user.authenticate_new_user">
+<code class="sig-prename descclassname"><span class="pre">authenticate_user.</span></code><code class="sig-name descname"><span class="pre">authenticate_new_user</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#authenticate_user.authenticate_new_user" title="Permalink to this definition">¶</a></dt>
 <dd><p>Authenticate a user for genomics API access.</p>
 </dd></dl>
 
-</section>
+</div>
 
 
            </div>
@@ -191,7 +192,7 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="daily_prev_by_location.html" class="btn btn-neutral float-right" title="daily_prev_by_location(pango_lin, location=’USA’, mutations=None, cumulative=None)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="collection_date.html" class="btn btn-neutral float-right" title="collection_date(pango_lin, mutations=None, location=None)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="Mut_By_Lin.html" class="btn btn-neutral float-left" title="mutations_by_lineage(mutation, location, pango_lin)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
