@@ -3,6 +3,7 @@ Script to generate authentication token for Python package.
 """
 
 import os
+import sys
 import time
 import requests
 import webbrowser

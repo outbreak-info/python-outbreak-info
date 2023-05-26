@@ -43,7 +43,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="mutation_details(mutations)" href="mutation_details.html" />
-    <link rel="prev" title="daily_prev_by_location(pango_lin, location=’USA’, mutations=None, cumulative=None)" href="daily_prev_by_location.html" /> 
+    <link rel="prev" title="authenticate_new_user()" href="auth_setup.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -89,7 +89,6 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="Outbreak_data%20Functions.html">get_outbreak_data()</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Cases_by_location.html">cases_by_location(location)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lineage_mutations.html">lineage_mutations(pango_lin, mutation, freq)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Prevalence_by_location.html">prevalence_by_location(location, startswith)</a></li>
@@ -97,10 +96,15 @@
 <li class="toctree-l1"><a class="reference internal" href="Seq_counts.html">sequence_counts(location, cumulative, sub_admin)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Mut_By_Lin.html">mutations_by_lineage(mutation, location, pango_lin)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="auth_setup.html">authenticate_new_user()</a></li>
-<li class="toctree-l1"><a class="reference internal" href="daily_prev_by_location.html">daily_prev_by_location(pango_lin, location=’USA’, mutations=None, cumulative=None)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">collection_date(pango_lin, mutations=None, location=None)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mutation_details.html">mutation_details(mutations)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="daily_lag.html">daily_lag(location=None)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Outbreak_data_Functions.html">get_outbreak_data()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="id_lookup.html">id_lookup(locations, max_results = 10, table = False)</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="epidem_analysis.html">Epidemiologic Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genomic_analysis.html">Lineage Prevalences</a></li>
 </ul>
 
             
@@ -180,16 +184,16 @@
 <dd><p>Most recent collection date by location</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><dl class="field-list simple">
-<dt class="field-odd">param pango_lin</dt>
+<dt class="field-odd">pango_lin</dt>
 <dd class="field-odd"><p>A string. (Required).</p>
 </dd>
-<dt class="field-even">param mutations</dt>
+<dt class="field-even">mutations</dt>
 <dd class="field-even"><p>(Optional). A string or list of strings. Comma separated list of mutations.</p>
 </dd>
-<dt class="field-odd">param location</dt>
+<dt class="field-odd">location</dt>
 <dd class="field-odd"><p>(Optional). If not specified, return most recent date globally.</p>
 </dd>
-<dt class="field-even">return</dt>
+<dt class="field-even">Value</dt>
 <dd class="field-even"><p>A pandas dataframe.</p>
 </dd>
 </dl>
@@ -206,7 +210,7 @@
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="mutation_details.html" class="btn btn-neutral float-right" title="mutation_details(mutations)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="daily_prev_by_location.html" class="btn btn-neutral float-left" title="daily_prev_by_location(pango_lin, location=’USA’, mutations=None, cumulative=None)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="auth_setup.html" class="btn btn-neutral float-left" title="authenticate_new_user()" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

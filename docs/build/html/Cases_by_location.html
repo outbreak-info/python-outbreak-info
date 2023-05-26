@@ -43,7 +43,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="lineage_mutations(pango_lin, mutation, freq)" href="Lineage_mutations.html" />
-    <link rel="prev" title="get_outbreak_data()" href="Outbreak_data%20Functions.html" /> 
+    <link rel="prev" title="Welcome to the Python Outbreak.info package docs!" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -89,7 +89,6 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="Outbreak_data%20Functions.html">get_outbreak_data()</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">cases_by_location(location)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lineage_mutations.html">lineage_mutations(pango_lin, mutation, freq)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Prevalence_by_location.html">prevalence_by_location(location, startswith)</a></li>
@@ -97,10 +96,15 @@
 <li class="toctree-l1"><a class="reference internal" href="Seq_counts.html">sequence_counts(location, cumulative, sub_admin)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Mut_By_Lin.html">mutations_by_lineage(mutation, location, pango_lin)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="auth_setup.html">authenticate_new_user()</a></li>
-<li class="toctree-l1"><a class="reference internal" href="daily_prev_by_location.html">daily_prev_by_location(pango_lin, location=’USA’, mutations=None, cumulative=None)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="collection_date.html">collection_date(pango_lin, mutations=None, location=None)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mutation_details.html">mutation_details(mutations)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="daily_lag.html">daily_lag(location=None)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Outbreak_data_Functions.html">get_outbreak_data()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="id_lookup.html">id_lookup(locations, max_results = 10, table = False)</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="epidem_analysis.html">Epidemiologic Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genomic_analysis.html">Lineage Prevalences</a></li>
 </ul>
 
             
@@ -181,13 +185,13 @@
 if location is a list of string locations. Since this API endpoint supports paging, collect_all is used to return all data.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><dl class="field-list simple">
-<dt class="field-odd">param location</dt>
+<dt class="field-odd">location</dt>
 <dd class="field-odd"><p>A string or list of strings, separate multiple locations by “,”</p>
 </dd>
-<dt class="field-even">param pull_smoothed</dt>
+<dt class="field-even">pull_smoothed</dt>
 <dd class="field-even"><p>For every value &gt;= 0, returns 1000 obs. (paging)</p>
 </dd>
-<dt class="field-odd">return</dt>
+<dt class="field-odd">Value</dt>
 <dd class="field-odd"><p>A pandas dataframe</p>
 </dd>
 </dl>
@@ -210,7 +214,7 @@ if location is a list of string locations. Since this API endpoint supports pagi
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="Lineage_mutations.html" class="btn btn-neutral float-right" title="lineage_mutations(pango_lin, mutation, freq)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="Outbreak_data%20Functions.html" class="btn btn-neutral float-left" title="get_outbreak_data()" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to the Python Outbreak.info package docs!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
