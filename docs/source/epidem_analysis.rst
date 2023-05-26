@@ -1,10 +1,15 @@
-Analysis for Epidemiologic Data
--------------------------------
-The Outbreak_Data package contains endpoints that return epidemiologic data on SARS-CoV-2. In conjunction with a Python visual package, we are able to see exactly how SARS-CoV-2 is affecting countries around the world.
+Working with epidemiological data
+--------------------------------------
+The ``outbreak_data`` package contains endpoints that return epidemiological data on SARS-CoV-2. We can then visualize how SARS-CoV-2 is affecting countries around the world (with the help of one of the many plotting packages available for Python). 
 
-For example, we can look at the pattern of infection count increases in California during a specific point in time::
+For example, we can look at the pattern of infection counts in California during a specific point in time::
 
-    import outbreak_data as od
+    # Perform authentication
+    from outbreak_data import authenticate_user
+    authenticate_user.authenticate_new_user()
+
+    # Import outbreak_data package
+    from outbreak_data import outbreak_data as od
     import pandas as pd
     
     # Get the number of increased cases from the previous day in California
@@ -44,8 +49,7 @@ For example, we can look at the pattern of infection count increases in Californ
     413                  15707  2021-08-13  
     167                  13100  2021-08-14  
     414                  10744  2021-08-15  
-
-[93 rows x 5 columns]
+    [93 rows x 5 columns]
 
 .. image:: graphs/ca_cases.png
 
