@@ -3,7 +3,7 @@ import requests
 import warnings
 import pandas as pd
 
-import authenticate_user
+from outbreak_data import authenticate_user
 
 server = 'api.outbreak.info'  # or 'dev.outbreak.info'
 nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer ES versions as well
@@ -138,21 +138,22 @@ def cases_by_location(location, server=server, auth=None, pull_smoothed=0):
             raise Exception('{} is not a valid location ID'.format(i))
 
 
-def prevalence_by_location(location, ndays=180, nday_threshold=10, other_threshold=0.05, other_exclude=None, cumulative=None, server=server, auth=None, startswith=None):
+def prevalence_by_location(location, startswith=None, ndays=2048, nday_threshold=1, other_threshold=0, other_exclude=None, cumulative=None, server=server, auth=None):
     """
     Loads prevalence data from a location
 
     Arguments:
      :param location: A string
+     :param startswith: A string; loads data for all lineages beginning with first letter(s) of name
      :param other_threshold (Default: 0) Minimum prevalence threshold below which lineages must be accumulated under "Other".
      :param nday_threshold (Default: 0) Minimum number of days in which the prevalence of a lineage must be below other_threshold to be accumulated under "Other".
-     :param ndays (Default: 2048) The number of days before the current date to be used as a window to accumulate lineages under "Other".
+     :param ndays (Default: 2048) The number of days before the current date to be used as a window to accumulate linegaes under "Other".
      :param other_exclude: Comma separated lineages that are NOT to be included under "Other" even if the conditions specified by the three thresholds above are met.
-     :param cumulative: (Default: false) If true return the cumulative prevalence.:param startswith: A string; loads data for all lineages beginning with first letter(s) of name
+     :param cumulative: (Default: false) If true return the cumulative prevalence.
      :return: A pandas dataframe
     """
                 
-    query =  f'location_id={location}&ndays={ndays}&nday_threshold={nday_threshold}&other_threshold={other_threshold}'
+    query =  f'location_id={location}&sort=date&ndays={ndays}&nday_threshold={nday_threshold}&other_threshold={other_threshold}'
    
     if cumulative:
         query = query + '&' + 'cumulative=true'
@@ -165,7 +166,6 @@ def prevalence_by_location(location, ndays=180, nday_threshold=10, other_thresho
     if startswith is not None:
         return df.loc[df['lineage'].str.startswith(startswith)]
     return df
-
 
 
 def lineage_mutations(pango_lin, mutations=None, freq=0.8, server=server, auth=None):
@@ -225,8 +225,8 @@ def global_prevalence(pango_lin, mutations=None, cumulative=None, server=server)
        
        Arguments:
         :param pangolin_lineage: (Required).
-        :param mutations: (Somewhat optional). Comma separated list of mutations.
-        :param cumulative: (Somewhat optional). If true returns the cumulative global prevalence since the first day of detection.
+        :param mutations: (Optional). Comma separated list of mutations.
+        :param cumulative: (Optional). If true returns the cumulative global prevalence since the first day of detection.
         :return: A pandas dataframe."""
     if mutations:
         if isinstance(mutations, list):
@@ -254,9 +254,9 @@ def sequence_counts(location=None, cumulative=None, sub_admin=None, server=serve
     """Returns number of sequences per day by location
 
     Arguments:
-     :param location_id: (Somewhat optional). If not specified, the global total counts are returned.
-     :param cumulative: (Somewhat optional). If true returns the cumulative number of sequences till date.
-     :param subadmin: (Somewhat optional). If true and cumulative=true, returns the cumulative number of sequences for the immedaite lower admin level.
+     :param location_id: (Optional). If not specified, the global total counts are returned.
+     :param cumulative: (Optional). If true returns the cumulative number of sequences till date.
+     :param subadmin: (Optional). If true and cumulative=true, returns the cumulative number of sequences for the immedaite lower admin level.
      :return: A pandas dataframe.
     """
         
@@ -281,10 +281,10 @@ def mutations_by_lineage(mutation, location=None, pango_lin=None, freq=None, ser
     """Returns the prevalence of a mutation or series of mutations across specified lineages by location
 
     Arguments:
-     :param mutations: (Somewhat optional). List of mutations. 
-     :param location_id: (Somewhat optional). If not specified, return most recent date globally.
-     :param pangolin_lineage: (Somewhat optional). If not specfied, returns all Pango lineages containing that mutation.
-     :param frequency: (Somewhat optional) Minimimum frequency threshold for the prevalence of a mutation in a lineage.
+     :param mutations: (Optional). List of mutations. 
+     :param location_id: (Optional). If not specified, return most recent date globally.
+     :param pangolin_lineage: (Optional). If not specfied, returns all Pango lineages containing that mutation.
+     :param frequency: (Optional) Minimimum frequency threshold for the prevalence of a mutation in a lineage.
      :return: A pandas dataframe.
     """
 
@@ -315,10 +315,10 @@ def daily_prev(pango_lin, location='USA', mutations=None, cumulative=None, serve
     """Returns the daily prevalence of a PANGO lineage by location.
    
        Arguments:
-        :param pango_lin: (Required). List of lineages separated by ,
-        :param location_id: (Somewhat optional). Default location: USA
-        :param mutations: (Somewhat optional). List of mutations separated by AND
-        :param cumulative: (Somewhat optional). If true returns the cumulative global prevalence since the first day of detection.
+        :param: pango_lin (Required). List of lineages separated by ,
+        :param: location_id (Optional). Default location: USA
+        :param: mutations (Optional). List of mutations separated by AND
+        :param: cumulative (Optional). If true returns the cumulative global prevalence since the first day of detection.
         :return: A pandas dataframe."""
     
     if isinstance(pango_lin, str):
@@ -370,10 +370,10 @@ def lineage_by_sub_admin(pango_lin, mutations=None, location=None, ndays=0, dete
 
         Arguments:
         :param pangolin_lineage: (Required). A list or string. List of lineages separated by ,
-        :param mutations: (Somewhat optional). A string or list of strings. Uses AND logic.
-        :param location_id: (Somewhat optional). A string. If not specified, returns cumulative prevalence at the country level globally.
-        :param ndays: (Somewhat optional). An integer. Specify number of days from current date to calculative cumuative counts. If not specified, there is no limit on the window.
-        :param detected: (Somewhat optional). If true returns only if at least found in location
+        :param mutations: (Optional). A string or list of strings. Uses AND logic.
+        :param location_id: (Optional). A string. If not specified, returns cumulative prevalence at the country level globally.
+        :param ndays: (Optional). An integer. Specify number of days from current date to calculative cumuative counts. If not specified, there is no limit on the window.
+        :param detected: (Optional). If true returns only if at least found in location
         :return: A pandas dataframe."""
         
     if isinstance(pango_lin, str):
@@ -415,8 +415,8 @@ def collection_date(pango_lin, mutations=None, location=None, server=server):
 
     Arguments:
      :param pango_lin: A string. (Required).
-     :param mutations: (Somewhat optional). A string or list of strings. Comma separated list of mutations.
-     :param location: (Somewhat optional). If not specified, return most recent date globally.
+     :param mutations: (Optional). A string or list of strings. Comma separated list of mutations.
+     :param location: (Optional). If not specified, return most recent date globally.
      :return: A pandas dataframe.
     """
     if mutations:
@@ -443,8 +443,8 @@ def submission_date(pango_lin, mutations=None, location=None, server=server):
 
      Arguments:
      :param pango_lin: A string. (Required).
-     :param mutations: (Somewhat optional). A string or list of strings. Comma separated list of mutations.
-     :param location: (Somewhat optional). If not specified, return most recent date globally.
+     :param mutations: (Optional). A string or list of strings. Comma separated list of mutations.
+     :param location: (Optional). If not specified, return most recent date globally.
      :return: A pandas dataframe."""
     if mutations:
          if isinstance(mutations, list):
@@ -499,7 +499,7 @@ def daily_lag(location=None, server=server):
     """Return the daily lag between collection and submission dates by location
 
     Arguments:
-     :param location_id: (Somewhat optional). If not specified, return lag globally.
+     :param location_id: (Optional). If not specified, return lag globally.
      :return: A pandas dataframe.
     """
     query = ''
@@ -573,7 +573,7 @@ def location_details(location, server=server):
      
     Arguments:
     :param location: A string. (Required).
-    :return: Some pandas dataframes."""
+    :return: A pandas dataframe."""
    
     query = '' + '&' + f'id={location}'
     raw_data = get_outbreak_data('genomics/location-lookup', query, collect_all=False)
@@ -603,7 +603,3 @@ def wildcard_mutations(name, server=server):
                       "total_count":values[1]}, index=[0]) # append each df
                 df = pd.concat([df, newdf], sort=False)
     return df
-
-
-
-
