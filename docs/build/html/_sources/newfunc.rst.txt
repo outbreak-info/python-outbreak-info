@@ -1,5 +1,0 @@
-New function
-============
-
-
-.. py:function:: get_outbreak_data()

@@ -66,7 +66,6 @@ Core Outbreak Data Tools
    mutation_details
    daily_lag
    Outbreak_data_Functions
-   id_lookup
 
 Example analyses:
 --------------------------
