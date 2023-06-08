@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>mutations_by_lineage(mutation, location, pango_lin) &mdash; Python Outbreak.info API 0.1 documentation</title>
@@ -13,8 +14,8 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
 
@@ -33,6 +34,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -176,11 +178,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="mutations-by-lineage-mutation-location-pango-lin">
+  <section id="mutations-by-lineage-mutation-location-pango-lin">
 <h1>mutations_by_lineage(mutation, location, pango_lin)<a class="headerlink" href="#mutations-by-lineage-mutation-location-pango-lin" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="outbreak_data.mutations_by_lineage">
-<code class="sig-prename descclassname"><span class="pre">outbreak_data.</span></code><code class="sig-name descname"><span class="pre">mutations_by_lineage</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mutation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pango_lin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test.outbreak.info'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#outbreak_data.mutations_by_lineage" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="outbreak_data.mutations_by_lineage">
+<span class="sig-prename descclassname"><span class="pre">outbreak_data.</span></span><span class="sig-name descname"><span class="pre">mutations_by_lineage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mutation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pango_lin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test.outbreak.info'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#outbreak_data.mutations_by_lineage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the prevalence of a mutation or series of mutations across specified lineages by location</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><dl class="field-list simple">
@@ -204,7 +206,44 @@
 </dl>
 </dd></dl>
 
+<p>Example usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#Get info on mutation &#39;orf1b:p314l&#39;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">mutations_by_lineage</span><span class="p">(</span><span class="s1">&#39;orf1b:p314l&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
 </div>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Output</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>         <span class="n">pangolin_lineage</span>  <span class="n">lineage_count</span>  <span class="n">mutation_count</span>  <span class="n">proportion</span>  \
+ <span class="mi">0</span>                   <span class="n">ba</span><span class="mf">.2</span>        <span class="mi">1227503</span>         <span class="mi">1222717</span>    <span class="mf">0.996101</span>
+ <span class="mi">1</span>                <span class="n">b</span><span class="mf">.1.1.7</span>        <span class="mi">1154337</span>         <span class="mi">1147331</span>    <span class="mf">0.993931</span>
+ <span class="mi">2</span>                 <span class="n">ba</span><span class="mf">.1.1</span>        <span class="mi">1044480</span>         <span class="mi">1039813</span>    <span class="mf">0.995532</span>
+ <span class="mi">3</span>                   <span class="n">ay</span><span class="mf">.4</span>         <span class="mi">858839</span>          <span class="mi">854935</span>    <span class="mf">0.995454</span>
+ <span class="mi">4</span>                   <span class="n">ba</span><span class="mf">.1</span>         <span class="mi">438947</span>          <span class="mi">437207</span>    <span class="mf">0.996036</span>
+ <span class="o">...</span>                  <span class="o">...</span>            <span class="o">...</span>             <span class="o">...</span>         <span class="o">...</span>
+ <span class="mi">2851</span>                <span class="n">fn</span><span class="mf">.1</span>              <span class="mi">1</span>               <span class="mi">1</span>    <span class="mf">1.000000</span>
+ <span class="mi">2852</span>  <span class="n">miscba1ba2post5386</span>              <span class="mi">1</span>               <span class="mi">1</span>    <span class="mf">1.000000</span>
+ <span class="mi">2853</span>            <span class="n">xbb</span><span class="mf">.1.23</span>              <span class="mi">1</span>               <span class="mi">1</span>    <span class="mf">1.000000</span>
+ <span class="mi">2854</span>            <span class="n">xbb</span><span class="mf">.1.37</span>              <span class="mi">1</span>               <span class="mi">1</span>    <span class="mf">1.000000</span>
+ <span class="mi">2855</span>                 <span class="n">xbv</span>              <span class="mi">1</span>               <span class="mi">1</span>    <span class="mf">1.000000</span>
+
+       <span class="n">proportion_ci_lower</span>  <span class="n">proportion_ci_upper</span>
+ <span class="mi">0</span>                <span class="mf">0.995990</span>             <span class="mf">0.996210</span>
+ <span class="mi">1</span>                <span class="mf">0.993788</span>             <span class="mf">0.994071</span>
+ <span class="mi">2</span>                <span class="mf">0.995402</span>             <span class="mf">0.995658</span>
+ <span class="mi">3</span>                <span class="mf">0.995310</span>             <span class="mf">0.995595</span>
+ <span class="mi">4</span>                <span class="mf">0.995847</span>             <span class="mf">0.996219</span>
+ <span class="o">...</span>                   <span class="o">...</span>                  <span class="o">...</span>
+ <span class="mi">2851</span>             <span class="mf">0.146746</span>             <span class="mf">0.999614</span>
+ <span class="mi">2852</span>             <span class="mf">0.146746</span>             <span class="mf">0.999614</span>
+ <span class="mi">2853</span>             <span class="mf">0.146746</span>             <span class="mf">0.999614</span>
+ <span class="mi">2854</span>             <span class="mf">0.146746</span>             <span class="mf">0.999614</span>
+ <span class="mi">2855</span>             <span class="mf">0.146746</span>             <span class="mf">0.999614</span>
+</pre></div>
+</div>
+</div>
+<p>[2856 rows x 6 columns]</p>
+</section>
 
 
            </div>

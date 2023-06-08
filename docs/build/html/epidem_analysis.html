@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Working with epidemiological data &mdash; Python Outbreak.info API 0.1 documentation</title>
@@ -13,8 +14,8 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
 
@@ -33,6 +34,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -176,7 +178,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="working-with-epidemiological-data">
+  <section id="working-with-epidemiological-data">
 <h1>Working with epidemiological data<a class="headerlink" href="#working-with-epidemiological-data" title="Permalink to this headline">¶</a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">outbreak_data</span></code> package contains endpoints that return epidemiological data on SARS-CoV-2. We can then visualize how SARS-CoV-2 is affecting countries around the world (with the help of one of the many plotting packages available for Python).</p>
 <p>For example, we can look at the pattern of infection counts in California during a specific point in time:</p>
@@ -196,6 +198,15 @@
 <span class="n">counts_ca</span> <span class="o">=</span> <span class="n">counts_ca</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span> <span class="o">=</span> <span class="s2">&quot;date&quot;</span><span class="p">)</span>
 <span class="n">counts_ca</span> <span class="o">=</span> <span class="n">counts_ca</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">counts_ca</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="s2">&quot;2021-05-15&quot;</span><span class="p">,</span> <span class="s2">&quot;2021-08-15&quot;</span><span class="p">)]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">counts_ca</span><span class="p">)</span>
+
+<span class="c1">#Import visual package of choice</span>
+<span class="kn">import</span> <span class="nn">altair</span> <span class="k">as</span> <span class="nn">alt</span>
+
+<span class="c1">#Graph!</span>
+<span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">xbb_mutations</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Daily ORF1a:K47R AND S:T19I Prevalence of Lineage XBB&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mark_line</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+<span class="n">x</span><span class="o">=</span><span class="s1">&#39;date:T&#39;</span><span class="p">,</span>
+<span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s1">&#39;proportion (%):Q&#39;</span><span class="p">),</span>
+<span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;mutations:N&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="literal-block-wrapper docutils container" id="id1">
@@ -240,10 +251,16 @@
 <span class="n">state_count</span> <span class="o">=</span> <span class="n">state_count</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;admin1&quot;</span><span class="p">:</span> <span class="s2">&quot;location&quot;</span><span class="p">})</span>
 <span class="n">state_count</span> <span class="o">=</span> <span class="n">state_count</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span> <span class="o">=</span> <span class="s2">&quot;date&quot;</span><span class="p">)</span>
 <span class="n">state_count</span> <span class="o">=</span> <span class="n">state_count</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">state_count</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="s2">&quot;2020-10-15&quot;</span><span class="p">,</span> <span class="s2">&quot;2021-01-15&quot;</span><span class="p">)]</span>
+
+<span class="c1">#Graph it!</span>
+<span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">state_count</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot; 90 Day SARS-COV-2 Case Count Increase in Four States&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mark_line</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+<span class="n">x</span><span class="o">=</span><span class="s1">&#39;date:T&#39;</span><span class="p">,</span>
+<span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s1">&#39;confirmed_numIncrease:Q&#39;</span><span class="p">),</span>
+<span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;location:N&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="_images/multi_state_cases.png" src="_images/multi_state_cases.png" />
-</div>
+</section>
 
 
            </div>
