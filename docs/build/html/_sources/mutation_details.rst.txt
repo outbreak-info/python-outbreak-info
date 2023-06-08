@@ -9,7 +9,7 @@ Example usage::
       df = outbreak_data.mutation_details('orf1b:p314l')
       print(df)
   
-  .. code-block::
+.. code-block::
      :caption: Output
      
                   Key        Values

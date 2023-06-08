@@ -63,6 +63,26 @@ Here is an example workflow that allows the user to manipulate the data to find 
 
 .. note:: The `Vega-Altair <https://altair-viz.github.io/index.html>`_ visualization package is used for demonstration purposes.         However, any Python visual package can be used to create graphical representations of the data.
 
+**Lineage_Mutations Heatmap**
+
+A basic but important question: how do we define a lineage? What mutations consistently appear in most sequences within the lineage?     Here's how we can plot the characteristic mutations of XBB.1.9.1 occurring in 90% of sequences using a heatmap::
+ 
+     lineages = od.lineage_mutations("xbb.1", freq = 0.90)
+     #Formatting columns for plotting
+     lineages["lineage"] = "xbb.1.9.1"
+     lineages["prevalence"] = lineages["prevalence"].apply(lambda x: x*100)
+     lineages = lineages.rename(columns={'prevalence': 'prevalence %'})
+
+     #Import visual package of choice and plot
+     import altair as alt
+     alt.Chart(lineages).mark_rect().encode(
+     x = "mutation:N",
+     y = "lineage:N",
+     color = 'prevalence %:Q',)
+ 
+.. image:: graphs/mut_by_lin.png
+     
+
 **Finding the Most Prevalent Lineages**
  
 If we wanted to determine and plot the top four most prevalent lineages in India, we can make a few queries and use a few simple commands to create a table that shows us what these lineages are::
@@ -124,24 +144,4 @@ Next we'll collect the prevalence data on each of the four lineages::
 
 .. image:: graphs/top4.png
 
-**Lineage_Mutations Heatmap**
 
-A basic but important question: how do we define a lineage? What mutations consistently appear in most sequences within the lineage? Here's how we can plot the characteristic mutations of XBB.1.9.1 occurring in 90% of sequences using a heatmap:
-
-   
-    lineages = od.lineage_mutations("xbb.1", freq = 0.90)
-    #Formatting columns for plotting
-    lineages["lineage"] = "xbb.1.9.1"
-    lineages["prevalence"] = lineages["prevalence"].apply(lambda x: x*100)
-    lineages = lineages.rename(columns={'prevalence': 'prevalence %'})
-
-    ##Import visual package of choice and plot
-    import altair as alt
-    alt.Chart(lineages).mark_rect().encode(
-    x = "mutation:N",
-    y = "lineage:N",
-    color = 'prevalence %:Q',)
-
-.. image:: graphs/mut_by_lin.png
-    
-    

@@ -3,7 +3,7 @@ daily_lag(location=None)
 
 .. autofunction:: outbreak_data.daily_lag
 
-Example usage:
+Example usage::
 
     df = outbreak_data.daily_lag('LUX')
     print(df)

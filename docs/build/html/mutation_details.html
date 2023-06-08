@@ -198,25 +198,26 @@
 </dd></dl>
 
 <p>Example usage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="c1">#Get info on mutation &#39;orf1b:p314l&#39;</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">outbreak_data</span><span class="o">.</span><span class="n">mutation_details</span><span class="p">(</span><span class="s1">&#39;orf1b:p314l&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-
-<span class="o">..</span> <span class="n">code</span><span class="o">-</span><span class="n">block</span><span class="p">::</span>
-   <span class="p">:</span><span class="n">caption</span><span class="p">:</span> <span class="n">Output</span>
-
-                <span class="n">Key</span>        <span class="n">Values</span>
-    <span class="mi">0</span>       <span class="n">mutation</span>   <span class="n">ORF1b</span><span class="p">:</span><span class="n">P314L</span>
-    <span class="mi">1</span>      <span class="n">alt_codon</span>           <span class="n">CTT</span>
-    <span class="mi">2</span>  <span class="n">is_synonymous</span>         <span class="kc">False</span>
-    <span class="mi">3</span>      <span class="n">codon_num</span>           <span class="mi">314</span>
-    <span class="mi">4</span>      <span class="n">ref_codon</span>           <span class="n">CCT</span>
-    <span class="mi">5</span>           <span class="n">gene</span>         <span class="n">ORF1b</span>
-    <span class="mi">6</span>            <span class="n">pos</span>         <span class="mi">14407</span>
-    <span class="mi">7</span>         <span class="n">alt_aa</span>             <span class="n">L</span>
-    <span class="mi">8</span>         <span class="n">ref_aa</span>             <span class="n">P</span>
-    <span class="mi">9</span>           <span class="nb">type</span>  <span class="n">substitution</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#Get info on mutation &#39;orf1b:p314l&#39;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">outbreak_data</span><span class="o">.</span><span class="n">mutation_details</span><span class="p">(</span><span class="s1">&#39;orf1b:p314l&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Output</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>             <span class="n">Key</span>        <span class="n">Values</span>
+ <span class="mi">0</span>       <span class="n">mutation</span>   <span class="n">ORF1b</span><span class="p">:</span><span class="n">P314L</span>
+ <span class="mi">1</span>      <span class="n">alt_codon</span>           <span class="n">CTT</span>
+ <span class="mi">2</span>  <span class="n">is_synonymous</span>         <span class="kc">False</span>
+ <span class="mi">3</span>      <span class="n">codon_num</span>           <span class="mi">314</span>
+ <span class="mi">4</span>      <span class="n">ref_codon</span>           <span class="n">CCT</span>
+ <span class="mi">5</span>           <span class="n">gene</span>         <span class="n">ORF1b</span>
+ <span class="mi">6</span>            <span class="n">pos</span>         <span class="mi">14407</span>
+ <span class="mi">7</span>         <span class="n">alt_aa</span>             <span class="n">L</span>
+ <span class="mi">8</span>         <span class="n">ref_aa</span>             <span class="n">P</span>
+ <span class="mi">9</span>           <span class="nb">type</span>  <span class="n">substitution</span>
+</pre></div>
+</div>
 </div>
 </section>
 

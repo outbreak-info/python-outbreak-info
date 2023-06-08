@@ -11,7 +11,7 @@ Example usage:
     print(df)
 
 .. code-block::
-   :caption: Example usage:
+   :caption: Output:
    
                   mutation  mutation_count  lineage_count  lineage   gene  \
     0                n:d3l         1133368        1154337  b.1.1.7      N   

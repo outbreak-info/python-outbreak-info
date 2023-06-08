@@ -242,6 +242,23 @@
 <p class="admonition-title">Note</p>
 <p>The <a class="reference external" href="https://altair-viz.github.io/index.html">Vega-Altair</a> visualization package is used for demonstration purposes.         However, any Python visual package can be used to create graphical representations of the data.</p>
 </div>
+<p><strong>Lineage_Mutations Heatmap</strong></p>
+<p>A basic but important question: how do we define a lineage? What mutations consistently appear in most sequences within the lineage?     Here’s how we can plot the characteristic mutations of XBB.1.9.1 occurring in 90% of sequences using a heatmap:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lineages</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">lineage_mutations</span><span class="p">(</span><span class="s2">&quot;xbb.1&quot;</span><span class="p">,</span> <span class="n">freq</span> <span class="o">=</span> <span class="mf">0.90</span><span class="p">)</span>
+<span class="c1">#Formatting columns for plotting</span>
+<span class="n">lineages</span><span class="p">[</span><span class="s2">&quot;lineage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;xbb.1.9.1&quot;</span>
+<span class="n">lineages</span><span class="p">[</span><span class="s2">&quot;prevalence&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lineages</span><span class="p">[</span><span class="s2">&quot;prevalence&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">lineages</span> <span class="o">=</span> <span class="n">lineages</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;prevalence&#39;</span><span class="p">:</span> <span class="s1">&#39;prevalence %&#39;</span><span class="p">})</span>
+
+<span class="c1">#Import visual package of choice and plot</span>
+<span class="kn">import</span> <span class="nn">altair</span> <span class="k">as</span> <span class="nn">alt</span>
+<span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">lineages</span><span class="p">)</span><span class="o">.</span><span class="n">mark_rect</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+<span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;mutation:N&quot;</span><span class="p">,</span>
+<span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;lineage:N&quot;</span><span class="p">,</span>
+<span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;prevalence %:Q&#39;</span><span class="p">,)</span>
+</pre></div>
+</div>
+<img alt="_images/mut_by_lin.png" src="_images/mut_by_lin.png" />
 <p><strong>Finding the Most Prevalent Lineages</strong></p>
 <p>If we wanted to determine and plot the top four most prevalent lineages in India, we can make a few queries and use a few simple commands to create a table that shows us what these lineages are:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">=</span><span class="n">od</span><span class="o">.</span><span class="n">prevalence_by_location</span><span class="p">(</span><span class="s2">&quot;IND&quot;</span><span class="p">)</span>
@@ -301,22 +318,6 @@
 </pre></div>
 </div>
 <img alt="_images/top4.png" src="_images/top4.png" />
-<p><strong>Lineage_Mutations Heatmap</strong></p>
-<p>A basic but important question: how do we define a lineage? What mutations consistently appear in most sequences within the lineage? Here’s how we can plot the characteristic mutations of XBB.1.9.1 occurring in 90% of sequences using a heatmap:</p>
-<blockquote>
-<div><p>lineages = od.lineage_mutations(“xbb.1”, freq = 0.90)
-#Formatting columns for plotting
-lineages[“lineage”] = “xbb.1.9.1”
-lineages[“prevalence”] = lineages[“prevalence”].apply(lambda x: x*100)
-lineages = lineages.rename(columns={‘prevalence’: ‘prevalence %’})</p>
-<p>##Import visual package of choice and plot
-import altair as alt
-alt.Chart(lineages).mark_rect().encode(
-x = “mutation:N”,
-y = “lineage:N”,
-color = ‘prevalence %:Q’,)</p>
-</div></blockquote>
-<img alt="_images/mut_by_lin.png" src="_images/mut_by_lin.png" />
 </section>
 
 
