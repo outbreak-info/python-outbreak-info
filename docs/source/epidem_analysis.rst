@@ -21,6 +21,16 @@ For example, we can look at the pattern of infection counts in California during
     counts_ca = counts_ca.loc[counts_ca["date"].between("2021-05-15", "2021-08-15")]
     print(counts_ca)
 
+    #Import visual package of choice
+    import altair as alt
+    
+    #Graph!
+    alt.Chart(xbb_mutations, title = "Daily ORF1a:K47R AND S:T19I Prevalence of Lineage XBB").mark_line().encode(
+    x='date:T',
+    y=alt.Y('proportion (%):Q'),
+    color = 'mutations:N')
+
+
 .. code-block:: 
    :caption: Output
 
@@ -64,5 +74,11 @@ We can also do the same analysis over multiple locations and visualize them all 
     state_count = state_count.rename(columns={"admin1": "location"})
     state_count = state_count.sort_values(by = "date")
     state_count = state_count.loc[state_count["date"].between("2020-10-15", "2021-01-15")]
+
+    #Graph it!
+    alt.Chart(state_count, title = " 90 Day SARS-COV-2 Case Count Increase in Four States").mark_line().encode(
+    x='date:T',
+    y=alt.Y('confirmed_numIncrease:Q'),
+    color = 'location:N')
 
 .. image:: graphs/multi_state_cases.png

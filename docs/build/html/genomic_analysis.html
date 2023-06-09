@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Lineage and mutation prevalence analyses &mdash; Python Outbreak.info API 0.1 documentation</title>
@@ -13,8 +14,8 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
 
@@ -33,6 +34,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -175,7 +177,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="lineage-and-mutation-prevalence-analyses">
+  <section id="lineage-and-mutation-prevalence-analyses">
 <h1>Lineage and mutation prevalence analyses<a class="headerlink" href="#lineage-and-mutation-prevalence-analyses" title="Permalink to this headline">¶</a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">outbreak_data</span></code> package has contains multiple tools that can collect the relevant genomic information on SARS-CoV-2. Using a combination of these endpoints will allow you to get the information on variants of concern (VoC) and the current mutations to conduct your own multi-level genomic analysis on SARS-CoV-2. On this page, you’ll find a few example workflows that demonstrate data manipulation and visualization steps to track the progression of SARS-CoV-2.</p>
 <p>Here is an example workflow that allows the user to manipulate the data to find all the XBB lineages prevalent in India within a 1-year timeframe:</p>
@@ -193,6 +195,15 @@
 <span class="c1"># Search for data based on date range</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;date&quot;</span><span class="p">)</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="s2">&quot;2020-09-12&quot;</span><span class="p">,</span> <span class="s2">&quot;2022-03-31&quot;</span><span class="p">)]</span>
+
+<span class="c1">## Use the visual package of your choice to create an area graph using your data</span>
+<span class="kn">import</span> <span class="nn">altair</span> <span class="k">as</span> <span class="nn">alt</span>
+
+<span class="c1"># Graph of results</span>
+<span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Lineage Prevalence in India&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mark_area</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+<span class="n">x</span><span class="o">=</span><span class="s1">&#39;date:T&#39;</span><span class="p">,</span>
+<span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s1">&#39;prevalence_rolling:Q&#39;</span><span class="p">),</span>
+<span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;lineage:N&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="literal-block-wrapper docutils container" id="id1">
@@ -231,6 +242,23 @@
 <p class="admonition-title">Note</p>
 <p>The <a class="reference external" href="https://altair-viz.github.io/index.html">Vega-Altair</a> visualization package is used for demonstration purposes.         However, any Python visual package can be used to create graphical representations of the data.</p>
 </div>
+<p><strong>Lineage_Mutations Heatmap</strong></p>
+<p>A basic but important question: how do we define a lineage? What mutations consistently appear in most sequences within the lineage?     Here’s how we can plot the characteristic mutations of XBB.1.9.1 occurring in 90% of sequences using a heatmap:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lineages</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">lineage_mutations</span><span class="p">(</span><span class="s2">&quot;xbb.1&quot;</span><span class="p">,</span> <span class="n">freq</span> <span class="o">=</span> <span class="mf">0.90</span><span class="p">)</span>
+<span class="c1">#Formatting columns for plotting</span>
+<span class="n">lineages</span><span class="p">[</span><span class="s2">&quot;lineage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;xbb.1.9.1&quot;</span>
+<span class="n">lineages</span><span class="p">[</span><span class="s2">&quot;prevalence&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lineages</span><span class="p">[</span><span class="s2">&quot;prevalence&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">lineages</span> <span class="o">=</span> <span class="n">lineages</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;prevalence&#39;</span><span class="p">:</span> <span class="s1">&#39;prevalence %&#39;</span><span class="p">})</span>
+
+<span class="c1">#Import visual package of choice and plot</span>
+<span class="kn">import</span> <span class="nn">altair</span> <span class="k">as</span> <span class="nn">alt</span>
+<span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">lineages</span><span class="p">)</span><span class="o">.</span><span class="n">mark_rect</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+<span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;mutation:N&quot;</span><span class="p">,</span>
+<span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;lineage:N&quot;</span><span class="p">,</span>
+<span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;prevalence %:Q&#39;</span><span class="p">,)</span>
+</pre></div>
+</div>
+<img alt="_images/mut_by_lin.png" src="_images/mut_by_lin.png" />
 <p><strong>Finding the Most Prevalent Lineages</strong></p>
 <p>If we wanted to determine and plot the top four most prevalent lineages in India, we can make a few queries and use a few simple commands to create a table that shows us what these lineages are:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">=</span><span class="n">od</span><span class="o">.</span><span class="n">prevalence_by_location</span><span class="p">(</span><span class="s2">&quot;IND&quot;</span><span class="p">)</span>
@@ -281,11 +309,16 @@
 <span class="c1"># Increase prevalence by 100%</span>
 <span class="n">data</span><span class="p">[</span><span class="s1">&#39;proportion&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;proportion&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
 
-<span class="c1">## Use the visual package of your choice to create an area graph using your data</span>
+<span class="c1">#Graph using preferred visual package</span>
+<span class="kn">import</span> <span class="nn">altair</span> <span class="k">as</span> <span class="nn">alt</span>
+<span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Top 4 Most Prevalent Lineages in India&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mark_area</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+<span class="n">x</span><span class="o">=</span><span class="s1">&#39;date:T&#39;</span><span class="p">,</span>
+<span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s1">&#39;proportion (%):Q&#39;</span><span class="p">),</span>
+<span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;lineage:N&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="_images/top4.png" src="_images/top4.png" />
-</div>
+</section>
 
 
            </div>

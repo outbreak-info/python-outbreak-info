@@ -134,13 +134,3 @@ def authenticate_new_user():
         if (time.time() - start_time > 60):
             print("Aborting, please try again.")
             break
-       
-
-
-    
-#this is just to help you test, delete everything below here in the final version
-def main():
-    authenticate_new_user()
-
-if __name__ == "__main__":
-    main()

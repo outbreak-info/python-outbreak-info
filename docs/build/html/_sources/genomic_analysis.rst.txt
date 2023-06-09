@@ -19,7 +19,15 @@ Here is an example workflow that allows the user to manipulate the data to find 
       # Search for data based on date range
       data = data.sort_values(by="date")
       data = data.loc[data["date"].between("2020-09-12", "2022-03-31")]
-      
+
+      ## Use the visual package of your choice to create an area graph using your data
+      import altair as alt
+
+      # Graph of results
+      alt.Chart(data, title = "Lineage Prevalence in India").mark_area().encode(
+      x='date:T',
+      y=alt.Y('prevalence_rolling:Q'),
+      color = 'lineage:N')
 
 .. code-block::
    :caption: Output:
@@ -54,6 +62,26 @@ Here is an example workflow that allows the user to manipulate the data to find 
 .. image:: graphs/prev_visual.png
 
 .. note:: The `Vega-Altair <https://altair-viz.github.io/index.html>`_ visualization package is used for demonstration purposes.         However, any Python visual package can be used to create graphical representations of the data.
+
+**Lineage_Mutations Heatmap**
+
+A basic but important question: how do we define a lineage? What mutations consistently appear in most sequences within the lineage?     Here's how we can plot the characteristic mutations of XBB.1.9.1 occurring in 90% of sequences using a heatmap::
+ 
+     lineages = od.lineage_mutations("xbb.1", freq = 0.90)
+     #Formatting columns for plotting
+     lineages["lineage"] = "xbb.1.9.1"
+     lineages["prevalence"] = lineages["prevalence"].apply(lambda x: x*100)
+     lineages = lineages.rename(columns={'prevalence': 'prevalence %'})
+
+     #Import visual package of choice and plot
+     import altair as alt
+     alt.Chart(lineages).mark_rect().encode(
+     x = "mutation:N",
+     y = "lineage:N",
+     color = 'prevalence %:Q',)
+ 
+.. image:: graphs/mut_by_lin.png
+     
 
 **Finding the Most Prevalent Lineages**
  
@@ -105,7 +133,15 @@ Next we'll collect the prevalence data on each of the four lineages::
     data = data.loc[data["date"].between("2022-09-12", "2023-03-31")]
     # Increase prevalence by 100%
     data['proportion'] = data['proportion'].apply(lambda x: x*100)
+   
+    #Graph using preferred visual package
+    import altair as alt
+    alt.Chart(data, title = "Top 4 Most Prevalent Lineages in India").mark_area().encode(
+    x='date:T',
+    y=alt.Y('proportion (%):Q'),
+    color = 'lineage:N')
 
-    ## Use the visual package of your choice to create an area graph using your data
 
 .. image:: graphs/top4.png
+
+

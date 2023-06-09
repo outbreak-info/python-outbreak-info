@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>sequence_counts(location, cumulative, sub_admin) &mdash; Python Outbreak.info API 0.1 documentation</title>
@@ -13,8 +14,8 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
 
@@ -33,6 +34,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -176,11 +178,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="sequence-counts-location-cumulative-sub-admin">
+  <section id="sequence-counts-location-cumulative-sub-admin">
 <h1>sequence_counts(location, cumulative, sub_admin)<a class="headerlink" href="#sequence-counts-location-cumulative-sub-admin" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="outbreak_data.sequence_counts">
-<code class="sig-prename descclassname"><span class="pre">outbreak_data.</span></code><code class="sig-name descname"><span class="pre">sequence_counts</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cumulative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sub_admin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test.outbreak.info'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#outbreak_data.sequence_counts" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="outbreak_data.sequence_counts">
+<span class="sig-prename descclassname"><span class="pre">outbreak_data.</span></span><span class="sig-name descname"><span class="pre">sequence_counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cumulative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sub_admin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test.outbreak.info'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#outbreak_data.sequence_counts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns number of sequences per day by location</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><dl class="field-list simple">
@@ -201,7 +203,47 @@
 </dl>
 </dd></dl>
 
+<p>Example usage:</p>
+<ol class="arabic">
+<li><p>Get number of daily sequence counts in the US:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">sequence_counts</span><span class="p">(</span><span class="s1">&#39;USA&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
 </div>
+</li>
+</ol>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Output</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>            <span class="n">Key</span>        <span class="n">Values</span>
+ <span class="mi">0</span>       <span class="n">mutation</span>   <span class="n">ORF1b</span><span class="p">:</span><span class="n">P314L</span>
+ <span class="mi">1</span>      <span class="n">alt_codon</span>           <span class="n">CTT</span>
+ <span class="mi">2</span>  <span class="n">is_synonymous</span>         <span class="kc">False</span>
+ <span class="mi">3</span>      <span class="n">codon_num</span>           <span class="mi">314</span>
+ <span class="mi">4</span>      <span class="n">ref_codon</span>           <span class="n">CCT</span>
+ <span class="mi">5</span>           <span class="n">gene</span>         <span class="n">ORF1b</span>
+ <span class="mi">6</span>            <span class="n">pos</span>         <span class="mi">14407</span>
+ <span class="mi">7</span>         <span class="n">alt_aa</span>             <span class="n">L</span>
+ <span class="mi">8</span>         <span class="n">ref_aa</span>             <span class="n">P</span>
+ <span class="mi">9</span>           <span class="nb">type</span>  <span class="n">substitution</span>
+</pre></div>
+</div>
+</div>
+<ol class="arabic" start="2">
+<li><p>Get total number of sequence counts</p>
+<blockquote>
+<div><p>df = od.sequence_counts(‘USA’, cumulative=True)
+print(df)</p>
+</div></blockquote>
+</li>
+</ol>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Output</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>               <span class="n">Values</span>
+ <span class="n">total_count</span>  <span class="mi">4617418</span>
+</pre></div>
+</div>
+</div>
+</section>
 
 
            </div>

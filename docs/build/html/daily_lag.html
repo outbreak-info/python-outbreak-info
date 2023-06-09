@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>daily_lag(location=None) &mdash; Python Outbreak.info API 0.1 documentation</title>
@@ -13,8 +14,8 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
 
@@ -33,6 +34,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -176,11 +178,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="daily-lag-location-none">
+  <section id="daily-lag-location-none">
 <h1>daily_lag(location=None)<a class="headerlink" href="#daily-lag-location-none" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="outbreak_data.daily_lag">
-<code class="sig-prename descclassname"><span class="pre">outbreak_data.</span></code><code class="sig-name descname"><span class="pre">daily_lag</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#outbreak_data.daily_lag" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="outbreak_data.daily_lag">
+<span class="sig-prename descclassname"><span class="pre">outbreak_data.</span></span><span class="sig-name descname"><span class="pre">daily_lag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#outbreak_data.daily_lag" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the daily lag between collection and submission dates by location</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><dl class="field-list simple">
@@ -195,7 +197,36 @@
 </dl>
 </dd></dl>
 
+<p>Example usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">outbreak_data</span><span class="o">.</span><span class="n">daily_lag</span><span class="p">(</span><span class="s1">&#39;LUX&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
 </div>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Output</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>              <span class="n">Key</span>      <span class="n">Values</span>             <span class="n">Key</span>      <span class="n">Values</span>             <span class="n">Key</span>  \
+ <span class="mi">0</span>  <span class="n">date_collected</span>  <span class="mi">2020</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">29</span>  <span class="n">date_collected</span>  <span class="mi">2020</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">29</span>  <span class="n">date_collected</span>
+ <span class="mi">1</span>  <span class="n">date_submitted</span>  <span class="mi">2020</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">07</span>  <span class="n">date_submitted</span>  <span class="mi">2020</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">02</span>  <span class="n">date_submitted</span>
+ <span class="mi">2</span>     <span class="n">total_count</span>           <span class="mi">1</span>     <span class="n">total_count</span>           <span class="mi">1</span>     <span class="n">total_count</span>
+
+        <span class="n">Values</span>             <span class="n">Key</span>      <span class="n">Values</span>             <span class="n">Key</span>      <span class="n">Values</span>  <span class="o">...</span>  \
+ <span class="mi">0</span>  <span class="mi">2020</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">05</span>  <span class="n">date_collected</span>  <span class="mi">2020</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">06</span>  <span class="n">date_collected</span>  <span class="mi">2020</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">07</span>  <span class="o">...</span>
+ <span class="mi">1</span>  <span class="mi">2020</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">02</span>  <span class="n">date_submitted</span>  <span class="mi">2020</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">02</span>  <span class="n">date_submitted</span>  <span class="mi">2020</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">02</span>  <span class="o">...</span>
+ <span class="mi">2</span>           <span class="mi">1</span>     <span class="n">total_count</span>           <span class="mi">1</span>     <span class="n">total_count</span>           <span class="mi">1</span>  <span class="o">...</span>
+
+               <span class="n">Key</span>      <span class="n">Values</span>             <span class="n">Key</span>      <span class="n">Values</span>             <span class="n">Key</span>  \
+ <span class="mi">0</span>  <span class="n">date_collected</span>  <span class="mi">2023</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">28</span>  <span class="n">date_collected</span>  <span class="mi">2023</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">29</span>  <span class="n">date_collected</span>
+ <span class="mi">1</span>  <span class="n">date_submitted</span>  <span class="mi">2023</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">10</span>  <span class="n">date_submitted</span>  <span class="mi">2023</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">10</span>  <span class="n">date_submitted</span>
+ <span class="mi">2</span>     <span class="n">total_count</span>          <span class="mi">20</span>     <span class="n">total_count</span>          <span class="mi">11</span>     <span class="n">total_count</span>
+
+        <span class="n">Values</span>             <span class="n">Key</span>      <span class="n">Values</span>             <span class="n">Key</span>      <span class="n">Values</span>
+ <span class="mi">0</span>  <span class="mi">2023</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">30</span>  <span class="n">date_collected</span>  <span class="mi">2023</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">01</span>  <span class="n">date_collected</span>  <span class="mi">2023</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">02</span>
+ <span class="mi">1</span>  <span class="mi">2023</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">10</span>  <span class="n">date_submitted</span>  <span class="mi">2023</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">10</span>  <span class="n">date_submitted</span>  <span class="mi">2023</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">10</span>
+ <span class="mi">2</span>           <span class="mi">1</span>     <span class="n">total_count</span>           <span class="mi">5</span>     <span class="n">total_count</span>           <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</section>
 
 
            </div>
