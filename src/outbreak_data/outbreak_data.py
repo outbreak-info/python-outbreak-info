@@ -125,14 +125,8 @@ def cases_by_location(location, server=server, auth=None, pull_smoothed=0):
         raw_data = get_outbreak_data(covid19_endpoint, args, collect_all=True)
         df = pd.DataFrame(raw_data['hits'])
         refined_table=df.drop(columns=['_score', 'admin1'], axis=1)
-        for i in location:  # checks each entry in location for invalid location ids after request
-                check = i[0:2] #checks for first 3 letters from string input in df; if they're there, the df passed
-                valid_loc = df.loc[df['_id'].str.startswith(check)]
-                if valid_loc.empty:
-                    raise Exception('{} is not a valid location ID'.format(i))
-        if not df.empty:
-            return df
-            return refined_table
+        return refined_table
+    
     except:
         for i in location:
             raise Exception('{} is not a valid location ID'.format(i))
@@ -162,7 +156,7 @@ def prevalence_by_location(location, ndays=180, nday_threshold=10, other_thresho
         
     lins = get_outbreak_data('genomics/prevalence-by-location-all-lineages', query)
     df = pd.DataFrame(lins['results'])
-    if startswith is not None:
+    if startswith:
         return df.loc[df['lineage'].str.startswith(startswith)]
     return df
 
@@ -277,7 +271,7 @@ def sequence_counts(location=None, cumulative=None, sub_admin=None, server=serve
         df = pd.DataFrame(raw_data['results'])
     return df
 
-def mutations_by_lineage(mutation, location=None, pango_lin=None, freq=None, server=server):
+def mutations_by_lineage(mutation, location=None, pango_lin=None, datemin=None, datemax=None, freq=None, server=server):
     """Returns the prevalence of a mutation or series of mutations across specified lineages by location
 
     Arguments:
@@ -285,6 +279,8 @@ def mutations_by_lineage(mutation, location=None, pango_lin=None, freq=None, ser
      :param location_id: (Optional). If not specified, return most recent date globally.
      :param pangolin_lineage: (Optional). If not specfied, returns all Pango lineages containing that mutation.
      :param frequency: (Optional) Minimimum frequency threshold for the prevalence of a mutation in a lineage.
+     :param datemin: (Optional). A string representing the first cutoff date for returned date. Must be in YYYY-MM-DD format and be before 'datemax'
+     :param datemax: (Optional). A string representing the second cutoff date. Must be in YYY-MM-DD format and be after 'datemin'
      :return: A pandas dataframe.
     """
 
@@ -295,14 +291,16 @@ def mutations_by_lineage(mutation, location=None, pango_lin=None, freq=None, ser
          mutation = list(mutation.split(","))
     
     mutations = '' + ','.join(mutation) + ''   
-    if location is not None and pango_lin is not None:
-        query = '' + f'mutations={mutations}&location_id={location}&pangolin_lineage={pango_lin}'
-    elif location is not None:
-        query = '' + f'mutations={mutations}&location_id={location}'
-    elif pango_lin is not None:
-        query = '' + f'mutations={mutations}&pangolin_lineage={pango_lin}'
-    else:
-        query = '' + f'mutations={mutations}'
+    
+    query = f'mutations={mutations}'
+    
+    if location:
+        query = query + f'&location_id={location}&pangolin_lineage={pango_lin}'
+    if pango_lin:
+        query = query + f'&pangolin_lineage={pango_lin}'
+    if datemin and datemax:
+        query = query + f'&datemin={datemin}&datemax={datemax}'
+
 
     raw_data = get_outbreak_data('genomics/mutations-by-lineage', f'{query}')
     df = pd.DataFrame(raw_data['results'][mutations])
@@ -310,8 +308,10 @@ def mutations_by_lineage(mutation, location=None, pango_lin=None, freq=None, ser
     if isinstance(freq, float) and freq > 0 and freq < 1:
         return df.loc[df['prevalence'] >= freq]
     return df
+
+
     
-def daily_prev(pango_lin, location='USA', mutations=None, cumulative=None, server=server):
+def daily_prev(pango_lin, location, mutations=None, datemin=None, datemax=None, cumulative=None, server=server):
     """Returns the daily prevalence of a PANGO lineage by location.
    
        Arguments:
@@ -319,6 +319,8 @@ def daily_prev(pango_lin, location='USA', mutations=None, cumulative=None, serve
         :param location_id: (Somewhat optional). Default location: USA
         :param mutations: (Somewhat optional). List of mutations separated by AND
         :param cumulative: (Somewhat optional). If true returns the cumulative global prevalence since the first day of detection.
+        :param datemin: (Optional). A string representing the first cutoff date for returned date. Must be in YYYY-MM-DD format and be before 'datemax'
+        :param datemax: (Optional). A string representing the second cutoff date. Must be in YYY-MM-DD format and be after 'datemin'
         :return: A pandas dataframe."""
     
     if isinstance(pango_lin, str):
@@ -341,6 +343,9 @@ def daily_prev(pango_lin, location='USA', mutations=None, cumulative=None, serve
         query = query + '&' + f'mutations={mutations}'
     if cumulative:
         query = query + '&' + 'cumulative=true'
+    if datemin and datemax:
+        query = query + f'&datemin={datemin}&datemax={datemax}'
+   
          
     raw_data = get_outbreak_data('genomics/prevalence-by-location', f'pangolin_lineage={query}', collect_all=False)
     key_list = raw_data['results']
@@ -361,8 +366,8 @@ def daily_prev(pango_lin, location='USA', mutations=None, cumulative=None, serve
             else:
                 newdf = pd.DataFrame(raw_data['results'][i]) # append each df
                 df = pd.concat([df, newdf], sort=False)  
+                
     return df
- 
 
 
 def lineage_by_sub_admin(pango_lin, mutations=None, location=None, ndays=0, detected=None, server=server):

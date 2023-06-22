@@ -62,14 +62,16 @@ Core Outbreak Data Tools
    Mut_By_Lin
    auth_setup
    daily_prev
+   lineage_by_sub_admin
    collection_date
    mutation_details
    daily_lag
    Outbreak_data_Functions
 
+
 Example analyses:
 --------------------------
 .. toctree::
    Epidemiological data analyses <epidem_analysis>
-   Lineage prevalence analyses <genomic_analysis> 
+   Genomic analyses <genomic_analysis> 
 
