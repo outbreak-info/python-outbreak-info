@@ -67,9 +67,10 @@ Core Outbreak Data Tools
    daily_lag
    Outbreak_data_Functions
 
+
 Example analyses:
 --------------------------
 .. toctree::
    Epidemiological data analyses <epidem_analysis>
-   Lineage prevalence analyses <genomic_analysis> 
+   Genomic analyses <genomic_analysis> 
 
