@@ -82,3 +82,5 @@ We can also do the same analysis over multiple locations and visualize them all 
     color = 'location:N')
 
 .. image:: graphs/multi_state_cases.png
+
+.. note:: The `Vega-Altair <https://altair-viz.github.io/index.html>`_ visualization package is used for demonstration purposes. However, any Python visual package can be used to create graphical representations of the data.
