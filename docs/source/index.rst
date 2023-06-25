@@ -73,5 +73,6 @@ Example analyses:
 --------------------------
 .. toctree::
    Epidemiological data analyses <epidem_analysis>
-   Genomic analyses <genomic_analysis> 
+   Lineage Prevalence Analyses <lineage_prevalence>
+   Mutation Data Analyses <mutation_analysis> 
 
