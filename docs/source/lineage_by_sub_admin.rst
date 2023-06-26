@@ -3,7 +3,7 @@ lineage_by_sub_admin(pango_lin, mutations, location, ndays=0, detected)
 
 .. autofunction:: outbreak_data.lineage_by_sub_admin
 
-Example usage:
+Example usage::
 
     df = od.lineage_by_sub_admin('xbb.1.15', location='FRA')
     print(df)
