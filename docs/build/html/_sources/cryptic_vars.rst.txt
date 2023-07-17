@@ -6,8 +6,12 @@ For example, we can look at small data sample consisting of 10 mutations: (S:A67
 
 To start, the ``mutations_by_lineage()`` function allows us to look at the clinical prevalence of a mutation and see which lineage it most likely belongs to. Let's try it for E:L21F::
 
-    import pandas as pd
-    import outbreak_data as od
+    # Perform authentication if you haven't already
+    from outbreak_data import authenticate_user
+    authenticate_user.authenticate_new_user()
+
+    # Import outbreak_data package
+    from outbreak_data import outbreak_data as od
 
     lin1 = od.mutations_by_lineage(mutation='E:L21F')
     print(lin1)

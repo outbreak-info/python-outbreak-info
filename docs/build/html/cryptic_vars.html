@@ -186,8 +186,12 @@
 <p>The Python Outbreak API can be queried in order to determine which lineages a mutation has been found in. After collecting a sample and determining what sequences are present, we may have a list of several SARS-CoV-2 mutations that we can immediately say are characteristic of a specific variant. However in some cases, we also may have a mutation that is relatively uncommon in most other samples.
 For example, we can look at small data sample consisting of 10 mutations: (S:A67V, S:DEL69/70, S:E484A, S:N501Y, S:T572N, S:D614G, S:G142D  N:S2Y, S:Q52R, E:L21F, S:G593D). We’ll want a way to find more details about any mutation collected, such as whether the mutation has been collected before, when, and where that mutation came from.</p>
 <p>To start, the <code class="docutils literal notranslate"><span class="pre">mutations_by_lineage()</span></code> function allows us to look at the clinical prevalence of a mutation and see which lineage it most likely belongs to. Let’s try it for E:L21F:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">outbreak_data</span> <span class="k">as</span> <span class="nn">od</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perform authentication if you haven&#39;t already</span>
+<span class="kn">from</span> <span class="nn">outbreak_data</span> <span class="kn">import</span> <span class="n">authenticate_user</span>
+<span class="n">authenticate_user</span><span class="o">.</span><span class="n">authenticate_new_user</span><span class="p">()</span>
+
+<span class="c1"># Import outbreak_data package</span>
+<span class="kn">from</span> <span class="nn">outbreak_data</span> <span class="kn">import</span> <span class="n">outbreak_data</span> <span class="k">as</span> <span class="n">od</span>
 
 <span class="n">lin1</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">mutations_by_lineage</span><span class="p">(</span><span class="n">mutation</span><span class="o">=</span><span class="s1">&#39;E:L21F&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">lin1</span><span class="p">)</span>

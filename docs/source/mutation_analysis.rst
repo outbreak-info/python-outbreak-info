@@ -4,8 +4,17 @@ Viral Mutation Analysis
 **Lineage_Mutations Heatmap**
 
 A basic but important question: how do we define a lineage? What mutations consistently appear in most sequences within a lineage? We could start by plotting some of the characteristic mutations of XBB occurring in 80% of sequences. Even better, we can do this for mulitple related lineages and compare them using a heatmap::
- 
+     
+    # Perform authentication if you haven't already
+    from outbreak_data import authenticate_user
+    authenticate_user.authenticate_new_user()
+
+    # Import outbreak_data package
+    from outbreak_data import outbreak_data as od
+
+
     # Collecting 15 characteristic mutations and their prevalences for each variant     
+    
     lin0 = od.lineage_mutations("xbb", freq = 0.80)
     lin0["lineage"] = "xbb"
     lin0 = lin0.iloc[:15]

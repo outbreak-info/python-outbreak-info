@@ -186,7 +186,16 @@
 <h1>Viral Mutation Analysis<a class="headerlink" href="#viral-mutation-analysis" title="Permalink to this headline">¶</a></h1>
 <p><strong>Lineage_Mutations Heatmap</strong></p>
 <p>A basic but important question: how do we define a lineage? What mutations consistently appear in most sequences within a lineage? We could start by plotting some of the characteristic mutations of XBB occurring in 80% of sequences. Even better, we can do this for mulitple related lineages and compare them using a heatmap:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Collecting 15 characteristic mutations and their prevalences for each variant</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perform authentication if you haven&#39;t already</span>
+<span class="kn">from</span> <span class="nn">outbreak_data</span> <span class="kn">import</span> <span class="n">authenticate_user</span>
+<span class="n">authenticate_user</span><span class="o">.</span><span class="n">authenticate_new_user</span><span class="p">()</span>
+
+<span class="c1"># Import outbreak_data package</span>
+<span class="kn">from</span> <span class="nn">outbreak_data</span> <span class="kn">import</span> <span class="n">outbreak_data</span> <span class="k">as</span> <span class="n">od</span>
+
+
+<span class="c1"># Collecting 15 characteristic mutations and their prevalences for each variant</span>
+
 <span class="n">lin0</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">lineage_mutations</span><span class="p">(</span><span class="s2">&quot;xbb&quot;</span><span class="p">,</span> <span class="n">freq</span> <span class="o">=</span> <span class="mf">0.80</span><span class="p">)</span>
 <span class="n">lin0</span><span class="p">[</span><span class="s2">&quot;lineage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;xbb&quot;</span>
 <span class="n">lin0</span> <span class="o">=</span> <span class="n">lin0</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">15</span><span class="p">]</span>
