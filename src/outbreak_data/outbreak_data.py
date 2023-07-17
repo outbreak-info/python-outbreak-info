@@ -195,7 +195,12 @@ def lineage_mutations(pango_lin, mutations=None, freq=0.8, server=server, auth=N
             mutations = " AND ".join(mutations)
         mutations = " AND " + mutations
         lineages = '' + lineages + '' + mutations # fixed function
-    raw_data = get_outbreak_data('genomics/lineage-mutations', f'pangolin_lineage={lineages}', collect_all=False)
+        
+        raw_data = get_outbreak_data('genomics/lineage-mutations', f'pangolin_lineage={lineages}', collect_all=False)
+        key_list = raw_data['results']
+        if len(key_list) == 0:
+            raise TypeError('No matches for query found')
+    
     key_list = raw_data['results']
     key_list = list(key_list)
 
