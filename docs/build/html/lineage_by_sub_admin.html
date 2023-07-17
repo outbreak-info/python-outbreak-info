@@ -101,6 +101,7 @@
 <li class="toctree-l1"><a class="reference internal" href="daily_prev.html">daily_prev(pango_lin, location, mutations, cumulative)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">lineage_by_sub_admin(pango_lin, mutations, location, ndays=0, detected)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="collection_date.html">collection_date(pango_lin, mutations=None, location=None)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="submission_date.html">submission_date(pango_lin, mutations=None, location)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mutation_details.html">mutation_details(mutations)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="daily_lag.html">daily_lag(location=None)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Outbreak_data_Functions.html">get_outbreak_data()</a></li>
@@ -109,6 +110,7 @@
 <li class="toctree-l1"><a class="reference internal" href="epidem_analysis.html">Epidemiological data analyses</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lineage_prevalence.html">Lineage Prevalence Analyses</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mutation_analysis.html">Mutation Data Analyses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cryptic_vars.html">Mapping Mutations to Lineages</a></li>
 </ul>
 
             
@@ -212,10 +214,10 @@
 </dd></dl>
 
 <p>Example usage:</p>
-<blockquote>
-<div><p>df = od.lineage_by_sub_admin(‘xbb.1.15’, location=’FRA’)
-print(df)</p>
-</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">lineage_by_sub_admin</span><span class="p">(</span><span class="s1">&#39;xbb.1.15&#39;</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s1">&#39;FRA&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">Output:</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>        <span class="n">date</span>              <span class="n">name</span>          <span class="nb">id</span>          <span class="n">total_count</span>  <span class="n">lineage_count</span>  \

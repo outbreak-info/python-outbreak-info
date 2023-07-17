@@ -64,6 +64,7 @@ Core Outbreak Data Tools
    daily_prev
    lineage_by_sub_admin
    collection_date
+   submission_date
    mutation_details
    daily_lag
    Outbreak_data_Functions
@@ -75,4 +76,5 @@ Example analyses:
    Epidemiological data analyses <epidem_analysis>
    Lineage Prevalence Analyses <lineage_prevalence>
    Mutation Data Analyses <mutation_analysis> 
+   Mapping Mutations to Lineages <cryptic_vars>
 

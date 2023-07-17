@@ -44,8 +44,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="mutation_details(mutations)" href="mutation_details.html" />
-    <link rel="prev" title="daily_prev(pango_lin, location, mutations, cumulative)" href="daily_prev.html" /> 
+    <link rel="next" title="submission_date(pango_lin, mutations=None, location)" href="submission_date.html" />
+    <link rel="prev" title="lineage_by_sub_admin(pango_lin, mutations, location, ndays=0, detected)" href="lineage_by_sub_admin.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -99,14 +99,18 @@
 <li class="toctree-l1"><a class="reference internal" href="Mut_By_Lin.html">mutations_by_lineage(mutation, location, pango_lin)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="auth_setup.html">authenticate_new_user()</a></li>
 <li class="toctree-l1"><a class="reference internal" href="daily_prev.html">daily_prev(pango_lin, location, mutations, cumulative)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lineage_by_sub_admin.html">lineage_by_sub_admin(pango_lin, mutations, location, ndays=0, detected)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">collection_date(pango_lin, mutations=None, location=None)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="submission_date.html">submission_date(pango_lin, mutations=None, location)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mutation_details.html">mutation_details(mutations)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="daily_lag.html">daily_lag(location=None)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Outbreak_data_Functions.html">get_outbreak_data()</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="epidem_analysis.html">Epidemiological data analyses</a></li>
-<li class="toctree-l1"><a class="reference internal" href="genomic_analysis.html">Lineage prevalence analyses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lineage_prevalence.html">Lineage Prevalence Analyses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutation_analysis.html">Mutation Data Analyses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cryptic_vars.html">Mapping Mutations to Lineages</a></li>
 </ul>
 
             
@@ -203,6 +207,19 @@
 </dl>
 </dd></dl>
 
+<p>Example usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">collection_date</span><span class="p">(</span><span class="s1">&#39;b.1.1.7&#39;</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s1">&#39;IND&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Output</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>                 <span class="n">Values</span>
+ <span class="n">date</span>        <span class="mi">2021</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">26</span>
+ <span class="n">date_count</span>           <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
 </section>
 
 
@@ -211,8 +228,8 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="mutation_details.html" class="btn btn-neutral float-right" title="mutation_details(mutations)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="daily_prev.html" class="btn btn-neutral float-left" title="daily_prev(pango_lin, location, mutations, cumulative)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="submission_date.html" class="btn btn-neutral float-right" title="submission_date(pango_lin, mutations=None, location)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="lineage_by_sub_admin.html" class="btn btn-neutral float-left" title="lineage_by_sub_admin(pango_lin, mutations, location, ndays=0, detected)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
