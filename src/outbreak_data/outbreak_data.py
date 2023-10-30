@@ -5,7 +5,7 @@ import pandas as pd
 
 import authenticate_user
 
-server = 'api.outbreak.info'  # or 'dev.outbreak.info'
+server = '54.156.30.13:9083'#'api.outbreak.info'  # or 'dev.outbreak.info'
 nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer ES versions as well
 covid19_endpoint = 'covid19/query'
 test_server = 'test.outbreak.info'
@@ -50,7 +50,9 @@ def get_outbreak_data(endpoint, argstring, server=server, auth=None, collect_all
     token = 'Bearer ' + token
     auth = {'Authorization': str(token)}
     # initial request // used to collect data during recursion or as output of single API call
-    url = f'https://{server}/{endpoint}?{argstring}'
+    url = f'http://{server}/{endpoint}?{argstring}'
+    print(url)
+
     in_req = requests.get(url, headers=auth)
     if in_req.headers.get('content-type') != 'application/json; charset=UTF-8':
         raise ValueError('Warning!: Potentially missing endpoint. Data not being returned by server.')
@@ -184,8 +186,8 @@ def lineage_mutations(pango_lin, mutations=None, freq=0.8, server=server, auth=N
           lineages = lineages.split(',')
           lineages = ",".join(lineages)
     elif isinstance(pango_lin, list):
-         lineages = ",".join(pango_lin)
-                  
+         lineages = " AND ".join(pango_lin)
+                
     if mutations:
         if isinstance(mutations, str) is True:
             mutations = mutations.replace(" ", "")
@@ -196,10 +198,10 @@ def lineage_mutations(pango_lin, mutations=None, freq=0.8, server=server, auth=N
         mutations = " AND " + mutations
         lineages = '' + lineages + '' + mutations # fixed function
         
-        raw_data = get_outbreak_data('genomics/lineage-mutations', f'pangolin_lineage={lineages}', collect_all=False)
-        key_list = raw_data['results']
-        if len(key_list) == 0:
-            raise TypeError('No matches for query found')
+    raw_data = get_outbreak_data('genomics/lineage-mutations', f'lineages={lineages}', collect_all=False)
+    key_list = raw_data['results']
+    if len(key_list) == 0:
+        raise TypeError('No matches for query found')
     
     key_list = raw_data['results']
     key_list = list(key_list)
@@ -295,14 +297,12 @@ def mutations_by_lineage(mutation, location=None, pango_lin=None, datemin=None, 
          mutation = mutation.replace(" ", "")
          mutation = list(mutation.split(","))
     
-    mutations = '' + ','.join(mutation) + ''   
+    mutations = '' + ' AND '.join(mutation) + ''   
     
     query = f'mutations={mutations}'
     
     if location:
-        query = query + f'&location_id={location}&pangolin_lineage={pango_lin}'
-    if pango_lin:
-        query = query + f'&pangolin_lineage={pango_lin}'
+        query = query + f'&location_id={location}'
     if datemin and datemax:
         query = query + f'&datemin={datemin}&datemax={datemax}'
 
@@ -313,8 +313,6 @@ def mutations_by_lineage(mutation, location=None, pango_lin=None, datemin=None, 
     if isinstance(freq, float) and freq > 0 and freq < 1:
         return df.loc[df['prevalence'] >= freq]
     return df
-
-
     
 def daily_prev(pango_lin, location, mutations=None, datemin=None, datemax=None, cumulative=None, server=server):
     """Returns the daily prevalence of a PANGO lineage by location.
