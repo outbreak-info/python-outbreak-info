@@ -599,6 +599,32 @@ def wildcard_mutations(name, server=server):
                 df = pd.concat([df, newdf], sort=False)
     return df
 
+### Significance API enpoints: ###
+    
+def growth_rates(lineage, location='Global'):
+    """Returns the growth rate score for a given lineage in a given location.
+    
+     Arguments:
+     :param lineage: (Required)  A string. 
+     :param location: (Required. Default: 'Global') A list or string. Separate multiple locations with ","
+     :return: A pandas dataframe."""
+    
+    if isinstance(location, str):
+        locations = location.replace(", " , "+OR+")
+    elif isinstance(location, list):
+             locations = '+OR+'.join(location)
+    
+    query = f'q=lineage:{lineage}+AND+location:{locations}'
+    raw_data = get_outbreak_data('growth_rate/query', query, collect_all=False)
+    df = pd.DataFrame(raw_data['hits'])
+    
+    return df
+
+
+
+
+    
+    
 
 
 
