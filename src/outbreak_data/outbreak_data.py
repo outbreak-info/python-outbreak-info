@@ -51,6 +51,8 @@ def get_outbreak_data(endpoint, argstring, server=server, auth=None, collect_all
     auth = {'Authorization': str(token)}
     # initial request // used to collect data during recursion or as output of single API call
     url = f'https://{server}/{endpoint}?{argstring}'
+    print(url)
+
     in_req = requests.get(url, headers=auth)
     if in_req.headers.get('content-type') != 'application/json; charset=UTF-8':
         raise ValueError('Warning!: Potentially missing endpoint. Data not being returned by server.')
@@ -132,7 +134,7 @@ def cases_by_location(location, server=server, auth=None, pull_smoothed=0):
             raise Exception('{} is not a valid location ID'.format(i))
 
 
-def prevalence_by_location(location, ndays=180, nday_threshold=10, other_threshold=0.05, other_exclude=None, cumulative=None, server=server, auth=None, startswith=None):
+def all_lineage_prevalences(location, ndays=180, nday_threshold=10, other_threshold=0.05, other_exclude=None, cumulative=None, server=server, auth=None, startswith=None):
     """
     Loads prevalence data from a location
 
@@ -160,57 +162,48 @@ def prevalence_by_location(location, ndays=180, nday_threshold=10, other_thresho
         return df.loc[df['lineage'].str.startswith(startswith)]
     return df
 
+### Helper function for dealing with all 'q' queries
+def pangolin_crumbs(pango_lin, mutations=None):
 
+    query = 'lineages=None'
+    if mutations:
+        query = query + f'&mutations={mutations}'
+    query = query + f'&q=pangolin_lineage_crumbs:*;{pango_lin};*'
+    return query
 
-def lineage_mutations(pango_lin, mutations=None, freq=0.8, server=server, auth=None):
+def lineage_mutations(pango_lin=None, lineage_crumbs=False, mutations=None, freq=0.8, server=server, auth=None):  ###
     """Retrieves data from all mutations in a specified lineage above a frequency threshold.
-       - Mutiple queries for lineages and mutations can be separated by ","
        - Use 'OR' in a string to return overlapping mutations in multiple lineages: 'BA.2 OR BA.1'
-       - param mutation is only useful for one lineage + mutation1 + mutation2 .... combinations
 
           Arguments:
-             :param pango_lin: A string or list; loads data for all mutations in a specified PANGO lineage 
-             :param mutation: A string or list; loads data of mutations for sequences classified as a specified PANGO lineage with mutation
+             :param pango_lin: A string; loads data for all mutations in a specified PANGO lineage
+             :param lineage_crumbs: If true returns data for descendant lineages of pango_lin. Include the wildcard '*' in string to return info on all related lineages.
+             :param mutations: A string; loads mutation data for the specified sequence under the specified PANGO lineage 
              :param freq: A number between 0 and 1 specifying the frequency threshold above which to return mutations (default = 0.8)
              :return: A pandas dataframe"""
 
-    # Turns any string input into list format: most universal
-    if isinstance(pango_lin, str) is True:
-      if 'OR' in pango_lin:
+    # Use strings, no reason to use list format anymore
+    
+    if lineage_crumbs:
+        query = pangolin_crumbs(pango_lin)
+                
+    else:
+        query = f'lineages={pango_lin}'
+        if 'OR' in pango_lin:
           lineages = pango_lin.split('OR')
-          lineages = "OR".join(lineages)
-      else:
-          lineages = pango_lin.replace(" ", "")
-          lineages = lineages.split(',')
-          lineages = ",".join(lineages)
-    elif isinstance(pango_lin, list):
-         lineages = ",".join(pango_lin)
-                  
-    if mutations:
-        if isinstance(mutations, str) is True:
-            mutations = mutations.replace(" ", "")
-            mutations = list(mutations.split(","))   # deals with string format for mutations
-
-        if isinstance(mutations, list) is True:
-            mutations = " AND ".join(mutations)
-        mutations = " AND " + mutations
-        lineages = '' + lineages + '' + mutations # fixed function
+          query = "OR".join(lineages)
+        if mutations:
+            query = '&' + f'mutations={mutations}' + query 
         
-        raw_data = get_outbreak_data('genomics/lineage-mutations', f'pangolin_lineage={lineages}', collect_all=False)
-        key_list = raw_data['results']
-        if len(key_list) == 0:
-            raise TypeError('No matches for query found')
+    raw_data = get_outbreak_data('genomics/lineage-mutations', f'{query}', collect_all=False)
+    key_list = raw_data['results']
+    if len(key_list) == 0:
+        raise TypeError('No matches for query found')
     
     key_list = raw_data['results']
     key_list = list(key_list)
-
-    for i in key_list: # Returns multiple lineages using ","
-        if i == key_list[0]:
-            df = pd.DataFrame(raw_data['results'][i])
-        else:
-            newdf = pd.DataFrame(raw_data['results'][i]) # append each dfs
-            df = pd.concat([df, newdf], sort=False)  
-
+    df = pd.DataFrame(raw_data['results'][key_list[0]])
+       
     if freq != 0.8:
         if isinstance(freq, float) and freq > 0 and freq < 1:
             return df.loc[df['prevalence'] >= freq]
@@ -266,7 +259,7 @@ def sequence_counts(location=None, cumulative=None, sub_admin=None, server=serve
         query = query +  '&' + 'cumulative=true'
     if sub_admin:
         query = query + '&' + 'subadmin=true'
-            
+    
     raw_data = get_outbreak_data('genomics/sequence-count', f'{query}')
      
     if cumulative or sub_admin:
@@ -276,47 +269,46 @@ def sequence_counts(location=None, cumulative=None, sub_admin=None, server=serve
         df = pd.DataFrame(raw_data['results'])
     return df
 
-def mutations_by_lineage(mutation, location=None, pango_lin=None, datemin=None, datemax=None, freq=None, server=server):
+def mutations_by_lineage(mutation=None, location=None, pango_lin=None, lineage_crumbs=False, datemin=None,  datemax=None, freq=None, server=server):
     """Returns the prevalence of a mutation or series of mutations across specified lineages by location
 
     Arguments:
-     :param mutations: (Optional). List of mutations. 
-     :param location_id: (Optional). If not specified, return most recent date globally.
+     :param mutations: (Optional). List or string of mutations separated by ",". 
+     :param location_id: (Optional). A string; If not specified, return most recent date globally.
      :param pangolin_lineage: (Optional). If not specfied, returns all Pango lineages containing that mutation.
      :param frequency: (Optional) Minimimum frequency threshold for the prevalence of a mutation in a lineage.
      :param datemin: (Optional). A string representing the first cutoff date for returned date. Must be in YYYY-MM-DD format and be before 'datemax'
      :param datemax: (Optional). A string representing the second cutoff date. Must be in YYY-MM-DD format and be after 'datemin'
      :return: A pandas dataframe.
     """
+    
+    if mutation: 
+        if isinstance(mutation, str):
+             mutation = mutation.replace(" ", "")
+             mutation = list(mutation.split(","))
+        mutation = '' + ' AND '.join(mutation) + ''   
+        query = f'mutations={mutation}'
+            
+    if pango_lin and lineage_crumbs:
+        query = pangolin_crumbs(pango_lin)
 
-    if isinstance(mutation, list):
-        pass
-    elif isinstance(mutation, str):
-         mutation = mutation.replace(" ", "")
-         mutation = list(mutation.split(","))
-    
-    mutations = '' + ','.join(mutation) + ''   
-    
-    query = f'mutations={mutations}'
-    
     if location:
-        query = query + f'&location_id={location}&pangolin_lineage={pango_lin}'
-    if pango_lin:
-        query = query + f'&pangolin_lineage={pango_lin}'
+        query = query + f'&location_id={location}'
     if datemin and datemax:
         query = query + f'&datemin={datemin}&datemax={datemax}'
 
-
     raw_data = get_outbreak_data('genomics/mutations-by-lineage', f'{query}')
-    df = pd.DataFrame(raw_data['results'][mutations])
-
+    
+    key_list = raw_data['results']
+    key_list = list(key_list)
+    df = pd.DataFrame(raw_data['results'][key_list[0]])
+       
     if isinstance(freq, float) and freq > 0 and freq < 1:
         return df.loc[df['prevalence'] >= freq]
     return df
 
 
-    
-def daily_prev(pango_lin, location, mutations=None, datemin=None, datemax=None, cumulative=None, server=server):
+def prevalence_by_location(pango_lin, location, mutations=None, datemin=None, datemax=None, cumulative=None, server=server):
     """Returns the daily prevalence of a PANGO lineage by location.
    
        Arguments:
