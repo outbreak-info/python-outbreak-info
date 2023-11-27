@@ -162,34 +162,40 @@ def all_lineage_prevalences(location, ndays=180, nday_threshold=10, other_thresh
         return df.loc[df['lineage'].str.startswith(startswith)]
     return df
 
+### Helper function for dealing with all 'q' queries
+def pangolin_crumbs(pango_lin, mutations=None):
 
+    query = 'lineages=None'
+    if mutations:
+        query = query + f'&mutations={mutations}'
+    query = query + f'&q=pangolin_lineage_crumbs:*;{pango_lin};*'
+    return query
 
-def lineage_mutations(pango_lin, mutations=None, freq=0.8, server=server, auth=None):  ###
+def lineage_mutations(pango_lin=None, lineage_crumbs=False, mutations=None, freq=0.8, server=server, auth=None):  ###
     """Retrieves data from all mutations in a specified lineage above a frequency threshold.
        - Use 'OR' in a string to return overlapping mutations in multiple lineages: 'BA.2 OR BA.1'
 
           Arguments:
-             :param pango_lin: A string; loads data for all mutations in a specified PANGO lineage 
+             :param pango_lin: A string; loads data for all mutations in a specified PANGO lineage
+             :param lineage_crumbs: If true returns data for descendant lineages of pango_lin. Include the wildcard '*' in string to return info on all related lineages.
              :param mutations: A string; loads mutation data for the specified sequence under the specified PANGO lineage 
              :param freq: A number between 0 and 1 specifying the frequency threshold above which to return mutations (default = 0.8)
              :return: A pandas dataframe"""
 
     # Use strings, no reason to use list format anymore
-   
+    
+    if lineage_crumbs:
+        query = pangolin_crumbs(pango_lin)
+                
+    else:
+        query = f'lineages={pango_lin}'
+        if 'OR' in pango_lin:
+          lineages = pango_lin.split('OR')
+          query = "OR".join(lineages)
+        if mutations:
+            query = '&' + f'mutations={mutations}' + query 
         
-    if isinstance(pango_lin, str):
-        if '*' in pango_lin:
-            query = '&' + f'q=pangolin_lineage_crumbs:*;{pango_lin};*'
-        else:
-            query = pango_lin
-            if 'OR' in pango_lin:
-              lineages = pango_lin.split('OR')
-              query = "OR".join(lineages)
-              
-    if mutations:
-        query = query + '&' + f'mutations={mutations}'
-        
-    raw_data = get_outbreak_data('genomics/lineage-mutations', f'lineages={query}', collect_all=False)
+    raw_data = get_outbreak_data('genomics/lineage-mutations', f'{query}', collect_all=False)
     key_list = raw_data['results']
     if len(key_list) == 0:
         raise TypeError('No matches for query found')
@@ -203,7 +209,7 @@ def lineage_mutations(pango_lin, mutations=None, freq=0.8, server=server, auth=N
             return df.loc[df['prevalence'] >= freq]
     else:
         return df
-
+    
 
 def global_prevalence(pango_lin, mutations=None, cumulative=None, server=server):
    
@@ -263,7 +269,7 @@ def sequence_counts(location=None, cumulative=None, sub_admin=None, server=serve
         df = pd.DataFrame(raw_data['results'])
     return df
 
-def mutations_by_lineage(mutation=None, location=None, pango_lin=None, datemin=None,  datemax=None, freq=None, server=server):
+def mutations_by_lineage(mutation=None, location=None, pango_lin=None, lineage_crumbs=False, datemin=None,  datemax=None, freq=None, server=server):
     """Returns the prevalence of a mutation or series of mutations across specified lineages by location
 
     Arguments:
@@ -282,9 +288,9 @@ def mutations_by_lineage(mutation=None, location=None, pango_lin=None, datemin=N
              mutation = list(mutation.split(","))
         mutation = '' + ' AND '.join(mutation) + ''   
         query = f'mutations={mutation}'
-    
-    if pango_lin and '*' in pango_lin:
-            query = '&' + f'q=pangolin_lineage_crumbs:*;{pango_lin};*'
+            
+    if pango_lin and lineage_crumbs:
+        query = pangolin_crumbs(pango_lin)
 
     if location:
         query = query + f'&location_id={location}'
