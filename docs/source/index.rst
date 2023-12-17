@@ -54,27 +54,30 @@ For location-specific analyses, users will need to supply the appropriate locati
 Core Outbreak Data Tools
 --------------------------
 .. toctree::
-   Cases_by_location
-   Lineage_mutations
-   Prevalence_by_location
-   Global_Prev
-   Seq_counts
-   Mut_By_Lin
    auth_setup
-   daily_prev
+   cases_by_location
+   lineage_mutations
+   all_lineage_prevalences
+   global_prevalence
+   seq_counts
+   mutations_by_lineage
+   prevalence_by_location
    lineage_by_sub_admin
    collection_date
    submission_date
    mutation_details
    daily_lag
+   wildcard_lineage
+   wildcard_location
+   wildcard_mutations
+   location_details
    Outbreak_data_Functions
-
+   growth_rates
 
 Example analyses:
 --------------------------
 .. toctree::
    Epidemiological data analyses <epidem_analysis>
    Lineage Prevalence Analyses <lineage_prevalence>
-   Mutation Data Analyses <mutation_analysis> 
-   Mapping Mutations to Lineages <cryptic_vars>
-
+   Mutation Data Analyses <mutation_analysis>
+   Dealing with Cryptic Variants <cryptic_vars> 

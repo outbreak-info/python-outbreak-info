@@ -184,32 +184,6 @@
             
   <section id="daily-prev-pango-lin-location-mutations-cumulative">
 <h1>daily_prev(pango_lin, location, mutations, cumulative)<a class="headerlink" href="#daily-prev-pango-lin-location-mutations-cumulative" title="Permalink to this headline">¶</a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="outbreak_data.daily_prev">
-<span class="sig-prename descclassname"><span class="pre">outbreak_data.</span></span><span class="sig-name descname"><span class="pre">daily_prev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pango_lin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'USA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cumulative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'api.outbreak.info'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#outbreak_data.daily_prev" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the daily prevalence of a PANGO lineage by location.</p>
-<dl class="simple">
-<dt>Arguments:</dt><dd><dl class="field-list simple">
-<dt class="field-odd">pango_lin</dt>
-<dd class="field-odd"><p>(Required). List of lineages separated by “,”</p>
-</dd>
-<dt class="field-even">location_id</dt>
-<dd class="field-even"><p>(Optional). Default location: USA</p>
-</dd>
-<dt class="field-odd">mutations</dt>
-<dd class="field-odd"><p>(Optional). List of mutations separated by AND</p>
-</dd>
-<dt class="field-even">cumulative</dt>
-<dd class="field-even"><p>(Optional). If true returns the cumulative global prevalence since the first day of detection.</p>
-</dd>
-<dt class="field-odd">Value</dt>
-<dd class="field-odd"><p>A pandas dataframe.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
 <p>Example usage:</p>
 <ol class="arabic">
 <li><p>Get the daily prevalence of lineage ‘BA.2’ in India since first detection:</p>

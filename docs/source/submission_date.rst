@@ -5,7 +5,7 @@ submission_date(pango_lin, mutations=None, location)
 
 Example usage::
 
-    df = od.submission_date('xbb.1', location='USA')
+    df = outbreak_data.submission_date('xbb.1', location='USA')
     print(df)
 
 .. code-block::

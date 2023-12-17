@@ -36,7 +36,7 @@ def get_outbreak_data(endpoint, argstring, server=server, auth=None, collect_all
      :auth: Auth key (defaults to acceptable state)
      :collect_all: if True, returns all data.
      :curr_page: iterator state for paging
-     :Value: A request object containing the raw data
+     :return: A request object containing the raw data
     """
     # To secure against None type
     if isinstance(server, type(None)):
@@ -51,6 +51,8 @@ def get_outbreak_data(endpoint, argstring, server=server, auth=None, collect_all
     auth = {'Authorization': str(token)}
     # initial request // used to collect data during recursion or as output of single API call
     url = f'https://{server}/{endpoint}?{argstring}'
+    print(url)
+
     in_req = requests.get(url, headers=auth)
     if in_req.headers.get('content-type') != 'application/json; charset=UTF-8':
         raise ValueError('Warning!: Potentially missing endpoint. Data not being returned by server.')
@@ -103,7 +105,7 @@ def cases_by_location(location, server=server, auth=None, pull_smoothed=0):
     Arguments:
      :location: A string or list of strings, separate multiple locations by ","
      :pull_smoothed: For every value >= 0, returns 1000 obs. (paging)
-     :Value: A pandas dataframe
+     :return: A pandas dataframe
     """
     # location names can be further checked to verify validity // proper format
     if isinstance(location, str):  # Converts all location input strings into lists: best universal input 
@@ -125,30 +127,25 @@ def cases_by_location(location, server=server, auth=None, pull_smoothed=0):
         raw_data = get_outbreak_data(covid19_endpoint, args, collect_all=True)
         df = pd.DataFrame(raw_data['hits'])
         refined_table=df.drop(columns=['_score', 'admin1'], axis=1)
-        for i in location:  # checks each entry in location for invalid location ids after request
-                check = i[0:2] #checks for first 3 letters from string input in df; if they're there, the df passed
-                valid_loc = df.loc[df['_id'].str.startswith(check)]
-                if valid_loc.empty:
-                    raise Exception('{} is not a valid location ID'.format(i))
-        if not df.empty:
-            return df
-            return refined_table
+        return refined_table
+    
     except:
         for i in location:
             raise Exception('{} is not a valid location ID'.format(i))
 
-def prevalence_by_location(location, ndays=180, nday_threshold=10, other_threshold=0.05, other_exclude=None, cumulative=None, server=server, auth=None, startswith=None):
+
+def all_lineage_prevalences(location, ndays=180, nday_threshold=10, other_threshold=0.05, other_exclude=None, cumulative=None, server=server, auth=None, startswith=None):
     """
     Loads prevalence data from a location
 
     Arguments:
      :location: A string
-     :other_threshold: (Default: 0.05) Minimum prevalence threshold below which lineages must be accumulated under "Other".
-     :nday_threshold: (Default: 10) Minimum number of days in which the prevalence of a lineage must be below other_threshold to be accumulated under "Other".
-     :ndays: (Default: 180) The number of days before the current date to be used as a window to accumulate lineages under "Other".
+     :other_threshold (Default: 0) Minimum prevalence threshold below which lineages must be accumulated under "Other".
+     :nday_threshold (Default: 0) Minimum number of days in which the prevalence of a lineage must be below other_threshold to be accumulated under "Other".
+     :ndays (Default: 180) The number of days before the current date to be used as a window to accumulate lineages under "Other".
      :other_exclude: Comma separated lineages that are NOT to be included under "Other" even if the conditions specified by the three thresholds above are met.
-     :cumulative: (Default: false) If true return the cumulative prevalence.:param startswith: A string; loads data for all lineages beginning with first letter(s) of name
-     :Value: A pandas dataframe
+     :cumulative: (Default: false) If true return the cumulative prevalence.:startswith: A string; loads data for all lineages beginning with first letter(s) of name
+     :return: A pandas dataframe
     """
                 
     query =  f'location_id={location}&ndays={ndays}&nday_threshold={nday_threshold}&other_threshold={other_threshold}'
@@ -161,54 +158,54 @@ def prevalence_by_location(location, ndays=180, nday_threshold=10, other_thresho
         
     lins = get_outbreak_data('genomics/prevalence-by-location-all-lineages', query)
     df = pd.DataFrame(lins['results'])
-    if startswith is not None:
+    if startswith:
         return df.loc[df['lineage'].str.startswith(startswith)]
     return df
 
-def lineage_mutations(pango_lin, mutations=None, freq=0.8, server=server, auth=None):
+
+### Helper function for dealing with all 'q' queries
+def pangolin_crumbs(pango_lin, mutations=None):
+
+    query = 'lineages=None'
+    if mutations:
+        query = query + f'&mutations={mutations}'
+    query = query + f'&q=pangolin_lineage_crumbs:*;{pango_lin};*'
+    return query
+
+
+def lineage_mutations(pango_lin=None, lineage_crumbs=False, mutations=None, freq=0.8, server=server, auth=None):  ###
     """Retrieves data from all mutations in a specified lineage above a frequency threshold.
-       - Mutiple queries for lineages and mutations can be separated by ","
        - Use 'OR' in a string to return overlapping mutations in multiple lineages: 'BA.2 OR BA.1'
-       - mutation is only useful for one lineage + mutation1 + mutation2 .... combinations
 
           Arguments:
-             :pango_lin: A string or list; loads data for all mutations in a specified PANGO lineage 
-             :mutation: A string or list; loads data of mutations for sequences classified as a specified PANGO lineage with mutation
+             :pango_lin: A string; loads data for all mutations in a specified PANGO lineage
+             :lineage_crumbs: If true returns data for descendant lineages of pango_lin. Include the wildcard '*' in string to return info on all related lineages.
+             :mutations: A string; loads mutation data for the specified sequence under the specified PANGO lineage 
              :freq: A number between 0 and 1 specifying the frequency threshold above which to return mutations (default = 0.8)
-             :Value: A pandas dataframe"""
+             :return: A pandas dataframe"""
 
-    # Turns any string input into list format: most universal
-    if isinstance(pango_lin, str) is True:
-      if 'OR' in pango_lin:
+    # Use strings, no reason to use list format anymore
+    
+    if lineage_crumbs:
+        query = pangolin_crumbs(pango_lin)
+                
+    else:
+        query = f'lineages={pango_lin}'
+        if 'OR' in pango_lin:
           lineages = pango_lin.split('OR')
-          lineages = "OR".join(lineages)
-      else:
-          lineages = pango_lin.replace(" ", "")
-          lineages = lineages.split(',')
-          lineages = ",".join(lineages)
-    elif isinstance(pango_lin, list):
-         lineages = ",".join(pango_lin)
-                  
-    if mutations:
-        if isinstance(mutations, str) is True:
-            mutations = mutations.replace(" ", "")
-            mutations = list(mutations.split(","))   # deals with string format for mutations
-
-        if isinstance(mutations, list) is True:
-            mutations = " AND ".join(mutations)
-        mutations = " AND " + mutations
-        lineages = '' + lineages + '' + mutations # fixed function
-    raw_data = get_outbreak_data('genomics/lineage-mutations', f'pangolin_lineage={lineages}', collect_all=False)
+          query = "OR".join(lineages)
+        if mutations:
+            query = '&' + f'mutations={mutations}' + query 
+        
+    raw_data = get_outbreak_data('genomics/lineage-mutations', f'{query}', collect_all=False)
+    key_list = raw_data['results']
+    if len(key_list) == 0:
+        raise TypeError('No matches for query found')
+    
     key_list = raw_data['results']
     key_list = list(key_list)
-
-    for i in key_list: # Returns multiple lineages using ","
-        if i == key_list[0]:
-            df = pd.DataFrame(raw_data['results'][i])
-        else:
-            newdf = pd.DataFrame(raw_data['results'][i]) # append each dfs
-            df = pd.concat([df, newdf], sort=False)  
-
+    df = pd.DataFrame(raw_data['results'][key_list[0]])
+       
     if freq != 0.8:
         if isinstance(freq, float) and freq > 0 and freq < 1:
             return df.loc[df['prevalence'] >= freq]
@@ -216,7 +213,7 @@ def lineage_mutations(pango_lin, mutations=None, freq=0.8, server=server, auth=N
         return df
     
 
-def global_prevalence(pango_lin, mutations=None, cumulative=None, server=test_server):
+def global_prevalence(pango_lin, mutations=None, cumulative=None, server=server):
    
     """Returns the global daily prevalence of a PANGO lineage
        
@@ -224,7 +221,7 @@ def global_prevalence(pango_lin, mutations=None, cumulative=None, server=test_se
         :pangolin_lineage: (Required).
         :mutations: (Optional). Comma separated list of mutations.
         :cumulative: (Optional). If true returns the cumulative global prevalence since the first day of detection.
-        :Value: A pandas dataframe."""
+        :return: A pandas dataframe."""
     if mutations:
         if isinstance(mutations, list):
             mutations = ','.join(mutations)
@@ -247,16 +244,14 @@ def global_prevalence(pango_lin, mutations=None, cumulative=None, server=test_se
         df = pd.DataFrame(raw_data['results'])
     return df
 
-
-def sequence_counts(location=None, cumulative=None, sub_admin=None, server=test_server):
-    """
-    Returns number of sequences per day by location
+def sequence_counts(location=None, cumulative=None, sub_admin=None, server=server):
+    """Returns number of sequences per day by location
 
     Arguments:
-     :location_id: (Optional). If not specified, the global total counts are returned.
+     :location: (Optional). If not specified, the global total counts are returned.
      :cumulative: (Optional). If true returns the cumulative number of sequences till date.
      :subadmin: (Optional). If true and cumulative=true, returns the cumulative number of sequences for the immedaite lower admin level.
-     :Value: A pandas dataframe.
+     :return: A pandas dataframe.
     """
         
     query = ''    
@@ -266,7 +261,7 @@ def sequence_counts(location=None, cumulative=None, sub_admin=None, server=test_
         query = query +  '&' + 'cumulative=true'
     if sub_admin:
         query = query + '&' + 'subadmin=true'
-            
+    
     raw_data = get_outbreak_data('genomics/sequence-count', f'{query}')
      
     if cumulative or sub_admin:
@@ -276,51 +271,57 @@ def sequence_counts(location=None, cumulative=None, sub_admin=None, server=test_
         df = pd.DataFrame(raw_data['results'])
     return df
 
-
-def mutations_by_lineage(mutation, location=None, pango_lin=None, freq=None, server=test_server):
-    """
-    Returns the prevalence of a mutation or series of mutations across specified lineages by location
+def mutations_by_lineage(mutation=None, location=None, pango_lin=None, lineage_crumbs=False, datemin=None,  datemax=None, freq=None, server=server):
+    """Returns the prevalence of a mutation or series of mutations across specified lineages by location
 
     Arguments:
-     :mutations: (Optional). List of mutations. 
-     :location_id: (Optional). If not specified, return most recent date globally.
+     :mutations: (Optional). List or string of mutations separated by ",". 
+     :location_id: (Optional). A string; If not specified, return most recent date globally.
      :pangolin_lineage: (Optional). If not specfied, returns all Pango lineages containing that mutation.
+     :lineage_crumbs: If true returns data for descendant lineages of pango_lin. Include the wildcard symbol '*' in string to return info on all related lineages.
      :frequency: (Optional) Minimimum frequency threshold for the prevalence of a mutation in a lineage.
-     :Value: A pandas dataframe.
+     :datemin: (Optional). A string representing the first cutoff date for returned date. Must be in YYYY-MM-DD format and be before 'datemax'
+     :datemax: (Optional). A string representing the second cutoff date. Must be in YYY-MM-DD format and be after 'datemin'
+     :return: A pandas dataframe.
     """
-
-    if isinstance(mutation, list):
-        pass
-    elif isinstance(mutation, str):
-         mutation = mutation.replace(" ", "")
-         mutation = list(mutation.split(","))
     
-    mutations = '' + ','.join(mutation) + ''   
-    if location is not None and pango_lin is not None:
-        query = '' + f'mutations={mutations}&location_id={location}&pangolin_lineage={pango_lin}'
-    elif location is not None:
-        query = '' + f'mutations={mutations}&location_id={location}'
-    elif pango_lin is not None:
-        query = '' + f'mutations={mutations}&pangolin_lineage={pango_lin}'
-    else:
-        query = '' + f'mutations={mutations}'
+    if mutation: 
+        if isinstance(mutation, str):
+             mutation = mutation.replace(" ", "")
+             mutation = list(mutation.split(","))
+        mutation = '' + ' AND '.join(mutation) + ''   
+        query = f'mutations={mutation}'
+            
+    if pango_lin and lineage_crumbs:
+        query = pangolin_crumbs(pango_lin)
+
+    if location:
+        query = query + f'&location_id={location}'
+    if datemin and datemax:
+        query = query + f'&datemin={datemin}&datemax={datemax}'
 
     raw_data = get_outbreak_data('genomics/mutations-by-lineage', f'{query}')
-    df = pd.DataFrame(raw_data['results'][mutations])
-
+    
+    key_list = raw_data['results']
+    key_list = list(key_list)
+    df = pd.DataFrame(raw_data['results'][key_list[0]])
+       
     if isinstance(freq, float) and freq > 0 and freq < 1:
         return df.loc[df['prevalence'] >= freq]
     return df
-    
-def daily_prev(pango_lin, location='USA', mutations=None, cumulative=None, server=server):
+
+
+def prevalence_by_location(pango_lin, location, mutations=None, datemin=None, datemax=None, cumulative=None, server=server):
     """Returns the daily prevalence of a PANGO lineage by location.
    
        Arguments:
-        :pango_lin: (Required). List of lineages separated by ","
+        :pango_lin: (Required). List of lineages separated by ,
         :location_id: (Optional). Default location: USA
         :mutations: (Optional). List of mutations separated by AND
         :cumulative: (Optional). If true returns the cumulative global prevalence since the first day of detection.
-        :Value: A pandas dataframe. """
+        :datemin: (Optional). A string representing the first cutoff date for returned date. Must be in YYYY-MM-DD format and be before 'datemax'
+        :datemax: (Optional). A string representing the second cutoff date. Must be in YYY-MM-DD format and be after 'datemin'
+        :return: A pandas dataframe."""
     
     if isinstance(pango_lin, str):
        pango_lin = pango_lin.replace(" ", "")
@@ -342,6 +343,9 @@ def daily_prev(pango_lin, location='USA', mutations=None, cumulative=None, serve
         query = query + '&' + f'mutations={mutations}'
     if cumulative:
         query = query + '&' + 'cumulative=true'
+    if datemin and datemax:
+        query = query + f'&datemin={datemin}&datemax={datemax}'
+   
          
     raw_data = get_outbreak_data('genomics/prevalence-by-location', f'pangolin_lineage={query}', collect_all=False)
     key_list = raw_data['results']
@@ -362,25 +366,26 @@ def daily_prev(pango_lin, location='USA', mutations=None, cumulative=None, serve
             else:
                 newdf = pd.DataFrame(raw_data['results'][i]) # append each df
                 df = pd.concat([df, newdf], sort=False)  
+                
     return df
- 
 
 
-def lineage_by_sub_admin(pango_lin, mutations=None, location=None, ndays=None, detected=None):
+def lineage_by_sub_admin(pango_lin, mutations=None, location=None, ndays=0, detected=None, server=server):
     """Cumulative prevalence of a PANGO lineage by the immediate admin level of a location
 
         Arguments:
-          :pangolin_lineage: (Required). A list or string. List of lineages separated by ,
-          :mutations: (Optional). A string or list of strings. Uses AND logic.
-          :location_id: (Optional). A string. If not specified, returns cumulative prevalence at the country level globally.
-          :ndays: (Optional). An integer. Specify number of days from current date to calculative cumuative counts. If not specified, there is no limit on the window.
-          :detected: (Optional). If true returns only if at least found in location
-          :Value: A pandas dataframe."""
+        :pangolin_lineage: (Required). A list or string. List of lineages separated by ,
+        :mutations: (Optional). A string or list of strings. Uses AND logic.
+        :location_id: (Optional). A string. If not specified, returns cumulative prevalence at the country level globally.
+        :ndays: (Optional). An integer. Specify number of days from current date to calculative cumuative counts. If not specified, there is no limit on the window.
+        :detected: (Optional). If true returns only if at least found in location
+        :return: A pandas dataframe."""
         
     if isinstance(pango_lin, str):
         pango_lin = pango_lin.replace(" ", "")
     elif isinstance(pango_lin, list):
          pango_lin = ','.join(pango_lin)
+    query = pango_lin
          
     if mutations:
         if isinstance(mutations, list):
@@ -410,15 +415,14 @@ def lineage_by_sub_admin(pango_lin, mutations=None, location=None, ndays=None, d
     return df
     
 
-def collection_date(pango_lin, mutations=None, location=None):
-    """
-    Most recent collection date by location
+def collection_date(pango_lin, mutations=None, location=None, server=server):
+    """Most recent collection date by location
 
     Arguments:
-      :pango_lin: A string. (Required).
-      :mutations: (Optional). A string or list of strings. Comma separated list of mutations.
-      :location: (Optional). If not specified, return most recent date globally.
-      :Value: A pandas dataframe.
+     :pango_lin: A string. (Required).
+     :mutations: (Optional). A string or list of strings. Comma separated list of mutations.
+     :location: (Optional). If not specified, return most recent date globally.
+     :return: A pandas dataframe.
     """
     if mutations:
         if isinstance(mutations, list):
@@ -439,14 +443,14 @@ def collection_date(pango_lin, mutations=None, location=None):
     return df
 
 
-def submission_date(pango_lin, mutations=None, location=None):
+def submission_date(pango_lin, mutations=None, location=None, server=server):
     """Returns the most recent submission date by location
 
      Arguments:
-      :pango_lin: A string. (Required).
-      :mutations: (Optional). A string or list of strings. Comma separated list of mutations.
-      :location: (Optional). If not specified, return most recent date globally.
-      :Value: A pandas dataframe."""
+       :pango_lin: A string. (Required).
+       :mutations: (Optional). A string or list of strings. Comma separated list of mutations.
+       :location: (Optional). If not specified, return most recent date globally.
+       :return: A pandas dataframe."""
     if mutations:
          if isinstance(mutations, list):
              mutations = ','.join(mutations)
@@ -465,14 +469,13 @@ def submission_date(pango_lin, mutations=None, location=None):
     df = pd.DataFrame(data) 
     return df
  
-    
-def mutation_details(mutations):
-    """ 
-    Returns details of a mutation.
+   
+def mutation_details(mutations, server=server):
+    """ Returns details of a mutation.
     
     Arguments:
-      :mutations: (Required). Comma separated list of mutations.
-      :Value: A pandas dataframe.
+     :mutations: (Required). Comma separated list of mutations.
+     :return: A pandas dataframe.
     """
     
     if isinstance(mutations, str):
@@ -497,13 +500,12 @@ def mutation_details(mutations):
     return df
 
 
-def daily_lag(location=None):
-    """
-    Return the daily lag between collection and submission dates by location
+def daily_lag(location=None, server=server):
+    """Return the daily lag between collection and submission dates by location
 
     Arguments:
-      :location_id: (Optional). If not specified, return lag globally.
-      :Value: A pandas dataframe.
+     :location_id: (Optional). If not specified, return lag globally.
+     :return: A pandas dataframe.
     """
     query = ''
     if location:
@@ -512,73 +514,71 @@ def daily_lag(location=None):
     raw_data = get_outbreak_data('genomics/collection-submission', query, collect_all=False)
     
     r = raw_data['results']
-    keys = tuple(r[0])
     
     for i in r: # for each seperate result
         values = tuple(i.values())
+        
         if i == r[0]:
-            df=pd.DataFrame({"Key": keys,
-                 "Values":values})
+            df=pd.DataFrame({"date_collected": values[0], "date_submitted": values[1], "total_count": values[2]})
         else:
-                newdf = pd.DataFrame({"Key": keys,
-                     "Values":values}) # append each df
-                df = pd.concat([df, newdf], axis=1, sort=False)
+                newdf = pd.DataFrame({"date_collected": values[0], "date_submitted": values[1], "total_count": values[2]}) # append each df
+                df = pd.concat([df, newdf], sort=False)
     return df
-     
+    
 
-def wildcard_lineage(name):
+def wildcard_lineage(name, server=server):
     """Match lineage name using wildcards. 
 
     Arguments:
-      :name: (Required). A string. Must use * at end of string. Supports wildcards. (Example: b.1*, ba.2*)
-      :Value: A pandas dataframe."""
+     :name: (Required). A string. Must use * at end of string. Supports wildcards. (Example: b.1*, ba.2*)
+     :return: A pandas dataframe."""
     
     query = '' + '&' + f'name={name}'
     raw_data = get_outbreak_data('genomics/lineage', query, collect_all=False)
     r = raw_data['results']
-    keys = tuple(r[0])
     
     for i in r: # for each seperate result
         values = tuple(i.values())
-        if i == r[0]:
-            df=pd.DataFrame({"Key": keys,
-                 "Values":values})
+        if i == r[0]: # follow new procedure as found for daily_lag
+            df=pd.DataFrame({"name": values[0],
+                  "total_count":values[1]}, index=[0])
         else:
-                newdf = pd.DataFrame({"Key": keys,
-                     "Values":values}) # append each df
-                df = pd.concat([df, newdf], axis=1, sort=False)
+                newdf = pd.DataFrame({"name": values[0],
+                      "total_count":values[1]}, index=[0]) # append each df
+                df = pd.concat([df, newdf], sort=False)
     return df
      
 
-def wildcard_location(name):
+
+def wildcard_location(name, server=server):
     """Match location name using wildcards. 
 
     Arguments:
-      :name: (Required). A string. Must use * at end of string. Supports wildcards. (Example: united*)
-      :Value: A pandas dataframe."""
+     :name: (Required). A string. Must use * at end of string. Supports wildcards. (Example: united*)
+     :return: A pandas dataframe."""
     
     query = '' + '&' + f'name={name}'
     raw_data = get_outbreak_data('genomics/location', query, collect_all=False)
     r = raw_data['results']
-    keys = tuple(r[0])
+   
     for i in r: # for each seperate result
         values = tuple(i.values())
         if i == r[0]:
-            df=pd.DataFrame({"Key": keys,
-                 "Values":values})
+            df=pd.DataFrame({"country": values[0], "country_id ": values[1],'id':values[2], "label":values[3],
+                             "admin_level":values[4], "total_count":values[5]}, index = [0])
         else:
-                newdf = pd.DataFrame({"Key": keys,
-                     "Values":values}) # append each df
-                df = pd.concat([df, newdf], axis=1, sort=False)
+                newdf = pd.DataFrame({"country": values[0], "country_id ": values[1],'id':values[2], "label":values[3], 
+                                      "admin_level":values[4], "total_count":values[5]}, index = [0]) # append each df
+                df = pd.concat([df, newdf], sort=False)
     return df
      
 
-def location_details(location):
+def location_details(location, server=server):
     """Get location details using location ID.
      
-    Arguments:
+     Arguments:
       :location: A string. (Required).
-      :Value: A pandas dataframe."""
+      :return: Some pandas dataframes."""
    
     query = '' + '&' + f'id={location}'
     raw_data = get_outbreak_data('genomics/location-lookup', query, collect_all=False)
@@ -587,27 +587,54 @@ def location_details(location):
     return df
 
     
-def wildcard_mutations(name):
+def wildcard_mutations(name, server=server):
     """Match mutations using wildcards.
     
      Arguments:
-       :name: (Required)  A string. Must use * at end of string. Supports wildcards. (Example: s:e484*)
-       :Value: A pandas dataframe.
-     """
-    
+      :name: (Required)  A string. Must use * at end of string. Supports wildcards. (Example: s:e484*)
+      :return: A pandas dataframe."""
 
     query = '' + '&' + f'name={name}'
     raw_data = get_outbreak_data('genomics/mutations', query, collect_all=False)
     r = raw_data['results']
-    keys = tuple(r[0])
     
     for i in r: # for each seperate result
         values = tuple(i.values())
         if i == r[0]:
-            df=pd.DataFrame({"Key": keys,
-                 "Values":values})
+            df=pd.DataFrame({"name": values[0],
+                  "total_count":values[1]}, index=[0])
         else:
-                newdf = pd.DataFrame({"Key": keys,
-                     "Values":values}) # append each df
-                df = pd.concat([df, newdf], axis=1, sort=False)
+                newdf = pd.DataFrame({"name": values[0],
+                      "total_count":values[1]}, index=[0]) # append each df
+                df = pd.concat([df, newdf], sort=False)
     return df
+
+### Significance API enpoints: ###
+    
+def growth_rates(lineage, location='Global'):
+    """Returns the growth rate score for a given lineage in a given location.
+    
+     Arguments:
+     :lineage: (Required)  A string. 
+     :location: (Required. Default: 'Global') A list or string. Separate multiple locations with ","
+     :return: A pandas dataframe."""
+    
+    if isinstance(location, str):
+        locations = location.replace(", " , "+OR+")
+    elif isinstance(location, list):
+             locations = '+OR+'.join(location)
+    
+    query = f'q=lineage:{lineage}+AND+location:{locations}'
+    raw_data = get_outbreak_data('growth_rate/query', query, collect_all=False)
+    df = pd.DataFrame(raw_data['hits'])
+    
+    return df
+
+
+
+
+    
+    
+
+
+

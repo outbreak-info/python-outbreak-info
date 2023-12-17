@@ -79,7 +79,7 @@ def print_terms():
 
 def authenticate_new_user():
     """
-    Authenticate a user for genomics API access.
+    Authenticate a user for genomics API access. Required to complete for first time use.
     """
     ###this code currently doesn't handle a bad request, make sure that the final product does!
 
