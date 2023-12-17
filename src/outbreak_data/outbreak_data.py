@@ -162,6 +162,7 @@ def all_lineage_prevalences(location, ndays=180, nday_threshold=10, other_thresh
         return df.loc[df['lineage'].str.startswith(startswith)]
     return df
 
+
 ### Helper function for dealing with all 'q' queries
 def pangolin_crumbs(pango_lin, mutations=None):
 
@@ -170,6 +171,7 @@ def pangolin_crumbs(pango_lin, mutations=None):
         query = query + f'&mutations={mutations}'
     query = query + f'&q=pangolin_lineage_crumbs:*;{pango_lin};*'
     return query
+
 
 def lineage_mutations(pango_lin=None, lineage_crumbs=False, mutations=None, freq=0.8, server=server, auth=None):  ###
     """Retrieves data from all mutations in a specified lineage above a frequency threshold.
@@ -527,7 +529,7 @@ def wildcard_lineage(name, server=server):
     """Match lineage name using wildcards. 
 
     Arguments:
-    :param name: (Required). A string. Must use * at end of string. Supports wildcards. (Example: b.1*, ba.2*)
+    :param name: (Required). A string. Supports wildcards. Must use '*' at end of string. (Example: b.1*, ba.2*)
     :return: A pandas dataframe."""
     
     query = '' + '&' + f'name={name}'
@@ -628,7 +630,10 @@ def growth_rates(lineage, location='Global'):
     return df
 
 
-
+df = wildcard_lineage('BA.2*')
+df2 = wildcard_location('united*')
+df3 = wildcard_mutations('s:e484*')
+df4 = location_details('IND')
 
     
     

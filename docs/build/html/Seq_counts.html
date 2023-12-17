@@ -44,8 +44,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="mutations_by_lineage(mutation, location, pango_lin)" href="Mut_By_Lin.html" />
-    <link rel="prev" title="global_prevalence(pango_lin, mutations, cumulative)" href="Global_Prev.html" /> 
+    <link rel="next" title="mutations_by_lineage(mutation, location, pango_lin)" href="mutations_by_lineage.html" />
+    <link rel="prev" title="global_prevalence(pango_lin, mutations, cumulative)" href="global_prevalence.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -91,26 +91,31 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="Cases_by_location.html">cases_by_location(location)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Lineage_mutations.html">lineage_mutations(pango_lin, mutation, freq)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Prevalence_by_location.html">prevalence_by_location(location, startswith)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Global_Prev.html">global_prevalence(pango_lin, mutations, cumulative)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">sequence_counts(location, cumulative, sub_admin)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Mut_By_Lin.html">mutations_by_lineage(mutation, location, pango_lin)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="auth_setup.html">authenticate_new_user()</a></li>
-<li class="toctree-l1"><a class="reference internal" href="daily_prev.html">daily_prev(pango_lin, location, mutations, cumulative)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cases_by_location.html">cases_by_location(location)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lineage_mutations.html">lineage_mutations(pango_lin, mutation, freq)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="all_lineage_prevalences.html">all_lineage_prevalences(location, startswith)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="global_prevalence.html">global_prevalence(pango_lin, mutations, cumulative)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">sequence_counts(location, cumulative, sub_admin)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutations_by_lineage.html">mutations_by_lineage(mutation, location, pango_lin)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prevalence_by_location.html">prevalence_by_location(pango_lin, location, mutations=None, datemin=None, datemax=None, cumulative=None)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lineage_by_sub_admin.html">lineage_by_sub_admin(pango_lin, mutations, location, ndays=0, detected)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="collection_date.html">collection_date(pango_lin, mutations=None, location=None)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="submission_date.html">submission_date(pango_lin, mutations=None, location)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mutation_details.html">mutation_details(mutations)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="daily_lag.html">daily_lag(location=None)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_lineage.html">wildcard_lineage(name)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_location.html">wildcard_location(name)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_mutations.html">wildcard_mutations(name)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="location_details.html">location_details(location)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Outbreak_data_Functions.html">get_outbreak_data()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_rates.html">growth_rates(lineage, location)</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="epidem_analysis.html">Epidemiological data analyses</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lineage_prevalence.html">Lineage Prevalence Analyses</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mutation_analysis.html">Mutation Data Analyses</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cryptic_vars.html">Mapping Mutations to Lineages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cryptic_vars.html">Dealing with Cryptic Variants</a></li>
 </ul>
 
             
@@ -169,7 +174,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/Seq_counts.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/seq_counts.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -186,11 +191,11 @@
 <h1>sequence_counts(location, cumulative, sub_admin)<a class="headerlink" href="#sequence-counts-location-cumulative-sub-admin" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="outbreak_data.sequence_counts">
-<span class="sig-prename descclassname"><span class="pre">outbreak_data.</span></span><span class="sig-name descname"><span class="pre">sequence_counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cumulative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sub_admin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'test.outbreak.info'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#outbreak_data.sequence_counts" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">outbreak_data.</span></span><span class="sig-name descname"><span class="pre">sequence_counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cumulative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sub_admin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'api.outbreak.info'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#outbreak_data.sequence_counts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns number of sequences per day by location</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><dl class="field-list simple">
-<dt class="field-odd">location_id</dt>
+<dt class="field-odd">location</dt>
 <dd class="field-odd"><p>(Optional). If not specified, the global total counts are returned.</p>
 </dd>
 <dt class="field-even">cumulative</dt>
@@ -199,7 +204,7 @@
 <dt class="field-odd">subadmin</dt>
 <dd class="field-odd"><p>(Optional). If true and cumulative=true, returns the cumulative number of sequences for the immedaite lower admin level.</p>
 </dd>
-<dt class="field-even">Value</dt>
+<dt class="field-even">return</dt>
 <dd class="field-even"><p>A pandas dataframe.</p>
 </dd>
 </dl>
@@ -255,8 +260,8 @@ print(df)</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="Mut_By_Lin.html" class="btn btn-neutral float-right" title="mutations_by_lineage(mutation, location, pango_lin)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="Global_Prev.html" class="btn btn-neutral float-left" title="global_prevalence(pango_lin, mutations, cumulative)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mutations_by_lineage.html" class="btn btn-neutral float-right" title="mutations_by_lineage(mutation, location, pango_lin)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="global_prevalence.html" class="btn btn-neutral float-left" title="global_prevalence(pango_lin, mutations, cumulative)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

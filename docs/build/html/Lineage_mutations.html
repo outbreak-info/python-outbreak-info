@@ -44,8 +44,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="prevalence_by_location(location, startswith)" href="Prevalence_by_location.html" />
-    <link rel="prev" title="cases_by_location(location)" href="Cases_by_location.html" /> 
+    <link rel="next" title="all_lineage_prevalences(location, startswith)" href="all_lineage_prevalences.html" />
+    <link rel="prev" title="cases_by_location(location)" href="cases_by_location.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -91,26 +91,31 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="Cases_by_location.html">cases_by_location(location)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">lineage_mutations(pango_lin, mutation, freq)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Prevalence_by_location.html">prevalence_by_location(location, startswith)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Global_Prev.html">global_prevalence(pango_lin, mutations, cumulative)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Seq_counts.html">sequence_counts(location, cumulative, sub_admin)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Mut_By_Lin.html">mutations_by_lineage(mutation, location, pango_lin)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="auth_setup.html">authenticate_new_user()</a></li>
-<li class="toctree-l1"><a class="reference internal" href="daily_prev.html">daily_prev(pango_lin, location, mutations, cumulative)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cases_by_location.html">cases_by_location(location)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">lineage_mutations(pango_lin, mutation, freq)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="all_lineage_prevalences.html">all_lineage_prevalences(location, startswith)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="global_prevalence.html">global_prevalence(pango_lin, mutations, cumulative)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="seq_counts.html">sequence_counts(location, cumulative, sub_admin)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutations_by_lineage.html">mutations_by_lineage(mutation, location, pango_lin)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prevalence_by_location.html">prevalence_by_location(pango_lin, location, mutations=None, datemin=None, datemax=None, cumulative=None)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lineage_by_sub_admin.html">lineage_by_sub_admin(pango_lin, mutations, location, ndays=0, detected)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="collection_date.html">collection_date(pango_lin, mutations=None, location=None)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="submission_date.html">submission_date(pango_lin, mutations=None, location)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mutation_details.html">mutation_details(mutations)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="daily_lag.html">daily_lag(location=None)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_lineage.html">wildcard_lineage(name)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_location.html">wildcard_location(name)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_mutations.html">wildcard_mutations(name)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="location_details.html">location_details(location)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Outbreak_data_Functions.html">get_outbreak_data()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_rates.html">growth_rates(lineage, location)</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="epidem_analysis.html">Epidemiological data analyses</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lineage_prevalence.html">Lineage Prevalence Analyses</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mutation_analysis.html">Mutation Data Analyses</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cryptic_vars.html">Mapping Mutations to Lineages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cryptic_vars.html">Dealing with Cryptic Variants</a></li>
 </ul>
 
             
@@ -169,7 +174,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/Lineage_mutations.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/lineage_mutations.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -186,25 +191,26 @@
 <h1>lineage_mutations(pango_lin, mutation, freq)<a class="headerlink" href="#lineage-mutations-pango-lin-mutation-freq" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="outbreak_data.lineage_mutations">
-<span class="sig-prename descclassname"><span class="pre">outbreak_data.</span></span><span class="sig-name descname"><span class="pre">lineage_mutations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pango_lin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'api.outbreak.info'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#outbreak_data.lineage_mutations" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">outbreak_data.</span></span><span class="sig-name descname"><span class="pre">lineage_mutations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pango_lin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lineage_crumbs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'api.outbreak.info'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#outbreak_data.lineage_mutations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves data from all mutations in a specified lineage above a frequency threshold.
-- Mutiple queries for lineages and mutations can be separated by “,”
-- Use ‘OR’ in a string to return overlapping mutations in multiple lineages: ‘BA.2 OR BA.1’
-- mutation is only useful for one lineage + mutation1 + mutation2 …. combinations</p>
+- Use ‘OR’ in a string to return overlapping mutations in multiple lineages: ‘BA.2 OR BA.1’</p>
 <blockquote>
 <div><dl class="simple">
 <dt>Arguments:</dt><dd><dl class="field-list simple">
 <dt class="field-odd">pango_lin</dt>
-<dd class="field-odd"><p>A string or list; loads data for all mutations in a specified PANGO lineage</p>
+<dd class="field-odd"><p>A string; loads data for all mutations in a specified PANGO lineage</p>
 </dd>
-<dt class="field-even">mutation</dt>
-<dd class="field-even"><p>A string or list; loads data of mutations for sequences classified as a specified PANGO lineage with mutation</p>
+<dt class="field-even">lineage_crumbs</dt>
+<dd class="field-even"><p>If true returns data for descendant lineages of pango_lin. Include the wildcard ‘*’ in string to return info on all related lineages.</p>
 </dd>
-<dt class="field-odd">freq</dt>
-<dd class="field-odd"><p>A number between 0 and 1 specifying the frequency threshold above which to return mutations (default = 0.8)</p>
+<dt class="field-odd">mutations</dt>
+<dd class="field-odd"><p>A string; loads mutation data for the specified sequence under the specified PANGO lineage</p>
 </dd>
-<dt class="field-even">Value</dt>
-<dd class="field-even"><p>A pandas dataframe</p>
+<dt class="field-even">freq</dt>
+<dd class="field-even"><p>A number between 0 and 1 specifying the frequency threshold above which to return mutations (default = 0.8)</p>
+</dd>
+<dt class="field-odd">return</dt>
+<dd class="field-odd"><p>A pandas dataframe</p>
 </dd>
 </dl>
 </dd>
@@ -387,8 +393,8 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="Prevalence_by_location.html" class="btn btn-neutral float-right" title="prevalence_by_location(location, startswith)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="Cases_by_location.html" class="btn btn-neutral float-left" title="cases_by_location(location)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="all_lineage_prevalences.html" class="btn btn-neutral float-right" title="all_lineage_prevalences(location, startswith)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="cases_by_location.html" class="btn btn-neutral float-left" title="cases_by_location(location)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
