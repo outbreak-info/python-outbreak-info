@@ -630,11 +630,6 @@ def growth_rates(lineage, location='Global'):
     return df
 
 
-df = wildcard_lineage('BA.2*')
-df2 = wildcard_location('united*')
-df3 = wildcard_mutations('s:e484*')
-df4 = location_details('IND')
-
     
     
 
