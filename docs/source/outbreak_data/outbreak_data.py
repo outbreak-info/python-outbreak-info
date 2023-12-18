@@ -615,9 +615,9 @@ def growth_rates(lineage, location='Global'):
     """Returns the growth rate score for a given lineage in a given location.
     
      Arguments:
-     :lineage: (Required)  A string. 
-     :location: (Required. Default: 'Global') A list or string. Separate multiple locations with ","
-     :return: A pandas dataframe."""
+       :lineage: (Required)  A string. 
+       :location: (Required. Default: 'Global') A list or string. Separate multiple locations with ","
+       :return: A pandas dataframe."""
     
     if isinstance(location, str):
         locations = location.replace(", " , "+OR+")
