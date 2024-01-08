@@ -3,7 +3,7 @@ import requests
 import warnings
 import pandas as pd
 
-import authenticate_user
+from outbreak_data import authenticate_user
 
 server = 'api.outbreak.info'  # or 'dev.outbreak.info'
 nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer ES versions as well
