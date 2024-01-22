@@ -3,7 +3,7 @@ import requests
 import warnings
 import pandas as pd
 
-import authenticate_user
+from outbreak_data import authenticate_user
 
 server = 'api.outbreak.info'  # or 'dev.outbreak.info'
 nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer ES versions as well
@@ -536,7 +536,7 @@ def wildcard_lineage(name, server=server):
     raw_data = get_outbreak_data('genomics/lineage', query, collect_all=False)
     r = raw_data['results']
     
-    for i in r: # for each seperate result
+    for i in r: # for each separate result
         values = tuple(i.values())
         if i == r[0]: # follow new procedure as found for daily_lag
             df=pd.DataFrame({"name": values[0],
