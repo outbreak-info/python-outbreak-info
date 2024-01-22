@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+.Python_outbreak_info_token.txt
 
 # C extensions
 *.so

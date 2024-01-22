@@ -71,7 +71,7 @@ Core Outbreak Data Tools
    wildcard_location
    wildcard_mutations
    location_details
-   Outbreak_data_Functions
+   outbreak_data_functions
    growth_rates
 
 Example analyses:
