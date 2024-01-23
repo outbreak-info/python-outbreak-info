@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lineage Prevalence Analysis &mdash; Python Outbreak.info API 0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=2709fde1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Viral Mutation Analysis" href="mutation_analysis.html" />
+    <link rel="prev" title="Working with epidemiological data" href="epidem_analysis.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Python Outbreak.info API
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="auth_setup.html">authenticate_new_user()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="all_lineage_prevalences.html">all_lineage_prevalences(location, startswith)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="global_prevalence.html">global_prevalence(pango_lin, mutations, cumulative)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutations_by_lineage.html">mutations_by_lineage(mutation, location, pango_lin)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lineage_by_sub_admin.html">lineage_by_sub_admin(pango_lin, mutations, location, ndays=0, detected)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collection_date.html">collection_date(pango_lin, mutations=None, location=None)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="submission_date.html">submission_date(pango_lin, mutations=None, location)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutation_details.html">mutation_details(mutations)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="daily_lag.html">daily_lag(location=None)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_lineage.html">wildcard_lineage(name)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_location.html">wildcard_location(name)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_mutations.html">wildcard_mutations(name)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="location_details.html">location_details(location)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Outbreak_data_Functions.html">get_outbreak_data()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_rates.html">growth_rates(lineage, location)</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="epidem_analysis.html">Epidemiological data analyses</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Lineage Prevalence Analyses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutation_analysis.html">Mutation Data Analyses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cryptic_vars.html">Dealing with Cryptic Variants</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Python Outbreak.info API</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Lineage Prevalence Analysis</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/lineage_prevalence.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="lineage-prevalence-analysis">
+<h1>Lineage Prevalence Analysis<a class="headerlink" href="#lineage-prevalence-analysis" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">outbreak_data</span></code> package has contains multiple endpoints that can collect information on SARS-CoV-2 lineages. Pulling data from a combination of endpoints will allow you to conduct your own analysis on the progression of SARS-CoV-2. On this page, you’ll find a few example workflows that demonstrate how to collect, manipulate, and visualize prevalence data in SARS-CoV-2 lineages.</p>
+<p>Here is how we would go about collecting data to find all the XBB lineages prevalent in India within a 1-year timeframe:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perform authentication if you haven&#39;t already</span>
+<span class="kn">from</span> <span class="nn">outbreak_data</span> <span class="kn">import</span> <span class="n">authenticate_user</span>
+<span class="n">authenticate_user</span><span class="o">.</span><span class="n">authenticate_new_user</span><span class="p">()</span>
+
+<span class="c1"># Import outbreak_data package</span>
+<span class="kn">from</span> <span class="nn">outbreak_data</span> <span class="kn">import</span> <span class="n">outbreak_data</span> <span class="k">as</span> <span class="n">od</span>
+
+<span class="c1"># Get the prevalence of all circulating XBB lineages in India</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">prevalence_by_location</span><span class="p">(</span><span class="s2">&quot;IND&quot;</span><span class="p">,</span> <span class="n">startswith</span> <span class="o">=</span> <span class="s1">&#39;xbb&#39;</span><span class="p">)</span>
+<span class="c1"># multiply prevalence values by 100% for scale</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;prevalence_rolling&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;prevalence_rolling&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+<span class="c1"># Search for data based on date range</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;date&quot;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="s2">&quot;2020-09-12&quot;</span><span class="p">,</span> <span class="s2">&quot;2022-03-31&quot;</span><span class="p">)]</span>
+
+<span class="c1">## Use the visual package of your choice to create an area graph using your data</span>
+<span class="kn">import</span> <span class="nn">altair</span> <span class="k">as</span> <span class="nn">alt</span>
+
+<span class="c1"># Graph of results</span>
+<span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Lineage Prevalence in India&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mark_area</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+<span class="n">x</span><span class="o">=</span><span class="s1">&#39;date:T&#39;</span><span class="p">,</span>
+<span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s1">&#39;prevalence_rolling:Q&#39;</span><span class="p">),</span>
+<span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;lineage:N&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Output:</span><a class="headerlink" href="#id1" title="Link to this code"></a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>            <span class="n">date</span>  <span class="n">total_count</span>  <span class="n">lineage_count</span>     <span class="n">lineage</span>  <span class="n">prevalence</span>  \
+ <span class="mi">3014</span> <span class="mi">2022</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">12</span>            <span class="mi">0</span>              <span class="mi">0</span>    <span class="n">xbb</span><span class="mf">.1.16</span>    <span class="mf">0.000000</span>
+ <span class="mi">3781</span> <span class="mi">2022</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">12</span>            <span class="mi">0</span>              <span class="mi">0</span>     <span class="n">xbb</span><span class="mf">.2.3</span>    <span class="mf">0.000000</span>
+ <span class="mi">2593</span> <span class="mi">2022</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">12</span>          <span class="mi">152</span>              <span class="mi">2</span>       <span class="n">xbb</span><span class="mf">.1</span>    <span class="mf">0.013158</span>
+ <span class="mi">3782</span> <span class="mi">2022</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">13</span>            <span class="mi">0</span>              <span class="mi">0</span>     <span class="n">xbb</span><span class="mf">.2.3</span>    <span class="mf">0.000000</span>
+ <span class="mi">3015</span> <span class="mi">2022</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">13</span>            <span class="mi">0</span>              <span class="mi">0</span>    <span class="n">xbb</span><span class="mf">.1.16</span>    <span class="mf">0.000000</span>
+ <span class="o">...</span>         <span class="o">...</span>          <span class="o">...</span>            <span class="o">...</span>         <span class="o">...</span>         <span class="o">...</span>
+ <span class="mi">4086</span> <span class="mi">2023</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">31</span>          <span class="mi">196</span>              <span class="mi">2</span>   <span class="n">xbb</span><span class="mf">.2.3.2</span>    <span class="mf">0.010204</span>
+ <span class="mi">3322</span> <span class="mi">2023</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">31</span>          <span class="mi">196</span>             <span class="mi">29</span>  <span class="n">xbb</span><span class="mf">.1.16.1</span>    <span class="mf">0.147959</span>
+ <span class="mi">2793</span> <span class="mi">2023</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">31</span>          <span class="mi">196</span>              <span class="mi">1</span>       <span class="n">xbb</span><span class="mf">.1</span>    <span class="mf">0.005102</span>
+ <span class="mi">3381</span> <span class="mi">2023</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">31</span>          <span class="mi">196</span>              <span class="mi">7</span>  <span class="n">xbb</span><span class="mf">.1.16.2</span>    <span class="mf">0.035714</span>
+ <span class="mi">3981</span> <span class="mi">2023</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">31</span>          <span class="mi">196</span>             <span class="mi">15</span>     <span class="n">xbb</span><span class="mf">.2.3</span>    <span class="mf">0.076531</span>
+
+      <span class="n">prevalence_rolling</span>
+ <span class="mi">3014</span>            <span class="mf">0.000000</span>
+ <span class="mi">3781</span>            <span class="mf">0.000000</span>
+ <span class="mi">2593</span>            <span class="mf">0.003451</span>
+ <span class="mi">3782</span>            <span class="mf">0.000000</span>
+ <span class="mi">3015</span>            <span class="mf">0.000000</span>
+ <span class="o">...</span>                  <span class="o">...</span>
+ <span class="mi">4086</span>            <span class="mf">0.031184</span>
+ <span class="mi">3322</span>            <span class="mf">0.144578</span>
+ <span class="mi">2793</span>            <span class="mf">0.014174</span>
+ <span class="mi">3381</span>            <span class="mf">0.045358</span>
+ <span class="mi">3981</span>            <span class="mf">0.084337</span>
+<span class="p">[</span><span class="mi">985</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">6</span> <span class="n">columns</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<img alt="_images/prev_visual.png" src="_images/prev_visual.png" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <a class="reference external" href="https://altair-viz.github.io/index.html">Vega-Altair</a> visualization package is used for demonstration purposes.         However, any Python visual package can be used to create graphical representations of the data.</p>
+</div>
+<p><strong>Finding the Most Prevalent Lineages</strong></p>
+<p>If we wanted to determine and plot the top four most prevalent lineages in India, we can make a few queries and use a few simple commands to create a table that shows us what these lineages are:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">=</span><span class="n">od</span><span class="o">.</span><span class="n">prevalence_by_location</span><span class="p">(</span><span class="s2">&quot;IND&quot;</span><span class="p">)</span>
+<span class="n">most_prev</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;lineage&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">max</span><span class="p">)</span> <span class="c1"># Finds the lineages with the most hits</span>
+<span class="n">most_prev</span> <span class="o">=</span> <span class="n">most_prev</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">most_prev</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span> <span class="o">=</span> <span class="s1">&#39;any&#39;</span><span class="p">)</span> <span class="c1"># Drop any unknowns</span>
+<span class="n">most_prev</span> <span class="o">=</span> <span class="n">most_prev</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">most_prev</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Output</span><a class="headerlink" href="#id2" title="Link to this code"></a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>                  <span class="n">date</span>  <span class="n">total_count</span>  <span class="n">lineage_count</span>    <span class="n">lineage</span>  <span class="n">prevalence</span>  \
+ <span class="n">lineage</span>
+ <span class="n">ba</span><span class="mf">.2</span>       <span class="mi">2023</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">20</span>         <span class="mi">5668</span>           <span class="mi">1445</span>       <span class="n">ba</span><span class="mf">.2</span>    <span class="mf">0.822785</span>
+ <span class="n">ba</span><span class="mf">.2.10.1</span>  <span class="mi">2023</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">19</span>         <span class="mi">5668</span>             <span class="mi">93</span>  <span class="n">ba</span><span class="mf">.2.10.1</span>    <span class="mf">0.285714</span>
+ <span class="n">bq</span><span class="mf">.1.1</span>     <span class="mi">2023</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">27</span>          <span class="mi">402</span>              <span class="mi">7</span>     <span class="n">bq</span><span class="mf">.1.1</span>    <span class="mf">0.428571</span>
+ <span class="n">ch</span><span class="mf">.1.1</span>     <span class="mi">2023</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">13</span>          <span class="mi">119</span>              <span class="mi">4</span>     <span class="n">ch</span><span class="mf">.1.1</span>    <span class="mf">0.400000</span>
+
+            <span class="n">prevalence_rolling</span>
+ <span class="n">lineage</span>
+ <span class="n">ba</span><span class="mf">.2</span>                 <span class="mf">0.677541</span>
+ <span class="n">ba</span><span class="mf">.2.10.1</span>            <span class="mf">0.095541</span>
+ <span class="n">bq</span><span class="mf">.1.1</span>               <span class="mf">0.156863</span>
+ <span class="n">ch</span><span class="mf">.1.1</span>               <span class="mf">0.066667</span>
+</pre></div>
+</div>
+</div>
+<p>Next we’ll collect the prevalence data on each of the four lineages:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Retrieve the official data on the prevalences of these lineages using `daily_prev()`</span>
+<span class="n">d1</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">daily_prev</span><span class="p">(</span><span class="s1">&#39;ba.2&#39;</span><span class="p">,</span> <span class="s2">&quot;IND&quot;</span><span class="p">)</span>
+<span class="n">d2</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">daily_prev</span><span class="p">(</span><span class="s1">&#39;ba.2.10.1&#39;</span><span class="p">,</span> <span class="s2">&quot;IND&quot;</span><span class="p">)</span>
+<span class="n">d3</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">daily_prev</span><span class="p">(</span><span class="s1">&#39;bq.1.1&#39;</span><span class="p">,</span> <span class="s2">&quot;IND&quot;</span><span class="p">)</span>
+<span class="n">d4</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">daily_prev</span><span class="p">(</span> <span class="s1">&#39;ch.1.1&#39;</span><span class="p">,</span> <span class="s2">&quot;IND&quot;</span><span class="p">)</span>
+
+<span class="c1"># Formatting for creating the graph</span>
+<span class="n">d1</span><span class="p">[</span><span class="s1">&#39;lineage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;ba.2&#39;</span>
+<span class="n">d2</span><span class="p">[</span><span class="s1">&#39;lineage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;ba.2.10.1&#39;</span>
+<span class="n">d3</span><span class="p">[</span><span class="s1">&#39;lineage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bq.1.1&#39;</span>
+<span class="n">d4</span><span class="p">[</span><span class="s1">&#39;lineage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;ch.1.1&#39;</span>
+
+<span class="c1"># Group together data from each lineage</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">d3</span><span class="p">,</span> <span class="n">d4</span><span class="p">])</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;proportion&#39;</span><span class="p">:</span> <span class="s1">&#39;proportion (%)&#39;</span><span class="p">})</span>
+
+<span class="c1">#Pick a date range to analyze</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;date&quot;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="s2">&quot;2022-09-12&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-03-31&quot;</span><span class="p">)]</span>
+<span class="c1"># Increase prevalence by 100%</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;proportion&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;proportion&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="c1">#Graph using preferred visual package</span>
+<span class="kn">import</span> <span class="nn">altair</span> <span class="k">as</span> <span class="nn">alt</span>
+<span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Top 4 Most Prevalent Lineages in India&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mark_area</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+<span class="n">x</span><span class="o">=</span><span class="s1">&#39;date:T&#39;</span><span class="p">,</span>
+<span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s1">&#39;proportion (%):Q&#39;</span><span class="p">),</span>
+<span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;lineage:N&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="_images/top4.png" src="_images/top4.png" />
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="epidem_analysis.html" class="btn btn-neutral float-left" title="Working with epidemiological data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mutation_analysis.html" class="btn btn-neutral float-right" title="Viral Mutation Analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
