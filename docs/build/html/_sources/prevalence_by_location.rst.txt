@@ -1,5 +1,5 @@
-prevalence_by_location(pango_lin, location, mutations=None, datemin=None, datemax=None, cumulative=None)
----------------------------------------------------------------------------------------------------------
+prevalence_by_location(pango_lin, location, mutations=None, datemin=None, datemax=None, cumulative=None, lineage_crumbs=False)
+-------------------------------------------------------------------------------------------------------------------------------
 
 .. autofunction:: outbreak_data.prevalence_by_location
 

@@ -164,12 +164,14 @@ def all_lineage_prevalences(location, ndays=180, nday_threshold=10, other_thresh
 
 
 ### Helper function for dealing with all 'q' queries
-def pangolin_crumbs(pango_lin, mutations=None):
-
-    query = 'lineages=None'
+def pangolin_crumbs(pango_lin, mutations=None,lin_prefix=True):
+    if lin_prefix:
+        query = 'lineages=None&'
+    else:
+        query = ''
     if mutations:
-        query = query + f'&mutations={mutations}'
-    query = query + f'&q=pangolin_lineage_crumbs:*;{pango_lin};*'
+        query = query + f'mutations={mutations}&'
+    query = query + f'q=pangolin_lineage_crumbs:*;{pango_lin};*'
     return query
 
 
@@ -213,7 +215,7 @@ def lineage_mutations(pango_lin=None, lineage_crumbs=False, mutations=None, freq
         return df
     
 
-def global_prevalence(pango_lin, mutations=None, cumulative=None, server=server):
+def global_prevalence(pango_lin, mutations=None, cumulative=None, lineage_crumbs=False, server=server):
    
     """Returns the global daily prevalence of a PANGO lineage
        
@@ -222,26 +224,49 @@ def global_prevalence(pango_lin, mutations=None, cumulative=None, server=server)
         :param mutations: (Somewhat optional). Comma separated list of mutations.
         :param cumulative: (Somewhat optional). If true returns the cumulative global prevalence since the first day of detection.
         :return: A pandas dataframe."""
-    if mutations:
-        if isinstance(mutations, list):
-            mutations = ','.join(mutations)
-        elif isinstance(mutations, str):
-             mutations = mutations.replace(" ", "")
-       
-    query = '' + pango_lin
-      
+
+    if lineage_crumbs:
+        query = pangolin_crumbs(pango_lin)   
+    else:
+        if mutations:
+            if isinstance(mutations, list):
+                mutations = ','.join(mutations)
+            elif isinstance(mutations, str):
+                 mutations = mutations.replace(" ", "")
+           
+        query = '' + pango_lin
+          
     if mutations:
         query =  query + '&' + f'mutations={mutations}' 
     if cumulative:
         query = query + '&' + 'cumulative=true'
-      
-    raw_data = get_outbreak_data('genomics/global-prevalence', f'pangolin_lineage={query}')
-   
-    if cumulative:
-        data = {'Values' : raw_data['results']}
-        df = pd.DataFrame(data) 
+    if lineage_crumbs:
+        # using a modified formulation to access the crumbs 
+        raw_data = get_outbreak_data('genomics/prevalence-by-location', query, collect_all=False)
+        key_list = raw_data['results']
+        key_list = list(key_list)
+        if cumulative:
+            for i in key_list:
+                if i == key_list[0]:
+                    data = {'Values' : raw_data['results'][i]}
+                    df = pd.DataFrame(data) 
+                else:
+                    newdf = {'Values' : raw_data['results'][i]}
+                    df = pd.concat([data, newdf], sort=False)  
+        else:
+            for i in key_list:
+                if i == key_list[0]:
+                    df = pd.DataFrame(raw_data['results'][i])
+                else:
+                    newdf = pd.DataFrame(raw_data['results'][i]) # append each df
+                    df = pd.concat([df, newdf], sort=False)  
     else:
-        df = pd.DataFrame(raw_data['results'])
+        raw_data = get_outbreak_data('genomics/global-prevalence', f'pangolin_lineage={query}')
+        if cumulative:
+            data = {'Values' : raw_data['results']}
+            df = pd.DataFrame(data) 
+        else:
+            df = pd.DataFrame(raw_data['results'])
     return df
 
 def sequence_counts(location=None, cumulative=None, sub_admin=None, server=server):
@@ -310,7 +335,8 @@ def mutations_by_lineage(mutation=None, location=None, pango_lin=None, lineage_c
     return df
 
 
-def prevalence_by_location(pango_lin, location, mutations=None, datemin=None, datemax=None, cumulative=None, server=server):
+def prevalence_by_location(pango_lin, location, mutations=None,  datemin=None, lineage_crumbs=False, 
+                           datemax=None, cumulative=None, server=server):
     """Returns the daily prevalence of a PANGO lineage by location.
    
        Arguments:
@@ -321,23 +347,26 @@ def prevalence_by_location(pango_lin, location, mutations=None, datemin=None, da
         :param datemin: (Optional). A string representing the first cutoff date for returned date. Must be in YYYY-MM-DD format and be before 'datemax'
         :param datemax: (Optional). A string representing the second cutoff date. Must be in YYY-MM-DD format and be after 'datemin'
         :return: A pandas dataframe."""
-    
-    if isinstance(pango_lin, str):
-       pango_lin = pango_lin.replace(" ", "")
-     
-    elif isinstance(pango_lin, list):
-        pango_lin = ','.join(pango_lin)
+    if lineage_crumbs:
+        query = pangolin_crumbs(pango_lin)  
+        query = query + '&' + f'location_id={location}' 
+    else:
+        if isinstance(pango_lin, str):
+            pango_lin = pango_lin.replace(" ", "")
+         
+        elif isinstance(pango_lin, list):
+            pango_lin = ','.join(pango_lin)
 
-    if mutations:
-        if isinstance(mutations, list):
-            pass
-        elif isinstance(mutations, str):
-             mutations = mutations.replace(" ", "")
-             mutations = list(mutations.split(","))
-        mutations = '' + ' AND '.join(mutations) + ''   
-      
-    query = pango_lin + '&' + f'location_id={location}'
-    
+        if mutations:
+            if isinstance(mutations, list):
+                pass
+            elif isinstance(mutations, str):
+                 mutations = mutations.replace(" ", "")
+                 mutations = list(mutations.split(","))
+            mutations = '' + ' AND '.join(mutations) + ''   
+          
+        query = pango_lin + '&' + f'location_id={location}'
+        
     if mutations:
         query = query + '&' + f'mutations={mutations}'
     if cumulative:
@@ -345,8 +374,11 @@ def prevalence_by_location(pango_lin, location, mutations=None, datemin=None, da
     if datemin and datemax:
         query = query + f'&datemin={datemin}&datemax={datemax}'
    
-         
-    raw_data = get_outbreak_data('genomics/prevalence-by-location', f'pangolin_lineage={query}', collect_all=False)
+    if lineage_crumbs:
+        raw_data = get_outbreak_data('genomics/prevalence-by-location', query, collect_all=False)
+    else:
+        raw_data = get_outbreak_data('genomics/prevalence-by-location', f'pangolin_lineage={query}', collect_all=False)
+
     key_list = raw_data['results']
     key_list = list(key_list)
     

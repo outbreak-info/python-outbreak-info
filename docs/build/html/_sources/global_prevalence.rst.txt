@@ -1,5 +1,5 @@
-global_prevalence(pango_lin, mutations, cumulative)
-----------------------------------------------------
+global_prevalence(pango_lin, mutations, cumulative, lineage_crumbs=False)
+--------------------------------------------------------------------------
 
 .. autofunction:: outbreak_data.global_prevalence
 
