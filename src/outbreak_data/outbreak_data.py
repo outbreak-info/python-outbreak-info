@@ -199,6 +199,8 @@ def lineage_mutations(pango_lin=None, lineage_crumbs=False, mutations=None, freq
         if mutations:
             query = '&' + f'mutations={mutations}' + query 
         
+    if freq!=0.8:
+        query = query + f'&frequency={freq}'
     raw_data = get_outbreak_data('genomics/lineage-mutations', f'{query}', collect_all=False)
     key_list = raw_data['results']
     if len(key_list) == 0:
@@ -208,11 +210,7 @@ def lineage_mutations(pango_lin=None, lineage_crumbs=False, mutations=None, freq
     key_list = list(key_list)
     df = pd.DataFrame(raw_data['results'][key_list[0]])
        
-    if freq != 0.8:
-        if isinstance(freq, float) and freq > 0 and freq < 1:
-            return df.loc[df['prevalence'] >= freq]
-    else:
-        return df
+    return df
     
 
 def global_prevalence(pango_lin, mutations=None, cumulative=None, lineage_crumbs=False, server=server):
