@@ -241,15 +241,32 @@ def global_prevalence(pango_lin, mutations=None, cumulative=None, lineage_crumbs
     if cumulative:
         query = query + '&' + 'cumulative=true'
     if lineage_crumbs:
-        raw_data = get_outbreak_data('genomics/global-prevalence', query)
+        # using a modified formulation to access the crumbs 
+        raw_data = get_outbreak_data('genomics/prevalence-by-location', query, collect_all=False)
+        key_list = raw_data['results']
+        key_list = list(key_list)
+        if cumulative:
+            for i in key_list:
+                if i == key_list[0]:
+                    data = {'Values' : raw_data['results'][i]}
+                    df = pd.DataFrame(data) 
+                else:
+                    newdf = {'Values' : raw_data['results'][i]}
+                    df = pd.concat([data, newdf], sort=False)  
+        else:
+            for i in key_list:
+                if i == key_list[0]:
+                    df = pd.DataFrame(raw_data['results'][i])
+                else:
+                    newdf = pd.DataFrame(raw_data['results'][i]) # append each df
+                    df = pd.concat([df, newdf], sort=False)  
     else:
         raw_data = get_outbreak_data('genomics/global-prevalence', f'pangolin_lineage={query}')
-   
-    if cumulative:
-        data = {'Values' : raw_data['results']}
-        df = pd.DataFrame(data) 
-    else:
-        df = pd.DataFrame(raw_data['results'])
+        if cumulative:
+            data = {'Values' : raw_data['results']}
+            df = pd.DataFrame(data) 
+        else:
+            df = pd.DataFrame(raw_data['results'])
     return df
 
 def sequence_counts(location=None, cumulative=None, sub_admin=None, server=server):
@@ -331,7 +348,8 @@ def prevalence_by_location(pango_lin, location, mutations=None,  datemin=None, l
         :param datemax: (Optional). A string representing the second cutoff date. Must be in YYY-MM-DD format and be after 'datemin'
         :return: A pandas dataframe."""
     if lineage_crumbs:
-        query = pangolin_crumbs(pango_lin)   
+        query = pangolin_crumbs(pango_lin)  
+        query = query + '&' + f'location_id={location}' 
     else:
         if isinstance(pango_lin, str):
             pango_lin = pango_lin.replace(" ", "")
