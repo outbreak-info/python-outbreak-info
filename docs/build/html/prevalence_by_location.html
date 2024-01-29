@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>prevalence_by_location(pango_lin, location, mutations=None, datemin=None, datemax=None, cumulative=None) &mdash; Python Outbreak.info API 0.1 documentation</title>
+  <title>prevalence_by_location(pango_lin, location, mutations=None, datemin=None, datemax=None, cumulative=None, lineage_crumbs=False) &mdash; Python Outbreak.info API 0.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -49,10 +49,10 @@
 <li class="toctree-l1"><a class="reference internal" href="cases_by_location.html">cases_by_location(location)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lineage_mutations.html">lineage_mutations(pango_lin, mutation, freq)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="all_lineage_prevalences.html">all_lineage_prevalences(location, startswith)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="global_prevalence.html">global_prevalence(pango_lin, mutations, cumulative)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="global_prevalence.html">global_prevalence(pango_lin, mutations, cumulative, lineage_crumbs=False)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="seq_counts.html">sequence_counts(location, cumulative, sub_admin)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mutations_by_lineage.html">mutations_by_lineage(mutation, location, pango_lin)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">prevalence_by_location(pango_lin, location, mutations=None, datemin=None, datemax=None, cumulative=None)</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">prevalence_by_location(pango_lin, location, mutations=None, datemin=None, datemax=None, cumulative=None, lineage_crumbs=False)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#outbreak_data.prevalence_by_location"><code class="docutils literal notranslate"><span class="pre">prevalence_by_location()</span></code></a></li>
 </ul>
 </li>
@@ -65,6 +65,7 @@
 <li class="toctree-l1"><a class="reference internal" href="wildcard_location.html">wildcard_location(name)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wildcard_mutations.html">wildcard_mutations(name)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="location_details.html">location_details(location)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="outbreak_data_functions.html">get_outbreak_data()</a></li>
 <li class="toctree-l1"><a class="reference internal" href="growth_rates.html">growth_rates(lineage, location)</a></li>
 </ul>
 <ul>
@@ -88,7 +89,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">prevalence_by_location(pango_lin, location, mutations=None, datemin=None, datemax=None, cumulative=None)</li>
+      <li class="breadcrumb-item active">prevalence_by_location(pango_lin, location, mutations=None, datemin=None, datemax=None, cumulative=None, lineage_crumbs=False)</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/prevalence_by_location.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -98,8 +99,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="prevalence-by-location-pango-lin-location-mutations-none-datemin-none-datemax-none-cumulative-none">
-<h1>prevalence_by_location(pango_lin, location, mutations=None, datemin=None, datemax=None, cumulative=None)<a class="headerlink" href="#prevalence-by-location-pango-lin-location-mutations-none-datemin-none-datemax-none-cumulative-none" title="Link to this heading"></a></h1>
+  <section id="prevalence-by-location-pango-lin-location-mutations-none-datemin-none-datemax-none-cumulative-none-lineage-crumbs-false">
+<h1>prevalence_by_location(pango_lin, location, mutations=None, datemin=None, datemax=None, cumulative=None, lineage_crumbs=False)<a class="headerlink" href="#prevalence-by-location-pango-lin-location-mutations-none-datemin-none-datemax-none-cumulative-none-lineage-crumbs-false" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="outbreak_data.prevalence_by_location">
 <span class="sig-prename descclassname"><span class="pre">outbreak_data.</span></span><span class="sig-name descname"><span class="pre">prevalence_by_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pango_lin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datemin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datemax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cumulative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'api.outbreak.info'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#outbreak_data.prevalence_by_location" title="Link to this definition"></a></dt>
