@@ -3,7 +3,7 @@ import requests
 import warnings
 import pandas as pd
 
-from outbreak_data import authenticate_user
+import authenticate_user  #from outbreak_data
 
 server = 'api.outbreak.info'  # or 'dev.outbreak.info'
 nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer ES versions as well
@@ -631,7 +631,60 @@ def growth_rates(lineage, location='Global'):
 
 
     
+## Wastewater API endpoint: ###
+
+def ab_formatting(tempdf, df2):
+    cols = df2.columns.tolist();  cols = cols[-6:] + cols[:-6]
+    df2 = df2[cols]
+    return df2
     
+
+def abundances(df1, site_id=None):
+    
+    if site_id:
+       df1 = df1.loc[df1['site_id'].isin(site_id)]
+       
+    df2 = pd.DataFrame()
+
+    for index, value in df1['lineages'].items():  
+          data = [value[i] for i in range(len(value))]
+          tempdf = pd.DataFrame(data, index=list(range(len(data))))
+          
+          #Formatting
+          date = str(df1['collection_date'][index]); site = str(df1['site_id'][index])
+          accession = str(df1['sra_accession'][index]); cov = str(df1['coverage'][index])
+          region = str(df1['geo_loc_region'][index]); country = str(df1['geo_loc_country'][index])
+            
+          tempdf = tempdf.assign(collection_date=date, site_id=site, sra_acession = accession, coverage=cov, 
+                                 geo_loc_region=region, geo_loc_country=country)
+          df2 = pd.concat([tempdf, df2], ignore_index=True)
+          
+    return ab_formatting(tempdf, df2)
+          
+    
+def wastewater_query(value, site_id=None):
+    """Returns data on lineages including lineage descendants discovered within a state/province-level location.
+    
+     Arguments:
+     :param value: (Required) A string. 
+     :return: A pandas dataframe."""
+    
+    query = f'q=geo_loc_region:{value}' 
+    raw_data = get_outbreak_data('wastewater/query', query, server='dev.outbreak.info', collect_all=False)
+    df1 = pd.DataFrame(raw_data['hits'])
+    df1.drop(['_id', '_score'], axis=1, inplace=True)
+    
+    return abundances(df1, site_id)
+
+    
+    
+    
+"""Users will want the data in this table (except maybe the columns _id and _score can be deleted), 
+but they might also want a table with just the abundances of different dates and lineages at one site. 
+I think adding a helper function that takes one of these dataframes and a site_id and returns a dataframe 
+with the abundances for each lineage and date would do the trick."""
+    
+
 
 
 
