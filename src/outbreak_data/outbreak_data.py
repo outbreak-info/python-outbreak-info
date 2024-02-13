@@ -3,7 +3,7 @@ import requests
 import warnings
 import pandas as pd
 
-import authenticate_user  #from outbreak_data
+from outbreak_data import authenticate_user 
 
 server = 'api.outbreak.info'  # or 'dev.outbreak.info'
 nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer ES versions as well
@@ -645,16 +645,15 @@ def abundances(df1, site_id=None):
        df1 = df1.loc[df1['site_id'].isin(site_id)]
        
     df2 = pd.DataFrame()
-
     for index, value in df1['lineages'].items():  
-          data = [value[i] for i in range(len(value))]
-          tempdf = pd.DataFrame(data, index=list(range(len(data))))
+          data = [value[i] for i in range(len(value))] #pulls out data in nested list format
+          tempdf = pd.DataFrame(data, index=list(range(len(data)))) 
           
           #Formatting
           date = str(df1['collection_date'][index]); site = str(df1['site_id'][index])
           accession = str(df1['sra_accession'][index]); cov = str(df1['coverage'][index])
           region = str(df1['geo_loc_region'][index]); country = str(df1['geo_loc_country'][index])
-            
+          #assigns proper labels to values in each column  
           tempdf = tempdf.assign(collection_date=date, site_id=site, sra_acession = accession, coverage=cov, 
                                  geo_loc_region=region, geo_loc_country=country)
           df2 = pd.concat([tempdf, df2], ignore_index=True)
@@ -673,13 +672,15 @@ def wastewater_query(value, site_id=None):
     raw_data = get_outbreak_data('wastewater/query', query, server='dev.outbreak.info', collect_all=False)
     df1 = pd.DataFrame(raw_data['hits'])
     df1.drop(['_id', '_score'], axis=1, inplace=True)
-    
+
     return abundances(site_id)
 
     
     
-    
 
+    
+    
+    
 
 
 
