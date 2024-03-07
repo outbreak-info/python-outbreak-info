@@ -3,7 +3,8 @@ import requests
 import warnings
 import pandas as pd
 
-from outbreak_data import authenticate_user
+# from outbreak_data 
+import authenticate_user
 
 server = 'api.outbreak.info'  # or 'dev.outbreak.info'
 nopage = 'fetch_all=true&page=0'  # worth verifying that this works with newer ES versions as well
@@ -662,51 +663,62 @@ def growth_rates(lineage, location='Global'):
 
 ## Wastewater API endpoint: ###
 
-def ab_formatting(tempdf, df2):
-    cols = df2.columns.tolist();  cols = cols[-6:] + cols[:-6]
-    df2 = df2[cols]
+def ab_formatting(tempdf, df2, df1=None, index=None, done=False): #Formatting helper function
+    #Final Formatting
+    if done:
+        cols = df2.columns.tolist(); cols = cols[-6:] + cols[:-6]
+        df2 = df2[cols]
+        return df2
+    
+    #Formatting for each site_id in abundances loop
+    date = str(df1['collection_date'][index]); site = str(df1['site_id'][index])
+    accession = str(df1['sra_accession'][index]); cov = str(df1['coverage'][index])
+    region = str(df1['geo_loc_region'][index]); country = str(df1['geo_loc_country'][index])
+    tempdf = tempdf.assign(collection_date=date, site_id=site, sra_acession = accession, coverage=cov, 
+                           geo_loc_region=region, geo_loc_country=country)
+    df2 = pd.concat([tempdf, df2], ignore_index=True)
     return df2
     
 
 def abundances(df1, site_id=None):
     
     if site_id:
-       df1 = df1.loc[df1['site_id'].isin(site_id)]
-       
+        df1 = df1[df1['site_id'].isin(site_id)].sort_values(by=['site_id']).reset_index()
+               
     df2 = pd.DataFrame()
 
-    for index, value in df1['lineages'].items():  
+    for index, value in df1['lineages'].items():  # Handles nested list format
           data = [value[i] for i in range(len(value))]
           tempdf = pd.DataFrame(data, index=list(range(len(data))))
+          df2 = ab_formatting(tempdf, df2, df1, index)
           
-          #Formatting
-          date = str(df1['collection_date'][index]); site = str(df1['site_id'][index])
-          accession = str(df1['sra_accession'][index]); cov = str(df1['coverage'][index])
-          region = str(df1['geo_loc_region'][index]); country = str(df1['geo_loc_country'][index])
-            
-          tempdf = tempdf.assign(collection_date=date, site_id=site, sra_acession = accession, coverage=cov, 
-                                 geo_loc_region=region, geo_loc_country=country)
-          df2 = pd.concat([tempdf, df2], ignore_index=True)
-          
-    return ab_formatting(tempdf, df2)
+    return ab_formatting(tempdf, df2, done = True)
           
     
-def wastewater_query(value, site_id=None):
+def wastewater_query(region, site_id = None, id_list=False):
     """Returns data on lineages including lineage descendants discovered within a state/province-level location.
     
      Arguments:
-     :param value: (Required) A string. 
+     :param region: (Required) A string. 
+     :param site_id: (Optional) A string or list. If valid returns all lineage data discovered only at specified site-ids. Multiple site_id queries must be separated by ","
+     :param id_list: If true prints a list of site_ids for the specified region
      :return: A pandas dataframe."""
-    
-    query = f'q=geo_loc_region:{value}' 
-    raw_data = get_outbreak_data('wastewater/query', query, server='dev.outbreak.info', collect_all=False)
-    df1 = pd.DataFrame(raw_data['hits'])
-    df1.drop(['_id', '_score'], axis=1, inplace=True)
-    
-
-    return abundances(site_id)
-
-    
-
-
+   
+    if isinstance(site_id, str):
+        site_id = site_id.replace(", ", ",")
+        site_id = list(site_id.split(","))
+        
+    query = f'q=geo_loc_region:{region}' 
+    try:
+        raw_data = get_outbreak_data('wastewater/query', query, server='dev.outbreak.info', collect_all=False)
+        df1 = pd.DataFrame(raw_data['hits'])
+        if id_list:
+           return df1['site_id']
+        df1.drop(['_id', '_score'], axis=1, inplace=True)
+        return abundances(df1, site_id)
+    except:
+        raise KeyError("No data for query was found. " 
+          "Make sure you are using the correct name of the location and/or site_id "
+          "(e.g. region = 'Ohio', site_id = 'OH35000')")
+       
 
