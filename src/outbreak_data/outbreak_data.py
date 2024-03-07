@@ -700,7 +700,7 @@ def wastewater_query(region, site_id = None, id_list=False):
      Arguments:
      :param region: (Required) A string. 
      :param site_id: (Optional) A string or list. If valid returns all lineage data discovered only at specified site-ids. Multiple site_id queries must be separated by ","
-     :param id_list: If true returns a list of site_ids for the specified region
+     :param id_list: If true returns a Series list of site_ids for the specified region
      :return: A pandas dataframe."""
    
     if isinstance(site_id, str):
