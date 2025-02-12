@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lineage_mutations(pango_lin, mutation, freq) &mdash; Python Outbreak.info API 0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=2709fde1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="all_lineage_prevalences(location, startswith)" href="all_lineage_prevalences.html" />
+    <link rel="prev" title="cases_by_location(location)" href="cases_by_location.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Python Outbreak.info API
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="auth_setup.html">authenticate_new_user()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cases_by_location.html">cases_by_location(location)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">lineage_mutations(pango_lin, mutation, freq)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#outbreak_data.lineage_mutations"><code class="docutils literal notranslate"><span class="pre">lineage_mutations()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="all_lineage_prevalences.html">all_lineage_prevalences(location, startswith)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="global_prevalence.html">global_prevalence(pango_lin, mutations, cumulative)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="seq_counts.html">sequence_counts(location, cumulative, sub_admin)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutations_by_lineage.html">mutations_by_lineage(mutation, location, pango_lin)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prevalence_by_location.html">prevalence_by_location(pango_lin, location, mutations=None, datemin=None, datemax=None, cumulative=None)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lineage_by_sub_admin.html">lineage_by_sub_admin(pango_lin, mutations, location, ndays=0, detected)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collection_date.html">collection_date(pango_lin, mutations=None, location=None)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="submission_date.html">submission_date(pango_lin, mutations=None, location)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutation_details.html">mutation_details(mutations)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="daily_lag.html">daily_lag(location=None)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_lineage.html">wildcard_lineage(name)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_location.html">wildcard_location(name)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_mutations.html">wildcard_mutations(name)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="location_details.html">location_details(location)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_rates.html">growth_rates(lineage, location)</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="epidem_analysis.html">Epidemiological data analyses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lineage_prevalence.html">Lineage Prevalence Analyses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutation_analysis.html">Mutation Data Analyses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cryptic_vars.html">Dealing with Cryptic Variants</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Python Outbreak.info API</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">lineage_mutations(pango_lin, mutation, freq)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/lineage_mutations.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="lineage-mutations-pango-lin-mutation-freq">
+<h1>lineage_mutations(pango_lin, mutation, freq)<a class="headerlink" href="#lineage-mutations-pango-lin-mutation-freq" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="outbreak_data.lineage_mutations">
+<span class="sig-prename descclassname"><span class="pre">outbreak_data.</span></span><span class="sig-name descname"><span class="pre">lineage_mutations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pango_lin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lineage_crumbs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'api.outbreak.info'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#outbreak_data.lineage_mutations" title="Link to this definition"></a></dt>
+<dd><p>Retrieves data from all mutations in a specified lineage above a frequency threshold.
+- Use ‘OR’ in a string to return overlapping mutations in multiple lineages: ‘BA.2 OR BA.1’</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Arguments:</dt><dd><dl class="field-list simple">
+<dt class="field-odd">pango_lin<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A string; loads data for all mutations in a specified PANGO lineage</p>
+</dd>
+<dt class="field-even">lineage_crumbs<span class="colon">:</span></dt>
+<dd class="field-even"><p>If true returns data for descendant lineages of pango_lin. Include the wildcard ‘*’ in string to return info on all related lineages.</p>
+</dd>
+<dt class="field-odd">mutations<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A string; loads mutation data for the specified sequence under the specified PANGO lineage</p>
+</dd>
+<dt class="field-even">freq<span class="colon">:</span></dt>
+<dd class="field-even"><p>A number between 0 and 1 specifying the frequency threshold above which to return mutations (default = 0.8)</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A pandas dataframe</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<p>Example usage:</p>
+<ol class="arabic">
+<li><p>Get a list of all mutations and relevant data associated with the variant ‘B.1.1.7’:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">outbreak_data</span><span class="o">.</span><span class="n">lineage_mutations</span><span class="p">(</span><span class="s1">&#39;b.1.1.7&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Output:</span><a class="headerlink" href="#id1" title="Link to this code"></a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>               <span class="n">mutation</span>  <span class="n">mutation_count</span>  <span class="n">lineage_count</span>  <span class="n">lineage</span>   <span class="n">gene</span>  \
+ <span class="mi">0</span>                <span class="n">n</span><span class="p">:</span><span class="n">d3l</span>         <span class="mi">1133368</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>      <span class="n">N</span>
+ <span class="mi">1</span>              <span class="n">n</span><span class="p">:</span><span class="n">r203k</span>         <span class="mi">1131899</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>      <span class="n">N</span>
+ <span class="mi">2</span>              <span class="n">s</span><span class="p">:</span><span class="n">d614g</span>         <span class="mi">1150796</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>      <span class="n">S</span>
+ <span class="mi">3</span>         <span class="n">orf1a</span><span class="p">:</span><span class="n">t1001i</span>         <span class="mi">1149579</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>  <span class="n">ORF1a</span>
+ <span class="mi">4</span>            <span class="n">orf8</span><span class="p">:</span><span class="n">s84l</span>         <span class="mi">1148665</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>   <span class="n">ORF8</span>
+ <span class="mi">5</span>              <span class="n">s</span><span class="p">:</span><span class="n">a570d</span>         <span class="mi">1147678</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>      <span class="n">S</span>
+ <span class="mi">6</span>              <span class="n">s</span><span class="p">:</span><span class="n">p681h</span>         <span class="mi">1147591</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>      <span class="n">S</span>
+ <span class="mi">7</span>          <span class="n">orf1b</span><span class="p">:</span><span class="n">p314l</span>         <span class="mi">1147331</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>  <span class="n">ORF1b</span>
+ <span class="mi">8</span>             <span class="n">s</span><span class="p">:</span><span class="n">d1118h</span>         <span class="mi">1147009</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>      <span class="n">S</span>
+ <span class="mi">9</span>         <span class="n">orf1a</span><span class="p">:</span><span class="n">a1708d</span>         <span class="mi">1146288</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>  <span class="n">ORF1a</span>
+ <span class="mi">10</span>           <span class="n">orf8</span><span class="p">:</span><span class="n">y73c</span>         <span class="mi">1144041</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>   <span class="n">ORF8</span>
+ <span class="mi">11</span>             <span class="n">s</span><span class="p">:</span><span class="n">s982a</span>         <span class="mi">1142512</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>      <span class="n">S</span>
+ <span class="mi">12</span>           <span class="n">orf8</span><span class="p">:</span><span class="n">q27</span><span class="o">*</span>         <span class="mi">1142465</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>   <span class="n">ORF8</span>
+ <span class="mi">13</span>             <span class="n">s</span><span class="p">:</span><span class="n">t716i</span>         <span class="mi">1142087</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>      <span class="n">S</span>
+ <span class="mi">14</span>             <span class="n">n</span><span class="p">:</span><span class="n">s235f</span>         <span class="mi">1141424</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>      <span class="n">N</span>
+ <span class="mi">15</span>           <span class="n">orf8</span><span class="p">:</span><span class="n">r52i</span>         <span class="mi">1138388</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>   <span class="n">ORF8</span>
+ <span class="mi">16</span>             <span class="n">s</span><span class="p">:</span><span class="n">n501y</span>         <span class="mi">1129018</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>      <span class="n">S</span>
+ <span class="mi">17</span>        <span class="n">orf1a</span><span class="p">:</span><span class="n">i2230t</span>         <span class="mi">1127643</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>  <span class="n">ORF1a</span>
+ <span class="mi">18</span>  <span class="n">orf1a</span><span class="p">:</span><span class="n">del3675</span><span class="o">/</span><span class="mi">3677</span>         <span class="mi">1115708</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>  <span class="n">ORF1a</span>
+ <span class="mi">19</span>          <span class="n">s</span><span class="p">:</span><span class="n">del69</span><span class="o">/</span><span class="mi">70</span>         <span class="mi">1114288</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>      <span class="n">S</span>
+ <span class="mi">20</span>        <span class="n">s</span><span class="p">:</span><span class="n">del144</span><span class="o">/</span><span class="mi">144</span>         <span class="mi">1093432</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>      <span class="n">S</span>
+ <span class="mi">21</span>             <span class="n">n</span><span class="p">:</span><span class="n">g204r</span>         <span class="mi">1050444</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>      <span class="n">N</span>
+
+                 <span class="n">ref_aa</span>        <span class="n">alt_aa</span>  <span class="n">codon_num</span> <span class="n">codon_end</span>          <span class="nb">type</span>  \
+ <span class="mi">0</span>                    <span class="n">D</span>             <span class="n">L</span>          <span class="mi">3</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">1</span>                    <span class="n">R</span>             <span class="n">K</span>        <span class="mi">203</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">2</span>                    <span class="n">D</span>             <span class="n">G</span>        <span class="mi">614</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">3</span>                    <span class="n">T</span>             <span class="n">I</span>       <span class="mi">1001</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">4</span>                    <span class="n">S</span>             <span class="n">L</span>         <span class="mi">84</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">5</span>                    <span class="n">A</span>             <span class="n">D</span>        <span class="mi">570</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">6</span>                    <span class="n">P</span>             <span class="n">H</span>        <span class="mi">681</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">7</span>                    <span class="n">P</span>             <span class="n">L</span>        <span class="mi">314</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">8</span>                    <span class="n">D</span>             <span class="n">H</span>       <span class="mi">1118</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">9</span>                    <span class="n">A</span>             <span class="n">D</span>       <span class="mi">1708</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">10</span>                   <span class="n">Y</span>             <span class="n">C</span>         <span class="mi">73</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">11</span>                   <span class="n">S</span>             <span class="n">A</span>        <span class="mi">982</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">12</span>                   <span class="n">Q</span>             <span class="o">*</span>         <span class="mi">27</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">13</span>                   <span class="n">T</span>             <span class="n">I</span>        <span class="mi">716</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">14</span>                   <span class="n">S</span>             <span class="n">F</span>        <span class="mi">235</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">15</span>                   <span class="n">R</span>             <span class="n">I</span>         <span class="mi">52</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">16</span>                   <span class="n">N</span>             <span class="n">Y</span>        <span class="mi">501</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">17</span>                   <span class="n">I</span>             <span class="n">T</span>       <span class="mi">2230</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">18</span>  <span class="n">ORF1A</span><span class="p">:</span><span class="n">DEL3675</span><span class="o">/</span><span class="mi">3677</span>  <span class="n">DEL3675</span><span class="o">/</span><span class="mi">3677</span>       <span class="mi">3675</span>    <span class="mf">3677.0</span>      <span class="n">deletion</span>
+ <span class="mi">19</span>          <span class="n">S</span><span class="p">:</span><span class="n">DEL69</span><span class="o">/</span><span class="mi">70</span>      <span class="n">DEL69</span><span class="o">/</span><span class="mi">70</span>         <span class="mi">69</span>      <span class="mf">70.0</span>      <span class="n">deletion</span>
+ <span class="mi">20</span>        <span class="n">S</span><span class="p">:</span><span class="n">DEL144</span><span class="o">/</span><span class="mi">144</span>    <span class="n">DEL144</span><span class="o">/</span><span class="mi">144</span>        <span class="mi">144</span>     <span class="mf">144.0</span>      <span class="n">deletion</span>
+ <span class="mi">21</span>                   <span class="n">G</span>             <span class="n">R</span>        <span class="mi">204</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+
+     <span class="n">prevalence</span> <span class="n">change_length_nt</span>
+ <span class="mi">0</span>     <span class="mf">0.981835</span>             <span class="kc">None</span>
+ <span class="mi">1</span>     <span class="mf">0.980562</span>             <span class="kc">None</span>
+ <span class="mi">2</span>     <span class="mf">0.996932</span>             <span class="kc">None</span>
+ <span class="mi">3</span>     <span class="mf">0.995878</span>             <span class="kc">None</span>
+ <span class="mi">4</span>     <span class="mf">0.995086</span>             <span class="kc">None</span>
+ <span class="mi">5</span>     <span class="mf">0.994231</span>             <span class="kc">None</span>
+ <span class="mi">6</span>     <span class="mf">0.994156</span>             <span class="kc">None</span>
+ <span class="mi">7</span>     <span class="mf">0.993931</span>             <span class="kc">None</span>
+ <span class="mi">8</span>     <span class="mf">0.993652</span>             <span class="kc">None</span>
+ <span class="mi">9</span>     <span class="mf">0.993027</span>             <span class="kc">None</span>
+ <span class="mi">10</span>    <span class="mf">0.991081</span>             <span class="kc">None</span>
+ <span class="mi">11</span>    <span class="mf">0.989756</span>             <span class="kc">None</span>
+ <span class="mi">12</span>    <span class="mf">0.989715</span>             <span class="kc">None</span>
+ <span class="mi">13</span>    <span class="mf">0.989388</span>             <span class="kc">None</span>
+ <span class="mi">14</span>    <span class="mf">0.988813</span>             <span class="kc">None</span>
+ <span class="mi">15</span>    <span class="mf">0.986183</span>             <span class="kc">None</span>
+ <span class="mi">16</span>    <span class="mf">0.978066</span>             <span class="kc">None</span>
+ <span class="mi">17</span>    <span class="mf">0.976875</span>             <span class="kc">None</span>
+ <span class="mi">18</span>    <span class="mf">0.966536</span>              <span class="mf">9.0</span>
+ <span class="mi">19</span>    <span class="mf">0.965306</span>              <span class="mf">6.0</span>
+ <span class="mi">20</span>    <span class="mf">0.947238</span>              <span class="mf">3.0</span>
+ <span class="mi">21</span>    <span class="mf">0.909998</span>             <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+<ol class="arabic" start="2">
+<li><p>Mutiple queries for lineages and mutations can be separated by “,”:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#Find mutation information for B.1.1.7, P.1, and XBB.1.5</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">outbreak_data_lineage_mutations</span><span class="p">(</span><span class="s1">&#39;b.1.1.7, p.1, xbb.1.5&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Output</span><a class="headerlink" href="#id2" title="Link to this code"></a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>         <span class="n">mutation</span>  <span class="n">mutation_count</span>  <span class="n">lineage_count</span>  <span class="n">lineage</span>   <span class="n">gene</span>        <span class="n">ref_aa</span>  \
+ <span class="mi">0</span>          <span class="n">n</span><span class="p">:</span><span class="n">d3l</span>         <span class="mi">1133368</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>      <span class="n">N</span>             <span class="n">D</span>
+ <span class="mi">1</span>        <span class="n">n</span><span class="p">:</span><span class="n">r203k</span>         <span class="mi">1131899</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>      <span class="n">N</span>             <span class="n">R</span>
+ <span class="mi">2</span>        <span class="n">s</span><span class="p">:</span><span class="n">d614g</span>         <span class="mi">1150796</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>      <span class="n">S</span>             <span class="n">D</span>
+ <span class="mi">3</span>   <span class="n">orf1a</span><span class="p">:</span><span class="n">t1001i</span>         <span class="mi">1149579</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>  <span class="n">ORF1a</span>             <span class="n">T</span>
+ <span class="mi">4</span>      <span class="n">orf8</span><span class="p">:</span><span class="n">s84l</span>         <span class="mi">1148665</span>        <span class="mi">1154337</span>  <span class="n">b</span><span class="mf">.1.1.7</span>   <span class="n">ORF8</span>             <span class="n">S</span>
+ <span class="o">..</span>           <span class="o">...</span>             <span class="o">...</span>            <span class="o">...</span>      <span class="o">...</span>    <span class="o">...</span>           <span class="o">...</span>
+ <span class="mi">63</span>       <span class="n">s</span><span class="p">:</span><span class="n">g446s</span>          <span class="mi">156244</span>         <span class="mi">167128</span>  <span class="n">xbb</span><span class="mf">.1.5</span>      <span class="n">S</span>             <span class="n">G</span>
+ <span class="mi">64</span>  <span class="n">s</span><span class="p">:</span><span class="n">del144</span><span class="o">/</span><span class="mi">144</span>          <span class="mi">154766</span>         <span class="mi">167128</span>  <span class="n">xbb</span><span class="mf">.1.5</span>      <span class="n">S</span>  <span class="n">S</span><span class="p">:</span><span class="n">DEL144</span><span class="o">/</span><span class="mi">144</span>
+ <span class="mi">65</span>       <span class="n">s</span><span class="p">:</span><span class="n">h146q</span>          <span class="mi">153308</span>         <span class="mi">167128</span>  <span class="n">xbb</span><span class="mf">.1.5</span>      <span class="n">S</span>             <span class="n">H</span>
+ <span class="mi">66</span>       <span class="n">s</span><span class="p">:</span><span class="n">r408s</span>          <span class="mi">152365</span>         <span class="mi">167128</span>  <span class="n">xbb</span><span class="mf">.1.5</span>      <span class="n">S</span>             <span class="n">R</span>
+ <span class="mi">67</span>       <span class="n">s</span><span class="p">:</span><span class="n">k417n</span>          <span class="mi">147604</span>         <span class="mi">167128</span>  <span class="n">xbb</span><span class="mf">.1.5</span>      <span class="n">S</span>             <span class="n">K</span>
+
+         <span class="n">alt_aa</span>  <span class="n">codon_num</span> <span class="n">codon_end</span>          <span class="nb">type</span>  <span class="n">prevalence</span> <span class="n">change_length_nt</span>
+ <span class="mi">0</span>            <span class="n">L</span>          <span class="mi">3</span>      <span class="kc">None</span>  <span class="n">substitution</span>    <span class="mf">0.981835</span>             <span class="kc">None</span>
+ <span class="mi">1</span>            <span class="n">K</span>        <span class="mi">203</span>      <span class="kc">None</span>  <span class="n">substitution</span>    <span class="mf">0.980562</span>             <span class="kc">None</span>
+ <span class="mi">2</span>            <span class="n">G</span>        <span class="mi">614</span>      <span class="kc">None</span>  <span class="n">substitution</span>    <span class="mf">0.996932</span>             <span class="kc">None</span>
+ <span class="mi">3</span>            <span class="n">I</span>       <span class="mi">1001</span>      <span class="kc">None</span>  <span class="n">substitution</span>    <span class="mf">0.995878</span>             <span class="kc">None</span>
+ <span class="mi">4</span>            <span class="n">L</span>         <span class="mi">84</span>      <span class="kc">None</span>  <span class="n">substitution</span>    <span class="mf">0.995086</span>             <span class="kc">None</span>
+ <span class="o">..</span>         <span class="o">...</span>        <span class="o">...</span>       <span class="o">...</span>           <span class="o">...</span>         <span class="o">...</span>              <span class="o">...</span>
+ <span class="mi">63</span>           <span class="n">S</span>        <span class="mi">446</span>      <span class="kc">None</span>  <span class="n">substitution</span>    <span class="mf">0.934876</span>             <span class="kc">None</span>
+ <span class="mi">64</span>  <span class="n">DEL144</span><span class="o">/</span><span class="mi">144</span>        <span class="mi">144</span>     <span class="mf">144.0</span>      <span class="n">deletion</span>    <span class="mf">0.926033</span>              <span class="mf">3.0</span>
+ <span class="mi">65</span>           <span class="n">Q</span>        <span class="mi">146</span>      <span class="kc">None</span>  <span class="n">substitution</span>    <span class="mf">0.917309</span>             <span class="kc">None</span>
+ <span class="mi">66</span>           <span class="n">S</span>        <span class="mi">408</span>      <span class="kc">None</span>  <span class="n">substitution</span>    <span class="mf">0.911667</span>             <span class="kc">None</span>
+ <span class="mi">67</span>           <span class="n">N</span>        <span class="mi">417</span>      <span class="kc">None</span>  <span class="n">substitution</span>    <span class="mf">0.883179</span>             <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+<p>[113 rows x 12 columns]</p>
+<ol class="arabic" start="3">
+<li><p>Use ‘OR’ in a string to return overlapping mutations in multiple lineages:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">outbreak_data</span><span class="o">.</span><span class="n">lineage_mutations</span><span class="p">(</span><span class="s1">&#39;ba.2 OR xbb.1.5&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Output</span><a class="headerlink" href="#id3" title="Link to this code"></a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>              <span class="n">mutation</span>  <span class="n">mutation_count</span>  <span class="n">lineage_count</span>         <span class="n">lineage</span>   <span class="n">gene</span>  \
+ <span class="mi">0</span>             <span class="n">n</span><span class="p">:</span><span class="n">r203k</span>          <span class="mi">237984</span>         <span class="mi">243206</span>  <span class="n">P</span><span class="mf">.1</span> <span class="n">OR</span> <span class="n">xbb</span><span class="mf">.1.5</span>      <span class="n">N</span>
+ <span class="mi">1</span>             <span class="n">s</span><span class="p">:</span><span class="n">d614g</span>          <span class="mi">242522</span>         <span class="mi">243206</span>  <span class="n">P</span><span class="mf">.1</span> <span class="n">OR</span> <span class="n">xbb</span><span class="mf">.1.5</span>      <span class="n">S</span>
+ <span class="mi">2</span>         <span class="n">orf1b</span><span class="p">:</span><span class="n">p314l</span>          <span class="mi">242226</span>         <span class="mi">243206</span>  <span class="n">P</span><span class="mf">.1</span> <span class="n">OR</span> <span class="n">xbb</span><span class="mf">.1.5</span>  <span class="n">ORF1b</span>
+ <span class="mi">3</span>             <span class="n">s</span><span class="p">:</span><span class="n">h655y</span>          <span class="mi">241765</span>         <span class="mi">243206</span>  <span class="n">P</span><span class="mf">.1</span> <span class="n">OR</span> <span class="n">xbb</span><span class="mf">.1.5</span>      <span class="n">S</span>
+ <span class="mi">4</span>           <span class="n">orf8</span><span class="p">:</span><span class="n">s84l</span>          <span class="mi">240116</span>         <span class="mi">243206</span>  <span class="n">P</span><span class="mf">.1</span> <span class="n">OR</span> <span class="n">xbb</span><span class="mf">.1.5</span>   <span class="n">ORF8</span>
+ <span class="mi">5</span>             <span class="n">n</span><span class="p">:</span><span class="n">g204r</span>          <span class="mi">238101</span>         <span class="mi">243206</span>  <span class="n">P</span><span class="mf">.1</span> <span class="n">OR</span> <span class="n">xbb</span><span class="mf">.1.5</span>      <span class="n">N</span>
+ <span class="mi">6</span>             <span class="n">s</span><span class="p">:</span><span class="n">n501y</span>          <span class="mi">235654</span>         <span class="mi">243206</span>  <span class="n">P</span><span class="mf">.1</span> <span class="n">OR</span> <span class="n">xbb</span><span class="mf">.1.5</span>      <span class="n">S</span>
+ <span class="mi">7</span>  <span class="n">orf1a</span><span class="p">:</span><span class="n">del3675</span><span class="o">/</span><span class="mi">3677</span>          <span class="mi">226006</span>         <span class="mi">243206</span>  <span class="n">P</span><span class="mf">.1</span> <span class="n">OR</span> <span class="n">xbb</span><span class="mf">.1.5</span>  <span class="n">ORF1a</span>
+
+                <span class="n">ref_aa</span>        <span class="n">alt_aa</span>  <span class="n">codon_num</span> <span class="n">codon_end</span>          <span class="nb">type</span>  \
+ <span class="mi">0</span>                   <span class="n">R</span>             <span class="n">K</span>        <span class="mi">203</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">1</span>                   <span class="n">D</span>             <span class="n">G</span>        <span class="mi">614</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">2</span>                   <span class="n">P</span>             <span class="n">L</span>        <span class="mi">314</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">3</span>                   <span class="n">H</span>             <span class="n">Y</span>        <span class="mi">655</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">4</span>                   <span class="n">S</span>             <span class="n">L</span>         <span class="mi">84</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">5</span>                   <span class="n">G</span>             <span class="n">R</span>        <span class="mi">204</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">6</span>                   <span class="n">N</span>             <span class="n">Y</span>        <span class="mi">501</span>      <span class="kc">None</span>  <span class="n">substitution</span>
+ <span class="mi">7</span>  <span class="n">ORF1A</span><span class="p">:</span><span class="n">DEL3675</span><span class="o">/</span><span class="mi">3677</span>  <span class="n">DEL3675</span><span class="o">/</span><span class="mi">3677</span>       <span class="mi">3675</span>    <span class="mf">3677.0</span>      <span class="n">deletion</span>
+
+    <span class="n">prevalence</span> <span class="n">change_length_nt</span>
+ <span class="mi">0</span>    <span class="mf">0.978528</span>             <span class="kc">None</span>
+ <span class="mi">1</span>    <span class="mf">0.997188</span>             <span class="kc">None</span>
+ <span class="mi">2</span>    <span class="mf">0.995970</span>             <span class="kc">None</span>
+ <span class="mi">3</span>    <span class="mf">0.994075</span>             <span class="kc">None</span>
+ <span class="mi">4</span>    <span class="mf">0.987295</span>             <span class="kc">None</span>
+ <span class="mi">5</span>    <span class="mf">0.979010</span>             <span class="kc">None</span>
+ <span class="mi">6</span>    <span class="mf">0.968948</span>             <span class="kc">None</span>
+ <span class="mi">7</span>    <span class="mf">0.929278</span>              <span class="mf">9.0</span>
+</pre></div>
+</div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cases_by_location.html" class="btn btn-neutral float-left" title="cases_by_location(location)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="all_lineage_prevalences.html" class="btn btn-neutral float-right" title="all_lineage_prevalences(location, startswith)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

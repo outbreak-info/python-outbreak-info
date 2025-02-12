@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>global_prevalence(pango_lin, mutations, cumulative, lineage_crumbs=False) &mdash; Python Outbreak.info API 0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=2709fde1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="sequence_counts(location, cumulative, sub_admin)" href="seq_counts.html" />
+    <link rel="prev" title="all_lineage_prevalences(location, startswith)" href="all_lineage_prevalences.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Python Outbreak.info API
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="auth_setup.html">authenticate_new_user()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cases_by_location.html">cases_by_location(location)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lineage_mutations.html">lineage_mutations(pango_lin, mutation, freq)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="all_lineage_prevalences.html">all_lineage_prevalences(location, startswith)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">global_prevalence(pango_lin, mutations, cumulative, lineage_crumbs=False)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#outbreak_data.global_prevalence"><code class="docutils literal notranslate"><span class="pre">global_prevalence()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="seq_counts.html">sequence_counts(location, cumulative, sub_admin)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutations_by_lineage.html">mutations_by_lineage(mutation, location, pango_lin)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prevalence_by_location.html">prevalence_by_location(pango_lin, location, mutations=None, datemin=None, datemax=None, cumulative=None)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lineage_by_sub_admin.html">lineage_by_sub_admin(pango_lin, mutations, location, ndays=0, detected)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collection_date.html">collection_date(pango_lin, mutations=None, location=None)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="submission_date.html">submission_date(pango_lin, mutations=None, location)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutation_details.html">mutation_details(mutations)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="daily_lag.html">daily_lag(location=None)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_lineage.html">wildcard_lineage(name)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_location.html">wildcard_location(name)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_mutations.html">wildcard_mutations(name)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="location_details.html">location_details(location)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="outbreak_data_functions.html">get_outbreak_data()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_rates.html">growth_rates(lineage, location)</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="epidem_analysis.html">Epidemiological data analyses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lineage_prevalence.html">Lineage Prevalence Analyses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutation_analysis.html">Mutation Data Analyses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cryptic_vars.html">Dealing with Cryptic Variants</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Python Outbreak.info API</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">global_prevalence(pango_lin, mutations, cumulative, lineage_crumbs=False)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/global_prevalence.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="global-prevalence-pango-lin-mutations-cumulative-lineage-crumbs-false">
+<h1>global_prevalence(pango_lin, mutations, cumulative, lineage_crumbs=False)<a class="headerlink" href="#global-prevalence-pango-lin-mutations-cumulative-lineage-crumbs-false" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="outbreak_data.global_prevalence">
+<span class="sig-prename descclassname"><span class="pre">outbreak_data.</span></span><span class="sig-name descname"><span class="pre">global_prevalence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pango_lin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cumulative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'api.outbreak.info'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#outbreak_data.global_prevalence" title="Link to this definition"></a></dt>
+<dd><p>Returns the global daily prevalence of a PANGO lineage</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><dl class="field-list simple">
+<dt class="field-odd">pangolin_lineage<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(Required).</p>
+</dd>
+<dt class="field-even">mutations<span class="colon">:</span></dt>
+<dd class="field-even"><p>(Optional). Comma separated list of mutations.</p>
+</dd>
+<dt class="field-odd">cumulative<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(Optional). If true returns the cumulative global prevalence since the first day of detection.</p>
+</dd>
+<dt class="field-even">return<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas dataframe.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Example: Get global info on lineage ‘XBB’:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">outbreak_data</span><span class="o">.</span><span class="n">global_prevalence</span><span class="p">(</span><span class="s1">&#39;xbb&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Output:</span><a class="headerlink" href="#id1" title="Link to this code"></a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>            <span class="n">date</span>  <span class="n">total_count</span>  <span class="n">lineage_count</span>  <span class="n">total_count_rolling</span>  \
+ <span class="mi">0</span>    <span class="mi">2021</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">29</span>        <span class="mi">15453</span>              <span class="mi">2</span>         <span class="mf">10772.428571</span>
+ <span class="mi">1</span>    <span class="mi">2021</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">30</span>        <span class="mi">13101</span>              <span class="mi">0</span>         <span class="mf">11060.571429</span>
+ <span class="mi">2</span>    <span class="mi">2021</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">01</span>        <span class="mi">13088</span>              <span class="mi">0</span>         <span class="mf">11495.000000</span>
+ <span class="mi">3</span>    <span class="mi">2021</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">02</span>        <span class="mi">11562</span>              <span class="mi">0</span>         <span class="mf">11890.571429</span>
+ <span class="mi">4</span>    <span class="mi">2021</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">03</span>         <span class="mi">8310</span>              <span class="mi">0</span>         <span class="mf">11845.571429</span>
+ <span class="o">..</span>          <span class="o">...</span>          <span class="o">...</span>            <span class="o">...</span>                  <span class="o">...</span>
+ <span class="mi">713</span>  <span class="mi">2023</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">12</span>           <span class="mi">27</span>              <span class="mi">0</span>           <span class="mf">112.428571</span>
+ <span class="mi">714</span>  <span class="mi">2023</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">13</span>            <span class="mi">8</span>              <span class="mi">0</span>            <span class="mf">61.714286</span>
+ <span class="mi">715</span>  <span class="mi">2023</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">14</span>            <span class="mi">1</span>              <span class="mi">0</span>            <span class="mf">36.000000</span>
+ <span class="mi">716</span>  <span class="mi">2023</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">15</span>            <span class="mi">1</span>              <span class="mi">0</span>            <span class="mf">25.285714</span>
+ <span class="mi">717</span>  <span class="mi">2023</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">17</span>            <span class="mi">1</span>              <span class="mi">0</span>             <span class="mf">8.000000</span>
+
+      <span class="n">lineage_count_rolling</span>  <span class="n">proportion</span>  <span class="n">proportion_ci_lower</span>  \
+ <span class="mi">0</span>                 <span class="mf">0.285714</span>    <span class="mf">0.000027</span>         <span class="mf">4.558329e-08</span>
+ <span class="mi">1</span>                 <span class="mf">0.285714</span>    <span class="mf">0.000026</span>         <span class="mf">4.439232e-08</span>
+ <span class="mi">2</span>                 <span class="mf">0.285714</span>    <span class="mf">0.000025</span>         <span class="mf">4.271630e-08</span>
+ <span class="mi">3</span>                 <span class="mf">0.285714</span>    <span class="mf">0.000024</span>         <span class="mf">4.129377e-08</span>
+ <span class="mi">4</span>                 <span class="mf">0.285714</span>    <span class="mf">0.000024</span>         <span class="mf">4.145063e-08</span>
+ <span class="o">..</span>                     <span class="o">...</span>         <span class="o">...</span>                  <span class="o">...</span>
+ <span class="mi">713</span>               <span class="mf">0.142857</span>    <span class="mf">0.001271</span>         <span class="mf">4.374452e-06</span>
+ <span class="mi">714</span>               <span class="mf">0.000000</span>    <span class="mf">0.000000</span>         <span class="mf">7.888011e-06</span>
+ <span class="mi">715</span>               <span class="mf">0.000000</span>    <span class="mf">0.000000</span>         <span class="mf">1.354537e-05</span>
+ <span class="mi">716</span>               <span class="mf">0.000000</span>    <span class="mf">0.000000</span>         <span class="mf">1.944577e-05</span>
+ <span class="mi">717</span>               <span class="mf">0.000000</span>    <span class="mf">0.000000</span>         <span class="mf">5.949030e-05</span>
+
+      <span class="n">proportion_ci_upper</span>
+ <span class="mi">0</span>               <span class="mf">0.000233</span>
+ <span class="mi">1</span>               <span class="mf">0.000227</span>
+ <span class="mi">2</span>               <span class="mf">0.000218</span>
+ <span class="mi">3</span>               <span class="mf">0.000211</span>
+ <span class="mi">4</span>               <span class="mf">0.000212</span>
+ <span class="o">..</span>                   <span class="o">...</span>
+ <span class="mi">713</span>             <span class="mf">0.022129</span>
+ <span class="mi">714</span>             <span class="mf">0.039548</span>
+ <span class="mi">715</span>             <span class="mf">0.066944</span>
+ <span class="mi">716</span>             <span class="mf">0.094683</span>
+ <span class="mi">717</span>             <span class="mf">0.262217</span>
+</pre></div>
+</div>
+</div>
+<p>[718 rows x 8 columns]</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="all_lineage_prevalences.html" class="btn btn-neutral float-left" title="all_lineage_prevalences(location, startswith)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="seq_counts.html" class="btn btn-neutral float-right" title="sequence_counts(location, cumulative, sub_admin)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

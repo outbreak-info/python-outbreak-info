@@ -1,0 +1,303 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>daily_lag &mdash; Python Outbreak.info API 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="growth_rates" href="growth_rates.html" />
+    <link rel="prev" title="cases_by_location" href="cases_by_location.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Python Outbreak.info API
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="authenticate_new_user.html">authenticate_user.authenticate_new_user</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="all_lineage_prevalences.html">outbreak_data.all_lineage_prevalences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cases_by_location.html">outbreak_data.cases_by_location</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">outbreak_data.daily_lag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_rates.html">outbreak_data.growth_rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gr_significance.html">outbreak_data.gr_significance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="known_mutations.html">outbreak_data.known_mutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lineage_by_sub_admin.html">outbreak_data.lineage_by_sub_admin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lineage_cl_prevalence.html">outbreak_data.lineage_cl_prevalence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="most_recent_cl_data.html">outbreak_data.most_recent_cl_data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutation_details.html">outbreak_data.mutation_details</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutation_prevalences.html">outbreak_data.mutation_prevalences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="seq_counts.html">outbreak_data.sequence_counts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_location.html">outbreak_data.wildcard_location</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_lineage.html">outbreak_data.wildcard_lineage</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_latest.html">outbreak_data.get_wastewater_latest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_lineages.html">outbreak_data.get_wastewater_lineages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_metadata.html">outbreak_data.get_wastewater_metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_mutations.html">outbreak_data.get_wastewater_mutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_samples.html">outbreak_data.get_wastewater_samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_samples_by_lineage.html">outbreak_data.get_wastewater_samples_by_lineage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_samples_by_mutation.html">outbreak_data.get_wastewater_samples_by_mutation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cluster_df.html">outbreak_tools.cluster_df</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const_idx.html">outbreak_tools.const_idx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datebin_and_agg.html">outbreak_tools.datebin_and_agg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="first_date.html">outbreak_tools.first_date</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_colors.html">outbreak_tools.get_colors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_riverplot_baseline.html">outbreak_tools.get_riverplot_baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_tree.html">outbreak_tools.get_tree</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_ww_weights.html">outbreak_tools.get_ww_weights</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cluster_lineages.html">outbreak_clustering.cluster_lineages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gather_groups.html">outbreak_clustering.gather_groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_agg_prevalence.html">outbreak_clustering.get_agg_prevalence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_compressed_tree.html">outbreak_clustering.get_compressed_tree</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_lineage_key.html">outbreak_clustering.get_lineage_key</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="epidem_analysis.html">Epidemiological data analyses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutation_analysis.html">Mutation Data Analyses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cryptic_vars.html">Dealing with Cryptic Variants</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Python Outbreak.info API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+<div class="git-ribbon">
+  <a href="http://github.com/SwissDataScienceCenter" rel="me">Join us on GitHub</a>
+</div>
+
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>daily_lag</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/daily_lag.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="daily-lag">
+<h1>daily_lag<a class="headerlink" href="#daily-lag" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="outbreak_data.daily_lag">
+<span class="sig-prename descclassname"><span class="pre">outbreak_data.</span></span><span class="sig-name descname"><span class="pre">daily_lag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">req_args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#outbreak_data.daily_lag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the daily lag between collection and submission dates of clinical sequences in a location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>location</strong> -- A string containing a location ID. If not specified, return lag globally.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A pandas dataframe of collection-submission date pairs and clinical sequence counts.</p>
+</dd>
+<dt class="field-odd">Parameter example</dt>
+<dd class="field-odd"><p>{ 'location': 'USA_US-HI' }</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p><strong>Example Usage</strong></p>
+<p>Get the daily lag for SARS-Cov-2 data in Hawaii:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">outbreak_data</span><span class="o">.</span><span class="n">daily_lag</span><span class="p">(</span><span class="s1">&#39;USA_US-HI&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span>
+<span class="go">                               total_count</span>
+<span class="go">date_collected date_submitted</span>
+<span class="go">2020-03-05     2020-04-16                1</span>
+<span class="go">2020-03-07     2020-04-16                1</span>
+<span class="go">2020-03-11     2020-12-31                1</span>
+<span class="go">2020-03-12     2020-06-16                2</span>
+<span class="go">               2020-12-31                1</span>
+<span class="go">...                                    ...</span>
+<span class="go">2024-04-24     2024-05-08                3</span>
+<span class="go">               2024-05-16                2</span>
+<span class="go">2024-04-25     2024-05-16                2</span>
+<span class="go">2024-04-27     2024-05-16                1</span>
+<span class="go">2024-04-30     2024-05-16                1</span>
+
+<span class="go">[5798 rows x 1 columns]</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="growth_rates.html" class="btn btn-neutral float-right" title="growth_rates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="cases_by_location.html" class="btn btn-neutral float-left" title="cases_by_location" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright .
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

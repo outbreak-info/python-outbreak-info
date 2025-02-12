@@ -1,0 +1,7 @@
+authenticate_new_user
+----------------------------------------------------
+
+.. autofunction:: authenticate_user.authenticate_new_user
+
+
+.. note:: Authentication is only needed to access clinical data endpoints. A web browser and internet access are required for authentication. The auth_token is saved locally between runs, so this function only needs to be run once.

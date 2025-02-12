@@ -1,0 +1,409 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Viral Mutation Analysis &mdash; Python Outbreak.info API 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tracing Mutations Back to Lineage" href="cryptic_vars.html" />
+    <link rel="prev" title="Working with epidemiological data" href="epidem_analysis.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Python Outbreak.info API
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="all_lineage_prevalences.html">all_lineage_prevalences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auth_setup.html">authenticate_new_user</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cases_by_location.html">cases_by_location</a></li>
+<li class="toctree-l1"><a class="reference internal" href="daily_lag.html">daily_lag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_rates.html">growth_rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gr_significance.html">gr_significance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="known_mutations.html">known_mutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lineage_by_sub_admin.html">lineage_by_sub_admin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lineage_cl_prevalence.html">lineage_cl_prevalence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="most_recent_cl_data.html">most_recent_cl_data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutation_details.html">mutation_details</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutation_prevalences.html">mutation_prevalences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="seq_counts.html">sequence_counts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_location.html">wildcard_location</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_lineage.html">wildcard_lineage</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_latest.html">get_wastewater_latest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_lineages.html">get_wastewater_lineages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_metadata.html">get_wastewater_metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_mutations.html">get_wastewater_mutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_samples.html">get_wastewater_samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_samples_by_lineage.html">get_wastewater_samples_by_lineage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_samples_by_mutation.html">get_wastewater_samples_by_mutation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cluster_df.html">cluster_df</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const_idx.html">const_idx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datebin_and_agg.html">datebin_and_agg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="first_date.html">first_date</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_colors.html">get_colors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_riverplot_baseline.html">get_riverplot_baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_tree.html">get_tree</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_ww_weights.html">get_ww_weights</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="epidem_analysis.html">Epidemiological data analyses</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Mutation Data Analyses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cryptic_vars.html">Dealing with Cryptic Variants</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Python Outbreak.info API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+<div class="git-ribbon">
+  <a href="http://github.com/SwissDataScienceCenter" rel="me">Join us on GitHub</a>
+</div>
+
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Viral Mutation Analysis</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/mutation_analysis.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="viral-mutation-analysis">
+<h1>Viral Mutation Analysis<a class="headerlink" href="#viral-mutation-analysis" title="Permalink to this headline">¶</a></h1>
+<p><strong>known_mutations Heatmap</strong></p>
+<p>A basic but important question: how do we define a lineage? What mutations consistently appear in most sequences within a lineage? We could start by plotting some of the characteristic mutations of XBB occurring in 80% of sequences. Even better, we can do this for mulitple related lineages and compare them using a heatmap:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perform authentication if you haven&#39;t already</span>
+<span class="kn">from</span> <span class="nn">outbreak_data</span> <span class="kn">import</span> <span class="n">authenticate_user</span>
+<span class="n">authenticate_user</span><span class="o">.</span><span class="n">authenticate_new_user</span><span class="p">()</span>
+
+<span class="c1"># Import outbreak_data package</span>
+<span class="kn">from</span> <span class="nn">outbreak_data</span> <span class="kn">import</span> <span class="n">outbreak_data</span> <span class="k">as</span> <span class="n">od</span>
+
+
+<span class="c1"># Collecting 15 characteristic mutations and their prevalences for each variant</span>
+
+<span class="n">lin0</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">known_mutations</span><span class="p">(</span><span class="s2">&quot;xbb&quot;</span><span class="p">,</span> <span class="n">freq</span> <span class="o">=</span> <span class="mf">0.80</span><span class="p">)</span>
+<span class="n">lin0</span><span class="p">[</span><span class="s2">&quot;lineage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;xbb&quot;</span>
+<span class="n">lin0</span> <span class="o">=</span> <span class="n">lin0</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">15</span><span class="p">]</span>
+
+<span class="n">lin1</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">known_mutations</span><span class="p">(</span><span class="s2">&quot;xbb.1&quot;</span><span class="p">,</span> <span class="n">freq</span> <span class="o">=</span> <span class="mf">0.80</span><span class="p">)</span>
+<span class="n">lin1</span><span class="p">[</span><span class="s2">&quot;lineage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;xbb.1&quot;</span>
+<span class="n">lin1</span> <span class="o">=</span> <span class="n">lin1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">15</span><span class="p">]</span>
+
+<span class="n">lin2</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">known_mutations</span><span class="p">(</span><span class="s2">&quot;xbb.1.5&quot;</span><span class="p">,</span> <span class="n">freq</span> <span class="o">=</span> <span class="mf">0.80</span><span class="p">)</span>
+<span class="n">lin2</span><span class="p">[</span><span class="s2">&quot;lineage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;xbb.1.5&quot;</span>
+<span class="n">lin2</span> <span class="o">=</span> <span class="n">lin2</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">15</span><span class="p">]</span>
+
+<span class="n">lin3</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">known_mutations</span><span class="p">(</span><span class="s2">&quot;xbb.1.16&quot;</span><span class="p">,</span> <span class="n">freq</span> <span class="o">=</span> <span class="mf">0.80</span><span class="p">)</span>
+<span class="n">lin3</span><span class="p">[</span><span class="s2">&quot;lineage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;xbb.1.16&quot;</span>
+<span class="n">lin3</span> <span class="o">=</span> <span class="n">lin3</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">15</span><span class="p">]</span>
+
+<span class="n">lin4</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">known_mutations</span><span class="p">(</span><span class="s2">&quot;xbb.1.9&quot;</span><span class="p">,</span> <span class="n">freq</span> <span class="o">=</span> <span class="mf">0.80</span><span class="p">)</span>
+<span class="n">lin4</span><span class="p">[</span><span class="s2">&quot;lineage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;xbb.1.9&quot;</span>
+<span class="n">lin4</span> <span class="o">=</span> <span class="n">lin4</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">15</span><span class="p">]</span>
+
+<span class="n">lin5</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">known_mutations</span><span class="p">(</span><span class="s2">&quot;xbb.2.3&quot;</span><span class="p">,</span> <span class="n">freq</span> <span class="o">=</span> <span class="mf">0.80</span><span class="p">)</span>
+<span class="n">lin5</span><span class="p">[</span><span class="s2">&quot;lineage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;xbb.2.3&quot;</span>
+<span class="n">lin5</span> <span class="o">=</span> <span class="n">lin5</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">15</span><span class="p">]</span>
+
+<span class="c1"># Link each of the findings together for plotting</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">lin0</span><span class="p">,</span> <span class="n">lin1</span><span class="p">,</span> <span class="n">lin2</span><span class="p">,</span> <span class="n">lin3</span><span class="p">,</span> <span class="n">lin4</span><span class="p">,</span> <span class="n">lin5</span><span class="p">])</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;prevalence&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;prevalence&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">df</span><span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;prevalence&#39;</span><span class="p">:</span> <span class="s1">&#39;prevalence %&#39;</span><span class="p">})</span>
+
+<span class="c1"># Plot mutation heatmap</span>
+<span class="kn">import</span> <span class="nn">altair</span> <span class="k">as</span> <span class="nn">alt</span>
+
+<span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">mark_rect</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;mutation:N&quot;</span><span class="p">,</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;lineage:N&quot;</span><span class="p">,</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;prevalence %:Q&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Output</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>         <span class="n">mutation</span>  <span class="n">mutation_count</span>  <span class="n">lineage_count</span>  <span class="n">lineage</span>   <span class="n">gene</span> <span class="n">ref_aa</span> <span class="n">alt_aa</span>  \
+ <span class="mi">0</span>      <span class="n">orf6</span><span class="p">:</span><span class="n">d61l</span>            <span class="mi">4198</span>           <span class="mi">4423</span>      <span class="n">xbb</span>   <span class="n">ORF6</span>      <span class="n">D</span>      <span class="n">L</span>
+ <span class="mi">1</span>         <span class="n">s</span><span class="p">:</span><span class="n">l24s</span>            <span class="mi">3919</span>           <span class="mi">4423</span>      <span class="n">xbb</span>      <span class="n">S</span>      <span class="n">L</span>      <span class="n">S</span>
+ <span class="mi">2</span>        <span class="n">n</span><span class="p">:</span><span class="n">r203k</span>            <span class="mi">4378</span>           <span class="mi">4423</span>      <span class="n">xbb</span>      <span class="n">N</span>      <span class="n">R</span>      <span class="n">K</span>
+ <span class="mi">3</span>        <span class="n">s</span><span class="p">:</span><span class="n">g339h</span>            <span class="mi">4054</span>           <span class="mi">4423</span>      <span class="n">xbb</span>      <span class="n">S</span>      <span class="n">G</span>      <span class="n">H</span>
+ <span class="mi">4</span>        <span class="n">s</span><span class="p">:</span><span class="n">v445p</span>            <span class="mi">3643</span>           <span class="mi">4423</span>      <span class="n">xbb</span>      <span class="n">S</span>      <span class="n">V</span>      <span class="n">P</span>
+ <span class="o">...</span>           <span class="o">...</span>             <span class="o">...</span>            <span class="o">...</span>      <span class="o">...</span>    <span class="o">...</span>    <span class="o">...</span>    <span class="o">...</span>
+ <span class="mi">10</span>  <span class="n">orf1a</span><span class="p">:</span><span class="n">p3395h</span>            <span class="mi">3263</span>           <span class="mi">3279</span>  <span class="n">xbb</span><span class="mf">.2.3</span>  <span class="n">ORF1a</span>      <span class="n">P</span>      <span class="n">H</span>
+ <span class="mi">11</span>       <span class="n">s</span><span class="p">:</span><span class="n">n969k</span>            <span class="mi">3261</span>           <span class="mi">3279</span>  <span class="n">xbb</span><span class="mf">.2.3</span>      <span class="n">S</span>      <span class="n">N</span>      <span class="n">K</span>
+ <span class="mi">12</span>  <span class="n">orf1a</span><span class="p">:</span><span class="n">g1307s</span>            <span class="mi">3257</span>           <span class="mi">3279</span>  <span class="n">xbb</span><span class="mf">.2.3</span>  <span class="n">ORF1a</span>      <span class="n">G</span>      <span class="n">S</span>
+ <span class="mi">13</span>       <span class="n">s</span><span class="p">:</span><span class="n">d614g</span>            <span class="mi">3257</span>           <span class="mi">3279</span>  <span class="n">xbb</span><span class="mf">.2.3</span>      <span class="n">S</span>      <span class="n">D</span>      <span class="n">G</span>
+ <span class="mi">14</span>       <span class="n">s</span><span class="p">:</span><span class="n">q954h</span>            <span class="mi">3257</span>           <span class="mi">3279</span>  <span class="n">xbb</span><span class="mf">.2.3</span>      <span class="n">S</span>      <span class="n">Q</span>      <span class="n">H</span>
+
+     <span class="n">codon_num</span> <span class="n">codon_end</span>          <span class="nb">type</span>  <span class="n">prevalence</span> <span class="o">%</span> <span class="n">change_length_nt</span>
+ <span class="mi">0</span>          <span class="mi">61</span>      <span class="kc">None</span>  <span class="n">substitution</span>     <span class="mf">94.912955</span>             <span class="kc">None</span>
+ <span class="mi">1</span>          <span class="mi">24</span>      <span class="kc">None</span>  <span class="n">substitution</span>     <span class="mf">88.605019</span>             <span class="kc">None</span>
+ <span class="mi">2</span>         <span class="mi">203</span>      <span class="kc">None</span>  <span class="n">substitution</span>     <span class="mf">98.982591</span>             <span class="kc">None</span>
+ <span class="mi">3</span>         <span class="mi">339</span>      <span class="kc">None</span>  <span class="n">substitution</span>     <span class="mf">91.657246</span>             <span class="kc">None</span>
+ <span class="mi">4</span>         <span class="mi">445</span>      <span class="kc">None</span>  <span class="n">substitution</span>     <span class="mf">82.364911</span>             <span class="kc">None</span>
+ <span class="o">...</span>        <span class="o">...</span>       <span class="o">...</span>           <span class="o">...</span>           <span class="o">...</span>              <span class="o">...</span>
+ <span class="mi">10</span>       <span class="mi">3395</span>      <span class="kc">None</span>  <span class="n">substitution</span>     <span class="mf">99.512046</span>             <span class="kc">None</span>
+ <span class="mi">11</span>        <span class="mi">969</span>      <span class="kc">None</span>  <span class="n">substitution</span>     <span class="mf">99.451052</span>             <span class="kc">None</span>
+ <span class="mi">12</span>       <span class="mi">1307</span>      <span class="kc">None</span>  <span class="n">substitution</span>     <span class="mf">99.329064</span>             <span class="kc">None</span>
+ <span class="mi">13</span>        <span class="mi">614</span>      <span class="kc">None</span>  <span class="n">substitution</span>     <span class="mf">99.329064</span>             <span class="kc">None</span>
+ <span class="mi">14</span>        <span class="mi">954</span>      <span class="kc">None</span>  <span class="n">substitution</span>     <span class="mf">99.329064</span>             <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+<p>[90 rows x 12 columns]</p>
+<img alt="_images/mut_by_lin.png" src="_images/mut_by_lin.png" />
+<p><strong>Comparing Lineages</strong></p>
+<p>To better understand the evolution of SARS-CoV-2, we may also want to know what mutations are shared between different viral lineages and how many shared mutations there are.</p>
+<p>For this example we'll look at three different lineages: B.1.1.7, P.1, and B.1.1.529. First, let's get an idea of which mutations are shared between all three lineages:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lin1</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">known_mutations</span><span class="p">(</span><span class="s2">&quot;b.1.1.7&quot;</span><span class="p">)</span>
+<span class="n">lin1</span><span class="p">[</span><span class="s2">&quot;lineage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;b.1.1.7&quot;</span>
+
+<span class="n">lin2</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">known_mutations</span><span class="p">(</span><span class="s2">&quot;P.1&quot;</span><span class="p">)</span>
+<span class="n">lin2</span><span class="p">[</span><span class="s2">&quot;lineage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;P.1&quot;</span>
+
+<span class="n">lin3</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">known_mutations</span><span class="p">(</span><span class="s2">&quot;b.1.1.529&quot;</span><span class="p">)</span>
+<span class="n">lin3</span><span class="p">[</span><span class="s2">&quot;lineage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;b.1.1.529&quot;</span>
+
+<span class="c1">#Finding intersections</span>
+
+<span class="c1">#Created an optional but convenient intersecting function</span>
+<span class="k">def</span> <span class="nf">intersect</span><span class="p">(</span><span class="n">lst1</span><span class="p">,</span> <span class="n">lst2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">lst1</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">lst2</span><span class="p">)</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">lin1</span><span class="p">[</span><span class="s1">&#39;mutation&#39;</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">lin2</span><span class="p">[</span><span class="s1">&#39;mutation&#39;</span><span class="p">])</span>
+<span class="n">c</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">lin3</span><span class="p">[</span><span class="s1">&#39;mutation&#39;</span><span class="p">])</span>
+
+<span class="n">m12</span> <span class="o">=</span> <span class="n">intersect</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">m13</span> <span class="o">=</span> <span class="n">intersect</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="n">m23</span> <span class="o">=</span> <span class="n">intersect</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="n">m123</span> <span class="o">=</span> <span class="n">intersect</span><span class="p">(</span><span class="n">m12</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Set 1.2:&#39;</span><span class="p">,</span> <span class="n">m12</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Set 1.3:&#39;</span><span class="p">,</span> <span class="n">m13</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Set 2.3:&#39;</span> <span class="p">,</span> <span class="n">m23</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Set 1.2.3:&#39;</span><span class="p">,</span> <span class="n">m123</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Output</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">Set</span> <span class="mf">1.2</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;orf1b:p314l&#39;</span><span class="p">,</span> <span class="s1">&#39;orf8:s84l&#39;</span><span class="p">,</span> <span class="s1">&#39;orf1a:del3675/3677&#39;</span><span class="p">,</span> <span class="s1">&#39;n:r203k&#39;</span><span class="p">,</span> <span class="s1">&#39;s:d614g&#39;</span><span class="p">,</span> <span class="s1">&#39;s:n501y&#39;</span><span class="p">,</span> <span class="s1">&#39;n:g204r&#39;</span><span class="p">}</span>
+ <span class="n">Set</span> <span class="mf">1.3</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;s:p681h&#39;</span><span class="p">,</span> <span class="s1">&#39;orf1b:p314l&#39;</span><span class="p">,</span> <span class="s1">&#39;orf8:s84l&#39;</span><span class="p">,</span> <span class="s1">&#39;n:r203k&#39;</span><span class="p">,</span> <span class="s1">&#39;s:d614g&#39;</span><span class="p">,</span> <span class="s1">&#39;n:g204r&#39;</span><span class="p">}</span>
+ <span class="n">Set</span> <span class="mf">2.3</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;orf1b:p314l&#39;</span><span class="p">,</span> <span class="s1">&#39;s:h655y&#39;</span><span class="p">,</span> <span class="s1">&#39;orf8:s84l&#39;</span><span class="p">,</span> <span class="s1">&#39;n:r203k&#39;</span><span class="p">,</span> <span class="s1">&#39;s:d614g&#39;</span><span class="p">,</span> <span class="s1">&#39;n:g204r&#39;</span><span class="p">}</span>
+ <span class="n">Set</span> <span class="mf">1.2.3</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;orf1b:p314l&#39;</span><span class="p">,</span> <span class="s1">&#39;orf8:s84l&#39;</span><span class="p">,</span> <span class="s1">&#39;n:r203k&#39;</span><span class="p">,</span> <span class="s1">&#39;s:d614g&#39;</span><span class="p">,</span> <span class="s1">&#39;n:g204r&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>Finally, we can make a visual based on our findings and create a Venn diagram of our results:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import libraries for venn diagram visual</span>
+<span class="kn">from</span> <span class="nn">matplotlib_venn</span> <span class="kn">import</span> <span class="n">venn3</span><span class="p">,</span> <span class="n">venn3_circles</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="c1"># Using matplotlib_venn to make venn diagram with custom visuals</span>
+ <span class="c1">## The venn diagram package used here automatically determines the number</span>
+ <span class="c1">## of intersecting values and plots accordingly</span>
+
+<span class="n">vd3</span> <span class="o">=</span> <span class="n">venn3</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">],</span> <span class="n">set_labels</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Alpha/B.1.1.7&#39;</span><span class="p">,</span> <span class="s1">&#39;Gamma/P.1&#39;</span><span class="p">,</span> <span class="s1">&#39;Omicron/B.1.1.529&#39;</span><span class="p">),</span> <span class="n">set_colors</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;#c4e6ff&#39;</span><span class="p">,</span> <span class="s1">&#39;#F4ACB7&#39;</span><span class="p">,</span><span class="s1">&#39;#9D8189&#39;</span><span class="p">),</span>
+ <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">venn3_circles</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,],</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;-.&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">vd3</span><span class="o">.</span><span class="n">set_labels</span><span class="p">:</span>
+ <span class="n">text</span><span class="o">.</span><span class="n">set_fontsize</span><span class="p">(</span><span class="mi">16</span><span class="p">);</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">vd3</span><span class="o">.</span><span class="n">subset_labels</span><span class="p">:</span>
+ <span class="n">text</span><span class="o">.</span><span class="n">set_fontsize</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Number of Overlapping Mutations in 3 Variants&#39;</span><span class="p">,</span><span class="n">fontname</span> <span class="o">=</span><span class="s1">&#39;Helvetica&#39;</span><span class="p">,</span><span class="n">fontweight</span> <span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">18</span><span class="p">,</span>
+ <span class="n">pad</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span><span class="n">backgroundcolor</span> <span class="o">=</span><span class="s1">&#39;#cbe7e3&#39;</span><span class="p">,</span><span class="n">color</span> <span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">style</span> <span class="o">=</span><span class="s1">&#39;normal&#39;</span><span class="p">);</span>
+<span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_lw</span><span class="p">(</span><span class="mf">7.0</span><span class="p">)</span>
+<span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ls</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="_images/compare.png" src="_images/compare.png" />
+<p>We can see that the graph matches the number of intersecting mutations that we previously saw, given that the venn diagram also takes into account unique values for each set.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please see the <a class="reference external" href="https://python-graph-gallery.com/venn-diagram/">matplotlib venn diagram documentation</a> and <a class="reference external" href="https://towardsdatascience.com/how-to-create-and-beautify-venn-diagrams-in-python-331129bd4ed3">this article</a>  for more info on how to create these graphs.</p>
+</div>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="cryptic_vars.html" class="btn btn-neutral float-right" title="Tracing Mutations Back to Lineage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="epidem_analysis.html" class="btn btn-neutral float-left" title="Working with epidemiological data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright .
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

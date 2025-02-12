@@ -1,0 +1,395 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Welcome to the Python Outbreak.info package docs! &mdash; Python Outbreak.info API 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="authenticate_new_user" href="authenticate_new_user.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home"> Python Outbreak.info API
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="authenticate_new_user.html">authenticate_user.authenticate_new_user</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="all_lineage_prevalences.html">outbreak_data.all_lineage_prevalences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cases_by_location.html">outbreak_data.cases_by_location</a></li>
+<li class="toctree-l1"><a class="reference internal" href="daily_lag.html">outbreak_data.daily_lag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_rates.html">outbreak_data.growth_rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gr_significance.html">outbreak_data.gr_significance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="known_mutations.html">outbreak_data.known_mutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lineage_by_sub_admin.html">outbreak_data.lineage_by_sub_admin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lineage_cl_prevalence.html">outbreak_data.lineage_cl_prevalence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="most_recent_cl_data.html">outbreak_data.most_recent_cl_data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutation_details.html">outbreak_data.mutation_details</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutation_prevalences.html">outbreak_data.mutation_prevalences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="seq_counts.html">outbreak_data.sequence_counts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_location.html">outbreak_data.wildcard_location</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_lineage.html">outbreak_data.wildcard_lineage</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_latest.html">outbreak_data.get_wastewater_latest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_lineages.html">outbreak_data.get_wastewater_lineages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_metadata.html">outbreak_data.get_wastewater_metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_mutations.html">outbreak_data.get_wastewater_mutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_samples.html">outbreak_data.get_wastewater_samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_samples_by_lineage.html">outbreak_data.get_wastewater_samples_by_lineage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_samples_by_mutation.html">outbreak_data.get_wastewater_samples_by_mutation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cluster_df.html">outbreak_tools.cluster_df</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const_idx.html">outbreak_tools.const_idx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datebin_and_agg.html">outbreak_tools.datebin_and_agg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="first_date.html">outbreak_tools.first_date</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_colors.html">outbreak_tools.get_colors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_riverplot_baseline.html">outbreak_tools.get_riverplot_baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_tree.html">outbreak_tools.get_tree</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_ww_weights.html">outbreak_tools.get_ww_weights</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cluster_lineages.html">outbreak_clustering.cluster_lineages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gather_groups.html">outbreak_clustering.gather_groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_agg_prevalence.html">outbreak_clustering.get_agg_prevalence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_compressed_tree.html">outbreak_clustering.get_compressed_tree</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_lineage_key.html">outbreak_clustering.get_lineage_key</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="epidem_analysis.html">Epidemiological data analyses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutation_analysis.html">Mutation Data Analyses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cryptic_vars.html">Dealing with Cryptic Variants</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Python Outbreak.info API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+<div class="git-ribbon">
+  <a href="http://github.com/SwissDataScienceCenter" rel="me">Join us on GitHub</a>
+</div>
+
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Welcome to the Python Outbreak.info package docs!</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="welcome-to-the-python-outbreak-info-package-docs">
+<h1>Welcome to the Python Outbreak.info package docs!<a class="headerlink" href="#welcome-to-the-python-outbreak-info-package-docs" title="Permalink to this headline">¶</a></h1>
+<p>Here you can find information on the functions you will use to collect and analyze SARS-COV-2  data from the Outbreak.info API.
+Our package pulls data from the <a class="reference external" href="https://api.outbreak.info/">Outbreak.info API</a> and is reflected on our <a class="reference external" href="https://outbreak.info/">Outbreak.info web interface</a></p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>We recommend installing the package via pip using:</p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">python-outbreak-info</span></code></p>
+<p>Alternatively, the package can be directly installed from source via pip:</p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">git+https://github.com/outbreak-info/python-outbreak-info.git</span></code></p>
+</section>
+<section id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>The Python Outbreak.info package contains key functions for accessing genomic and epidemiological data for SARS-CoV-2. Access to genomic data requires logging in using GISAID credentials to generate an API key, using the <code class="docutils literal notranslate"><span class="pre">authenticate_new_user()</span></code> function. To perform authentication, you'll need to first run</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">outbreak_data.authenticate_user</span> <span class="kn">import</span> <span class="n">authenticate_new_user</span>
+<span class="n">authenticate_new_user</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>and then you should be able access all of the functionality of the package. Most of the rest of the tools are available within the <code class="docutils literal notranslate"><span class="pre">outbreak_data</span></code> component of the package. For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">outbreak_data</span> <span class="kn">import</span> <span class="n">outbreak_data</span>
+<span class="n">lin_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;B.1.1.7&#39;</span><span class="p">,</span><span class="s1">&#39;B.1.351&#39;</span><span class="p">,</span><span class="s1">&#39;B.1.617.2&#39;</span><span class="p">]</span>
+<span class="c1"># request lineages occurring with minimum frequency of 0.05 (5%)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">outbreak_data</span><span class="o">.</span><span class="n">known_mutations</span><span class="p">(</span><span class="n">lin_list</span><span class="p">,</span><span class="n">freq</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="c1"># filter mutations and sort by codon number</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;gene&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;S&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;codon_num&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For wastewater abundance analyses, users will need to supply the appropriate location code corresponding to their location of interest and a date range. To do this, users would first retrieve wastewater data from <code class="docutils literal notranslate"><span class="pre">outbreak_data</span></code> then aggregate the data by date and weight to get the abundances for each lineage using the <code class="docutils literal notranslate"><span class="pre">outbreak_tools</span></code> part of the package. An example lookup should look like:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">outbreak_data</span> <span class="kn">import</span> <span class="n">outbreak_data</span>
+<span class="kn">from</span> <span class="nn">outbreak_tools</span> <span class="kn">import</span> <span class="n">outbreak_tools</span>
+<span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;Ohio&quot;</span>
+<span class="n">startdate</span><span class="p">,</span> <span class="n">enddate</span> <span class="o">=</span> <span class="s2">&quot;2023-09-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-10-01&quot;</span>
+<span class="n">ww_samples</span> <span class="o">=</span> <span class="n">outbreak_data</span><span class="o">.</span><span class="n">get_wastewater_samples</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="n">state</span><span class="p">,</span> <span class="n">date_range</span><span class="o">=</span><span class="p">[</span><span class="n">startdate</span><span class="p">,</span> <span class="n">enddate</span><span class="p">])</span>
+<span class="n">ww_samples</span> <span class="o">=</span> <span class="n">outbreak_data</span><span class="o">.</span><span class="n">get_wastewater_lineages</span><span class="p">(</span><span class="n">ww_samples</span><span class="p">)</span>
+<span class="n">ww_abundances</span> <span class="o">=</span> <span class="n">outbreak_tools</span><span class="o">.</span><span class="n">datebin_and_agg</span><span class="p">(</span><span class="n">ww_samples</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">outbreak_tools</span><span class="o">.</span><span class="n">get_ww_weights</span><span class="p">(</span><span class="n">ww_samples</span><span class="p">),</span> <span class="n">startdate</span><span class="o">=</span><span class="n">startdate</span><span class="p">,</span> <span class="n">enddate</span><span class="o">=</span><span class="n">enddate</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;7D&#39;</span><span class="p">)</span>
+<span class="c1"># This data frame is large, so we&#39;ll focus on one lineage</span>
+<span class="n">ww_abundances</span><span class="p">[</span><span class="s1">&#39;B.1.1.191&#39;</span><span class="p">]</span>
+
+<span class="p">(</span><span class="mi">2023</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">31</span><span class="p">,</span> <span class="mi">2023</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">07</span><span class="p">]</span>    <span class="mf">0.068126</span>
+<span class="p">(</span><span class="mi">2023</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">07</span><span class="p">,</span> <span class="mi">2023</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">14</span><span class="p">]</span>    <span class="mf">0.017081</span>
+<span class="p">(</span><span class="mi">2023</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">14</span><span class="p">,</span> <span class="mi">2023</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">21</span><span class="p">]</span>    <span class="mf">0.030141</span>
+<span class="p">(</span><span class="mi">2023</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">21</span><span class="p">,</span> <span class="mi">2023</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">28</span><span class="p">]</span>    <span class="mf">0.031744</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">EG</span><span class="mf">.2</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+</pre></div>
+</div>
+<p><strong>About Clinical and Wastewater Tools</strong></p>
+<p>Toward the beginning of the SARS-Cov-2 pandemic, viral genome sequencing data were collected through specimens that were obtained from clinical testing. Yet studies have shown that the method has introduced sampling bias due to systemic healthcare disparities, particularly in poor and underserved communities. In contrast, wastewater samples have been highly useful for tracking regional infection dynamics while providing less biased abundance estimates than clinical testing. Data collected by tracking viral genomic sequences in wastewater has also improved community prevalence estimates and detects emerging variants earlier on.</p>
+<p>In clinical genomic data, each sample contains one sequence, allowing us to see whether two or more mutations occur frequently together. However, wastewater data samples contain a mix of sequences, and it's unclear which mutations go with which variants exactly. Analyzing clinical data would then be needed to answer co-occurence questions.</p>
+<p>The Andersen Lab has developed improved virus concentration protocols and deconvolution software that fully resolve multiple virus strains from wastewater. The resulting data is now deployed by Python-outbreak-info. In short, SARS-Cov-2 analysis should be done using both clinical and wastewater tools in order to see the full picture in viral genomic data.</p>
+<p><a class="reference external" href="https://www.nature.com/articles/s41586-022-05049-6">Click here</a> for more information on wastewater analysis.</p>
+</section>
+</section>
+<section id="table-of-contents">
+<h1>Table of Contents:<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h1>
+<section id="user-authentication-outbreak-data-authenticate-user">
+<h2>User Authentication (<em>outbreak_data.authenticate_user</em>)<a class="headerlink" href="#user-authentication-outbreak-data-authenticate-user" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="authenticate_new_user.html">authenticate_user.authenticate_new_user</a></li>
+</ul>
+</div>
+</section>
+<section id="core-outbreak-data-tools-outbreak-data-outbreak-data">
+<h2>Core Outbreak Data Tools (<em>outbreak_data.outbreak_data</em>)<a class="headerlink" href="#core-outbreak-data-tools-outbreak-data-outbreak-data" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="all_lineage_prevalences.html">outbreak_data.all_lineage_prevalences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cases_by_location.html">outbreak_data.cases_by_location</a></li>
+<li class="toctree-l1"><a class="reference internal" href="daily_lag.html">outbreak_data.daily_lag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_rates.html">outbreak_data.growth_rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gr_significance.html">outbreak_data.gr_significance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="known_mutations.html">outbreak_data.known_mutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lineage_by_sub_admin.html">outbreak_data.lineage_by_sub_admin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lineage_cl_prevalence.html">outbreak_data.lineage_cl_prevalence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="most_recent_cl_data.html">outbreak_data.most_recent_cl_data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutation_details.html">outbreak_data.mutation_details</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutation_prevalences.html">outbreak_data.mutation_prevalences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="seq_counts.html">outbreak_data.sequence_counts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_location.html">outbreak_data.wildcard_location</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_lineage.html">outbreak_data.wildcard_lineage</a></li>
+</ul>
+</div>
+</section>
+<section id="wastewater-analysis-tools-outbreak-data-outbreak-data">
+<h2>Wastewater Analysis Tools (<em>outbreak_data.outbreak_data</em>)<a class="headerlink" href="#wastewater-analysis-tools-outbreak-data-outbreak-data" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_latest.html">outbreak_data.get_wastewater_latest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_lineages.html">outbreak_data.get_wastewater_lineages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_metadata.html">outbreak_data.get_wastewater_metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_mutations.html">outbreak_data.get_wastewater_mutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_samples.html">outbreak_data.get_wastewater_samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_samples_by_lineage.html">outbreak_data.get_wastewater_samples_by_lineage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_samples_by_mutation.html">outbreak_data.get_wastewater_samples_by_mutation</a></li>
+</ul>
+</div>
+</section>
+<section id="plotting-and-organization-toolkit-outbreak-tools-outbreak-tools">
+<h2>Plotting and Organization Toolkit (<em>outbreak_tools.outbreak_tools</em>)<a class="headerlink" href="#plotting-and-organization-toolkit-outbreak-tools-outbreak-tools" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cluster_df.html">outbreak_tools.cluster_df</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const_idx.html">outbreak_tools.const_idx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datebin_and_agg.html">outbreak_tools.datebin_and_agg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="first_date.html">outbreak_tools.first_date</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_colors.html">outbreak_tools.get_colors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_riverplot_baseline.html">outbreak_tools.get_riverplot_baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_tree.html">outbreak_tools.get_tree</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_ww_weights.html">outbreak_tools.get_ww_weights</a></li>
+</ul>
+</div>
+</section>
+<section id="lineage-clustering-outbreak-tools-outbreak-clustering">
+<h2>Lineage Clustering (<em>outbreak_tools.outbreak_clustering</em>)<a class="headerlink" href="#lineage-clustering-outbreak-tools-outbreak-clustering" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cluster_lineages.html">outbreak_clustering.cluster_lineages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gather_groups.html">outbreak_clustering.gather_groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_agg_prevalence.html">outbreak_clustering.get_agg_prevalence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_compressed_tree.html">outbreak_clustering.get_compressed_tree</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_lineage_key.html">outbreak_clustering.get_lineage_key</a></li>
+</ul>
+</div>
+</section>
+<section id="example-applications-and-analyses">
+<h2>Example Applications and Analyses<a class="headerlink" href="#example-applications-and-analyses" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="epidem_analysis.html">Epidemiological data analyses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutation_analysis.html">Mutation Data Analyses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cryptic_vars.html">Dealing with Cryptic Variants</a></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="authenticate_new_user.html" class="btn btn-neutral float-right" title="authenticate_new_user" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright .
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

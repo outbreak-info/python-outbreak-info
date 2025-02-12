@@ -1,0 +1,329 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Tracing Mutations Back to Lineage &mdash; Python Outbreak.info API 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/fonts.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Viral Mutation Analysis" href="mutation_analysis.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Python Outbreak.info API
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="all_lineage_prevalences.html">all_lineage_prevalences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auth_setup.html">authenticate_new_user</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cases_by_location.html">cases_by_location</a></li>
+<li class="toctree-l1"><a class="reference internal" href="daily_lag.html">daily_lag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growth_rates.html">growth_rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gr_significance.html">gr_significance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="known_mutations.html">known_mutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lineage_by_sub_admin.html">lineage_by_sub_admin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lineage_cl_prevalence.html">lineage_cl_prevalence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="most_recent_cl_data.html">most_recent_cl_data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutation_details.html">mutation_details</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutation_prevalences.html">mutation_prevalences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="seq_counts.html">sequence_counts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_location.html">wildcard_location</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wildcard_lineage.html">wildcard_lineage</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_latest.html">get_wastewater_latest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_lineages.html">get_wastewater_lineages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_metadata.html">get_wastewater_metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_mutations.html">get_wastewater_mutations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_samples.html">get_wastewater_samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_samples_by_lineage.html">get_wastewater_samples_by_lineage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_wastewater_samples_by_mutation.html">get_wastewater_samples_by_mutation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cluster_df.html">cluster_df</a></li>
+<li class="toctree-l1"><a class="reference internal" href="const_idx.html">const_idx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datebin_and_agg.html">datebin_and_agg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="first_date.html">first_date</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_colors.html">get_colors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_riverplot_baseline.html">get_riverplot_baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_tree.html">get_tree</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_ww_weights.html">get_ww_weights</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="epidem_analysis.html">Epidemiological data analyses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mutation_analysis.html">Mutation Data Analyses</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Dealing with Cryptic Variants</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Python Outbreak.info API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+<div class="git-ribbon">
+  <a href="http://github.com/SwissDataScienceCenter" rel="me">Join us on GitHub</a>
+</div>
+
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Tracing Mutations Back to Lineage</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/cryptic_vars.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="tracing-mutations-back-to-lineage">
+<h1>Tracing Mutations Back to Lineage<a class="headerlink" href="#tracing-mutations-back-to-lineage" title="Permalink to this headline">¶</a></h1>
+<p>The Python Outbreak API can be queried in order to determine which lineages a mutation has been found in. After collecting a sample and determining what sequences are present, we may have a list of several SARS-CoV-2 mutations that we can immediately say are characteristic of a specific variant. However in some cases, we also may have a mutation that is relatively uncommon in most other samples.
+For example, we can look at small data sample consisting of 10 mutations: (S:A67V, S:DEL69/70, S:E484A, S:N501Y, S:T572N, S:D614G, S:G142D  N:S2Y, S:Q52R, E:L21F, S:G593D). We’ll want a way to find more details about any mutation collected, such as whether the mutation has been collected before, when, and where that mutation came from.</p>
+<p>To start, the <code class="docutils literal notranslate"><span class="pre">mutation_prevalences()</span></code> function allows us to look at the clinical prevalence of a mutation and see which lineage it most likely belongs to. Let's try it for E:L21F:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perform authentication if you haven&#39;t already</span>
+<span class="kn">from</span> <span class="nn">outbreak_data</span> <span class="kn">import</span> <span class="n">authenticate_user</span>
+<span class="n">authenticate_user</span><span class="o">.</span><span class="n">authenticate_new_user</span><span class="p">()</span>
+
+<span class="c1"># Import outbreak_data package</span>
+<span class="kn">from</span> <span class="nn">outbreak_data</span> <span class="kn">import</span> <span class="n">outbreak_data</span> <span class="k">as</span> <span class="n">od</span>
+
+<span class="n">lin1</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">mutation_prevalences</span><span class="p">(</span><span class="n">mutation</span><span class="o">=</span><span class="s1">&#39;E:L21F&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lin1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Output</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>          <span class="n">pangolin_lineage</span>  <span class="n">lineage_count</span>  <span class="n">mutation_count</span>  <span class="n">proportion</span>  \
+     <span class="mi">0</span>               <span class="n">ba</span><span class="mf">.2</span>        <span class="mi">1228296</span>             <span class="mi">560</span>    <span class="mf">0.000456</span>
+     <span class="mi">1</span>            <span class="n">b</span><span class="mf">.1.1.7</span>        <span class="mi">1155169</span>             <span class="mi">844</span>    <span class="mf">0.000731</span>
+     <span class="mi">2</span>             <span class="n">ba</span><span class="mf">.1.1</span>        <span class="mi">1046121</span>             <span class="mi">268</span>    <span class="mf">0.000256</span>
+     <span class="mi">3</span>               <span class="n">ay</span><span class="mf">.4</span>         <span class="mi">861521</span>             <span class="mi">526</span>    <span class="mf">0.000611</span>
+     <span class="mi">4</span>               <span class="n">ba</span><span class="mf">.1</span>         <span class="mi">439838</span>              <span class="mi">49</span>    <span class="mf">0.000111</span>
+     <span class="o">...</span>               <span class="o">...</span>            <span class="o">...</span>             <span class="o">...</span>         <span class="o">...</span>
+     <span class="mi">400</span>          <span class="n">ba</span><span class="mf">.2.77</span>             <span class="mi">63</span>              <span class="mi">48</span>    <span class="mf">0.761905</span>
+     <span class="mi">401</span>        <span class="n">ba</span><span class="mf">.5.2.54</span>             <span class="mi">55</span>               <span class="mi">2</span>    <span class="mf">0.036364</span>
+     <span class="mi">402</span>          <span class="n">b</span><span class="mf">.1.616</span>             <span class="mi">39</span>               <span class="mi">3</span>    <span class="mf">0.076923</span>
+     <span class="mi">403</span>        <span class="n">b</span><span class="mf">.1.1.386</span>             <span class="mi">20</span>               <span class="mi">1</span>    <span class="mf">0.050000</span>
+     <span class="mi">404</span>        <span class="n">b</span><span class="mf">.1.1.400</span>             <span class="mi">20</span>              <span class="mi">20</span>    <span class="mf">1.000000</span>
+
+          <span class="n">proportion_ci_lower</span>  <span class="n">proportion_ci_upper</span>
+     <span class="mi">0</span>               <span class="mf">0.000419</span>             <span class="mf">0.000495</span>
+     <span class="mi">1</span>               <span class="mf">0.000683</span>             <span class="mf">0.000781</span>
+     <span class="mi">2</span>               <span class="mf">0.000227</span>             <span class="mf">0.000288</span>
+     <span class="mi">3</span>               <span class="mf">0.000560</span>             <span class="mf">0.000664</span>
+     <span class="mi">4</span>               <span class="mf">0.000083</span>             <span class="mf">0.000146</span>
+     <span class="o">...</span>                   <span class="o">...</span>                  <span class="o">...</span>
+     <span class="mi">400</span>             <span class="mf">0.646596</span>             <span class="mf">0.853783</span>
+     <span class="mi">401</span>             <span class="mf">0.007632</span>             <span class="mf">0.111568</span>
+     <span class="mi">402</span>             <span class="mf">0.022142</span>             <span class="mf">0.191265</span>
+     <span class="mi">403</span>             <span class="mf">0.005449</span>             <span class="mf">0.210819</span>
+     <span class="mi">404</span>             <span class="mf">0.883361</span>             <span class="mf">0.999976</span>
+</pre></div>
+</div>
+</div>
+<p>[405 rows x 6 columns]</p>
+<p>This mutation has clearly been seen before in some previous lineages. We might be able recognize that most of the mutations in our list have been detected in older variants, as well as Omicron. However, S:G593D is relatively uncommon in most other samples. We can easily find out where and when it was last detected:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span> <span class="n">lin2</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">mutation_prevalences</span><span class="p">(</span><span class="n">mutation</span><span class="o">=</span><span class="s1">&#39;S:G593D&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span> <span class="nb">print</span><span class="p">(</span><span class="n">lin2</span><span class="p">)</span>
+
+<span class="go">     pangolin_lineage  lineage_count  mutation_count  proportion  \</span>
+<span class="go"> 0            xbb.1          28205               1    0.000035</span>
+
+<span class="go">    proportion_ci_lower  proportion_ci_upper</span>
+<span class="go"> 0             0.000004             0.000166</span>
+
+
+<span class="gp">&gt;&gt;&gt; </span> <span class="n">last_seen</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">most_recent_cl_data</span><span class="p">(</span><span class="s1">&#39;xbb.1&#39;</span><span class="p">,</span> <span class="s1">&#39;S:G593D&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span> <span class="nb">print</span><span class="p">(</span><span class="n">last_seen</span><span class="p">)</span>
+
+<span class="go">Timestamp(2022-12-22 00:00:00)</span>
+</pre></div>
+</div>
+<p>According to our data, S:G593D has only been detected once in a single sequence belonging to the xbb.1 lineage. The last time it was collected was back on December 12, 2022.</p>
+<p>Additionally <code class="docutils literal notranslate"><span class="pre">mutation_prevalences</span></code> allows us to find out if there is a lineage where several mutations overlap. Selecting 7 of the mutations from our original list yields one lineage with all of these mutation characteristics:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lin3</span> <span class="o">=</span> <span class="n">od</span><span class="o">.</span><span class="n">mutation_prevalences</span><span class="p">(</span><span class="n">mutation</span><span class="o">=</span><span class="s1">&#39;S:A67V, S:DEL69/70, S:E484A, S:N501Y, S:T572N, S:D614G, S:G142D&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">lin3</span><span class="p">)</span>
+
+<span class="go">     pangolin_lineage  lineage_count  mutation_count  proportion  \</span>
+<span class="go">   0          ba.1.19           4587               1    0.000218</span>
+
+<span class="go">   proportion_ci_lower  proportion_ci_upper</span>
+<span class="go">0             0.000024             0.001019</span>
+</pre></div>
+</div>
+<p>Here we see that the only lineage that contains all 7 mutations is ba.1.19.</p>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="mutation_analysis.html" class="btn btn-neutral float-left" title="Viral Mutation Analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright .
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
